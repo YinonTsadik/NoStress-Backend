@@ -1,5 +1,5 @@
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 enum constraintType
 {
@@ -15,11 +15,30 @@ public class Constraint extends Period
 {
     private constraintType type;
 
-    public Constraint(LocalDate date, LocalTime startTime, LocalTime endTime, double durationInHours, double durationInMinutes, String description, constraintType type)
+    public Constraint(LocalDateTime startTime, LocalDateTime endTime, String description, constraintType type)
     {
-        super(date, startTime, endTime, durationInHours, durationInMinutes, description);
+        super(description);
+        setStartTime(startTime);
+        setEndTime(endTime);
         this.type = type;
+
+        updateHoursAndMinutes();
     }
+
+    // ===========================================================================
+
+    private void updateHoursAndMinutes()
+    {
+        Duration duration = Duration.between(getStartTime(), getEndTime());
+
+        double hours = duration.toHours();
+        hours += (duration.toMinutes() % 60 / 60.0);
+
+        setHours(hours);
+        setMinutes(duration.toMinutes());
+    }
+
+    // ===========================================================================
 
     public constraintType getType()
     {
@@ -34,7 +53,8 @@ public class Constraint extends Period
     @Override
     public String toString()
     {
-        return "Constraint:\n{" + super.toString() + ",\n"
-        + "Type = " + type + "}\n";
+        return ">> Constraint:\n" + super.toString() + "\n"
+        + "Type = " + type + "\n"
+        + "===================================\n";
     }
 }

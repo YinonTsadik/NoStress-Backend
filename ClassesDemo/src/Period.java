@@ -1,48 +1,46 @@
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public abstract class Period
 {
-    private LocalDate date;
-    private LocalTime startTime;
-    private LocalTime endTime;
-    private double durationInHours;
-    private double durationInMinutes;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private double hours;
+    private double minutes;
     private String description;
 
-    public Period(LocalDate date, LocalTime startTime, LocalTime endTime, double durationInHours, double durationInMinutes, String description)
+    public static final DateTimeFormatter FORMATTER= DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+    public Period(String description)
     {
-        this.date = date;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.durationInHours = durationInHours;
-        this.durationInMinutes = durationInMinutes;
+        this.startTime = LocalDateTime.now();
+        this.endTime = LocalDateTime.now();
+        this.hours = 0;
+        this.minutes = 0;
+        
         this.description = description;
     }
 
-    public LocalDate getDate()
-    {
-        return date;
-    }
+    // ===========================================================================
 
-    public LocalTime getStartTime()
+    public LocalDateTime getStartTime()
     {
         return startTime;
     }
 
-    public LocalTime getEndTime()
+    public LocalDateTime getEndTime()
     {
         return endTime;
     }
 
-    public double getDurationInHours()
+    public double getHours()
     {
-        return durationInHours;
+        return hours;
     }
 
-    public double getDurationInMinutes()
+    public double getMinutes()
     {
-        return durationInMinutes;
+        return minutes;
     }
 
     public String getDescription()
@@ -50,29 +48,24 @@ public abstract class Period
         return description;
     }
 
-    public void setDate(LocalDate date)
-    {
-        this.date = date;
-    }
-
-    public void setStartTime(LocalTime startTime)
+    public void setStartTime(LocalDateTime startTime)
     {
         this.startTime = startTime;
     }
 
-    public void setEndTime(LocalTime endTime)
+    public void setEndTime(LocalDateTime endTime)
     {
         this.endTime = endTime;
     }
 
-    public void setDurationInHours(double durationInHours)
+    public void setHours(double hours)
     {
-        this.durationInHours = durationInHours;
+        this.hours = hours;
     }
 
-    public void setDurationInMinutes(double durationInMinutes)
+    public void setMinutes(double minutes)
     {
-        this.durationInMinutes = durationInMinutes;
+        this.minutes = minutes;
     }
 
     public void setDescription(String description)
@@ -83,11 +76,10 @@ public abstract class Period
     @Override
     public String toString()
     {
-        return "Date = " + date + ",\n"
-        + "Start Time = " + startTime + ",\n"
-        + "End Time = " + endTime + ",\n"
-        + "Duration In Hours = " + durationInHours + ",\n"
-        + "Duration In Minutes = " + durationInMinutes + ",\n"
+        return "Start Time = " + startTime.format(FORMATTER) + "\n"
+        + "End Time = " + endTime.format(FORMATTER) + "\n"
+        + "Duration In Hours = " + hours + "\n"
+        + "Duration In Minutes = " + minutes + "\n"
         + "Description = " + description;
     }
 }
