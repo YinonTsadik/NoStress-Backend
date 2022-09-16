@@ -31,8 +31,8 @@ public abstract class Period
         double minutes = duration.toMinutes();
         hours += (minutes % 60 / 60.0);
 
-        setHours(hours);
-        setMinutes(minutes);
+        this.hours = hours;
+        this.minutes = minutes;
     }
 
     // ===========================================================================
