@@ -10,7 +10,9 @@ public class Task extends Period
     public Task(LocalDateTime deadline, double hours, String description)
     {
         super(description);
+
         this.deadline = deadline;
+
         setHours(hours);
         setMinutes(hours * 60);
 
@@ -84,6 +86,8 @@ public class Task extends Period
         return score;
     }
 
+    // ===========================================================================
+
     public void setDeadline(LocalDateTime deadline)
     {
         this.deadline = deadline;
@@ -99,12 +103,14 @@ public class Task extends Period
     //     this.score = score;
     // }
 
+    // ===========================================================================
+
     @Override
     public String toString()
     {
         return ">> Task:\n" + super.toString() + "\n"
         + "Deadline = " + deadline.format(FORMATTER) + "\n"
-        + "Days Until Deadline = " + String.format("%.3f", daysUntilDeadline) + "\n"
+        + "Days Until Deadline = " + daysUntilDeadline + "\n"
         + "Score = " + score + "\n"
         + "===================================\n";
     }

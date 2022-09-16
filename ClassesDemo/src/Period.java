@@ -1,3 +1,4 @@
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -9,7 +10,7 @@ public abstract class Period
     private double minutes;
     private String description;
 
-    public static final DateTimeFormatter FORMATTER= DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     public Period(String description)
     {
@@ -17,8 +18,21 @@ public abstract class Period
         this.endTime = LocalDateTime.now();
         this.hours = 0;
         this.minutes = 0;
-        
         this.description = description;
+    }
+
+    // ===========================================================================
+
+    public void updateHoursAndMinutes()
+    {
+        Duration duration = Duration.between(getStartTime(), getEndTime());
+
+        double hours = duration.toHours();
+        double minutes = duration.toMinutes();
+        hours += (minutes % 60 / 60.0);
+
+        setHours(hours);
+        setMinutes(minutes);
     }
 
     // ===========================================================================
@@ -48,6 +62,8 @@ public abstract class Period
         return description;
     }
 
+    // ===========================================================================
+
     public void setStartTime(LocalDateTime startTime)
     {
         this.startTime = startTime;
@@ -72,6 +88,8 @@ public abstract class Period
     {
         this.description = description;
     }
+
+    // ===========================================================================
 
     @Override
     public String toString()

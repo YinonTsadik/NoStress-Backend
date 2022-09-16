@@ -1,4 +1,3 @@
-import java.time.Duration;
 import java.time.LocalDateTime;
 
 enum constraintType
@@ -18,25 +17,16 @@ public class Constraint extends Period
     public Constraint(LocalDateTime startTime, LocalDateTime endTime, String description, constraintType type)
     {
         super(description);
+
         setStartTime(startTime);
         setEndTime(endTime);
+        
         this.type = type;
 
         updateHoursAndMinutes();
     }
 
     // ===========================================================================
-
-    private void updateHoursAndMinutes()
-    {
-        Duration duration = Duration.between(getStartTime(), getEndTime());
-
-        double hours = duration.toHours();
-        hours += (duration.toMinutes() % 60 / 60.0);
-
-        setHours(hours);
-        setMinutes(duration.toMinutes());
-    }
 
     // ===========================================================================
 
@@ -45,16 +35,21 @@ public class Constraint extends Period
         return type;
     }
 
+    // ===========================================================================
+
     public void setType(constraintType type)
     {
         this.type = type;
     }
 
+    // ===========================================================================
+
     @Override
     public String toString()
     {
-        return ">> Constraint:\n" + super.toString() + "\n"
+        return ((this instanceof Test) ? ">> Test:\n" : ">> Constraint:\n")
+        + super.toString() + "\n"
         + "Type = " + type + "\n"
-        + "===================================\n";
+        + ((this instanceof Test) ? "" : "===================================\n");
     }
 }
