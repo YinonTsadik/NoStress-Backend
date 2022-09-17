@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Day
@@ -8,6 +9,8 @@ public class Day
     private ArrayList<Task> optionalTasks;
     private double availableHours;
     private double totalScore;
+    
+    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public Day(LocalDate date)
     {
@@ -78,6 +81,7 @@ public class Day
     public String toString()
     {
         return ">> Day:\n"
+        + "Date = " + date.format(FORMATTER) + "\n"
         + "Schedule: " + schedule + "\n"
         + "Optional Tasks: " + optionalTasks + "\n"
         + "Available Hours = " + availableHours + "\n"

@@ -48,8 +48,8 @@ public class Constraint extends Period
     public String toString()
     {
         return ((this instanceof Test) ? ">> Test:\n" : ">> Constraint:\n")
-        + super.toString() + "\n"
         + "Type = " + type + "\n"
+        + super.toString() + "\n"
         + ((this instanceof Test) ? "" : "===================================\n");
     }
 }

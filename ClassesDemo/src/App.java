@@ -1,7 +1,8 @@
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class App {
+public class App
+{
     public static void main(String[] args)
     {
         LocalDateTime dl = LocalDateTime.of(2022, 9, 14, 10, 45);
@@ -18,7 +19,6 @@ public class App {
                 LocalDateTime.of(2022, 10, 1, 12, 0),
                 LocalDateTime.of(2022, 10, 1, 14, 50),
                 10, "Algebra test");
-
         System.out.println(test);
 
         Day day = new Day(LocalDate.now());
