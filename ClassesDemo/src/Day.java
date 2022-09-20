@@ -81,11 +81,11 @@ public class Day
     public String toString()
     {
         return ">> Day:\n"
-        + "Date = " + date.format(FORMATTER) + "\n"
+        + "Date: " + date.format(FORMATTER) + "\n"
         + "Schedule: " + schedule + "\n"
         + "Optional Tasks: " + optionalTasks + "\n"
-        + "Available Hours = " + availableHours + "\n"
-        + "Total Score = " + totalScore + "\n"
+        + "Available Hours: " + availableHours + "\n"
+        + "Total Score: " + totalScore + "\n"
         + "###################################\n";
     }
 }

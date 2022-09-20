@@ -7,7 +7,6 @@ public abstract class Period
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private double hours;
-    private double minutes;
     private String description;
 
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
@@ -17,13 +16,12 @@ public abstract class Period
         this.startTime = LocalDateTime.now();
         this.endTime = LocalDateTime.now();
         this.hours = 0;
-        this.minutes = 0;
         this.description = description;
     }
 
     // ===========================================================================
 
-    public void updateHoursAndMinutes()
+    public void updateHours()
     {
         Duration duration = Duration.between(getStartTime(), getEndTime());
 
@@ -32,7 +30,6 @@ public abstract class Period
         hours += (minutes % 60 / 60.0);
 
         this.hours = hours;
-        this.minutes = minutes;
     }
 
     // ===========================================================================
@@ -50,11 +47,6 @@ public abstract class Period
     public double getHours()
     {
         return hours;
-    }
-
-    public double getMinutes()
-    {
-        return minutes;
     }
 
     public String getDescription()
@@ -79,11 +71,6 @@ public abstract class Period
         this.hours = hours;
     }
 
-    public void setMinutes(double minutes)
-    {
-        this.minutes = minutes;
-    }
-
     public void setDescription(String description)
     {
         this.description = description;
@@ -94,10 +81,9 @@ public abstract class Period
     @Override
     public String toString()
     {
-        return "Start Time = " + startTime.format(FORMATTER) + "\n"
-        + "End Time = " + endTime.format(FORMATTER) + "\n"
-        + "Duration In Hours = " + hours + "\n"
-        + "Duration In Minutes = " + minutes + "\n"
-        + "Description = " + description;
+        return "Description: " + description + "\n"
+        + "Start Time: " + startTime.format(FORMATTER) + "\n"
+        + "End Time: " + endTime.format(FORMATTER) + "\n"
+        + "Duration In Hours: " + hours;
     }
 }

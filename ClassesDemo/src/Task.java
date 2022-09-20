@@ -14,7 +14,6 @@ public class Task extends Period
         this.deadline = deadline;
 
         setHours(hours);
-        setMinutes(hours * 60);
 
         updateDeadline();
         updateScore();
@@ -52,19 +51,19 @@ public class Task extends Period
 
         else
         {
-            score += f(days);
-            score += g(hours);
+            score += daysScore(days);
+            score += hoursScore(hours);
 
             this.score = score;
         }
     }
 
-    private double f(double x)
+    private double daysScore(double x)
     {
         return Math.log10(x - 1) / Math.log10(0.88) + 25.8;
     }
 
-    private double g(double x)
+    private double hoursScore(double x)
     {
         return Math.pow(1.7, x) - 1;
     }
@@ -108,10 +107,12 @@ public class Task extends Period
     @Override
     public String toString()
     {
-        return ">> Task:\n" + super.toString() + "\n"
-        + "Deadline = " + deadline.format(FORMATTER) + "\n"
-        + "Days Until Deadline = " + daysUntilDeadline + "\n"
-        + "Score = " + score + "\n"
+        return ">> Task:\n"
+        + "Description: " + getDescription() + "\n"
+        + "Deadline: " + deadline.format(FORMATTER) + "\n"
+        + "Days Until Deadline: " + String.format("%.2f", daysUntilDeadline) + "\n"
+        + "Duration In Hours: " + getHours() + "\n"
+        + "Score: " + String.format("%.2f", score) + "\n"
         + "===================================\n";
     }
 }

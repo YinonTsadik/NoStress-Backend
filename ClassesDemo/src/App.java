@@ -1,27 +1,19 @@
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class App
 {
     public static void main(String[] args)
     {
-        LocalDateTime dl = LocalDateTime.of(2022, 9, 14, 10, 45);
-        Task t = new Task(dl, 0.5, "OS HomeWork");
-        System.out.println(t);
+        ArrayList<Task> allTasks = new ArrayList<>();
+        allTasks.add(new Task(LocalDateTime.of(2022, 9, 23, 23, 59), 5, "Task 1"));
+        allTasks.add(new Task(LocalDateTime.of(2022, 9, 29, 23, 59), 0.5, "Task 2"));
+        allTasks.add(new Task(LocalDateTime.of(2022, 10, 13, 23, 59), 2, "Task 3"));
+        allTasks.add(new Task(LocalDateTime.of(2022, 10, 7, 23, 59), 1, "Task 4"));
+        allTasks.add(new Task(LocalDateTime.of(2022, 10, 23, 23, 59), 7, "Task 5"));
 
-        LocalDateTime d2 = LocalDateTime.of(2022, 9, 15, 21, 15);
-        LocalDateTime d3 = LocalDateTime.of(2022, 9, 16, 0, 30);
+        System.out.println(allTasks);
 
-        Constraint c = new Constraint(d2, d3, "Cinema with friends", constraintType.Event);
-        System.out.println(c);
-
-        Test test = new Test(
-                LocalDateTime.of(2022, 10, 1, 12, 0),
-                LocalDateTime.of(2022, 10, 1, 14, 50),
-                10, "Algebra test");
-        System.out.println(test);
-
-        Day day = new Day(LocalDate.now());
-        System.out.println(day);
+        System.out.println(new Constraint(LocalDateTime.of(2022, 10, 26, 0, 0), LocalDateTime.of(2022, 10, 27, 0, 0), "Birthday", constraintType.Event));
     }
 }

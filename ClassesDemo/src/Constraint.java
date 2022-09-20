@@ -23,10 +23,8 @@ public class Constraint extends Period
         
         this.type = type;
 
-        updateHoursAndMinutes();
+        updateHours();
     }
-
-    // ===========================================================================
 
     // ===========================================================================
 
@@ -47,9 +45,12 @@ public class Constraint extends Period
     @Override
     public String toString()
     {
-        return ((this instanceof Test) ? ">> Test:\n" : ">> Constraint:\n")
-        + "Type = " + type + "\n"
-        + super.toString() + "\n"
-        + ((this instanceof Test) ? "" : "===================================\n");
+        return ">> Constraint:\n"
+        + "Description: " + getDescription() + "\n"
+        + "Type: " + type + "\n"
+        + "Start Time: " + getStartTime().format(FORMATTER) + "\n"
+        + "End Time: " + getEndTime().format(FORMATTER) + "\n"
+        + "Duration In Hours: " + String.format("%.2f", getHours()) + "\n"
+        + "===================================\n";
     }
 }
