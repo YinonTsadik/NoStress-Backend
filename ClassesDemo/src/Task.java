@@ -5,15 +5,13 @@ public class Task extends Period
 {
     private LocalDateTime deadline;
     private double daysUntilDeadline;
-    private int score;
+    private int value;
 
-    public Task(LocalDateTime deadline, int hours, String description)
+    public Task(String description, LocalDateTime deadline, int hours)
     {
         super(description);
-
+        this.hours = hours;
         this.deadline = deadline;
-
-        setHours(hours);
 
         updateDeadline();
         updateScore();
@@ -43,18 +41,18 @@ public class Task extends Period
     private void updateScore()
     {
         double days = this.daysUntilDeadline;
-        double hours = this.getHours();
-        int score = 0;
+        double hours = this.hours;
+        int value = 0;
 
         if (days <= 1)
-            this.score = Integer.MAX_VALUE;
+            this.value = Integer.MAX_VALUE;
 
         else
         {
-            score += daysScore(days);
-            score += hoursScore(hours);
+            value += daysScore(days);
+            value += hoursScore(hours);
 
-            this.score = score;
+            this.value = value;
         }
     }
 
@@ -80,9 +78,9 @@ public class Task extends Period
         return daysUntilDeadline;
     }
 
-    public double getScore()
+    public int getValue()
     {
-        return score;
+        return value;
     }
 
     // ===========================================================================
@@ -97,22 +95,28 @@ public class Task extends Period
     //     this.daysUntilDeadline = daysUntilDeadline;
     // }
 
-    // public void setScore(double score)
+    // public void setValue(int value)
     // {
-    //     this.score = score;
+    //     this.value = value;
     // }
 
     // ===========================================================================
 
+    // @Override
+    // public String toString()
+    // {
+    //     return ">> Task:\n"
+    //     + "Description: " + description + "\n"
+    //     + "Deadline: " + deadline.format(FORMATTER) + "\n"
+    //     + "Days Until Deadline: " + String.format("%.2f", daysUntilDeadline) + "\n"
+    //     + "Duration In Hours: " + hours + "\n"
+    //     + "Score: " + String.format("%d", value) + "\n"
+    //     + "===================================\n";
+    // }
+
     @Override
     public String toString()
     {
-        return ">> Task:\n"
-        + "Description: " + getDescription() + "\n"
-        + "Deadline: " + deadline.format(FORMATTER) + "\n"
-        + "Days Until Deadline: " + String.format("%.2f", daysUntilDeadline) + "\n"
-        + "Duration In Hours: " + getHours() + "\n"
-        + "Score: " + String.format("%d", score) + "\n"
-        + "===================================\n";
+        return getDescription() + ", Weight = " + getHours() + ", Value = " + value;
     }
 }

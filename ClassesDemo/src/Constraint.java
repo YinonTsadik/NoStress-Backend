@@ -14,14 +14,12 @@ public class Constraint extends Period
 {
     private constraintType type;
 
-    public Constraint(LocalDateTime startTime, LocalDateTime endTime, String description, constraintType type)
+    public Constraint(String description, constraintType type, LocalDateTime startTime, LocalDateTime endTime)
     {
         super(description);
-
-        setStartTime(startTime);
-        setEndTime(endTime);
-        
         this.type = type;
+        this.startTime = startTime;
+        this.endTime = endTime;
 
         updateHours();
     }
@@ -46,11 +44,11 @@ public class Constraint extends Period
     public String toString()
     {
         return ">> Constraint:\n"
-        + "Description: " + getDescription() + "\n"
+        + "Description: " + description + "\n"
         + "Type: " + type + "\n"
-        + "Start Time: " + getStartTime().format(FORMATTER) + "\n"
-        + "End Time: " + getEndTime().format(FORMATTER) + "\n"
-        + "Duration In Hours: " + String.format("%d", getHours()) + "\n"
+        + "Start Time: " + startTime.format(FORMATTER) + "\n"
+        + "End Time: " + endTime.format(FORMATTER) + "\n"
+        + "Duration In Hours: " + String.format("%d", hours) + "\n"
         + "===================================\n";
     }
 }

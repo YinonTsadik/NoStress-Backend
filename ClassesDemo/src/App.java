@@ -6,14 +6,16 @@ public class App
     public static void main(String[] args)
     {
         ArrayList<Task> allTasks = new ArrayList<>();
-        allTasks.add(new Task(LocalDateTime.of(2022, 9, 23, 23, 59), 5, "Task 1"));
-        allTasks.add(new Task(LocalDateTime.of(2022, 9, 29, 23, 59), 3, "Task 2"));
-        allTasks.add(new Task(LocalDateTime.of(2022, 10, 13, 23, 59), 2, "Task 3"));
-        allTasks.add(new Task(LocalDateTime.of(2022, 10, 7, 23, 59), 1, "Task 4"));
-        allTasks.add(new Task(LocalDateTime.of(2022, 10, 23, 23, 59), 7, "Task 5"));
+        allTasks.add(new Task("Task #1", LocalDateTime.of(2022, 9, 24, 23, 59), 5));
+        allTasks.add(new Task("Task #2", LocalDateTime.of(2022, 9, 29, 23, 59), 3));
+        allTasks.add(new Task("Task #3", LocalDateTime.of(2022, 10, 13, 23, 59), 2));
+        allTasks.add(new Task("Task #4", LocalDateTime.of(2022, 10, 7, 23, 59), 1));
+        allTasks.add(new Task("Task #5", LocalDateTime.of(2022, 10, 23, 23, 59), 7));
 
-        System.out.println(allTasks);
 
-        System.out.println(new Constraint(LocalDateTime.of(2022, 10, 26, 0, 0), LocalDateTime.of(2022, 10, 27, 0, 0), "Birthday", constraintType.Event));
+        Knapsack knapsack = new Knapsack(allTasks, 10);
+        knapsack.display();
+        Solution solution = knapsack.solve();
+        solution.display();
     }
 }
