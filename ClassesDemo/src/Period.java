@@ -6,7 +6,7 @@ public abstract class Period
 {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private double hours;
+    private int hours;
     private String description;
 
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
@@ -25,11 +25,11 @@ public abstract class Period
     {
         Duration duration = Duration.between(getStartTime(), getEndTime());
 
-        double hours = duration.toHours();
-        double minutes = duration.toMinutes();
+        long hours = duration.toHours();
+        long minutes = duration.toMinutes();
         hours += (minutes % 60 / 60.0);
 
-        this.hours = hours;
+        this.hours = (int) hours;
     }
 
     // ===========================================================================
@@ -44,7 +44,7 @@ public abstract class Period
         return endTime;
     }
 
-    public double getHours()
+    public int getHours()
     {
         return hours;
     }
@@ -66,7 +66,7 @@ public abstract class Period
         this.endTime = endTime;
     }
 
-    public void setHours(double hours)
+    public void setHours(int hours)
     {
         this.hours = hours;
     }

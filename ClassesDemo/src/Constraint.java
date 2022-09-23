@@ -50,7 +50,7 @@ public class Constraint extends Period
         + "Type: " + type + "\n"
         + "Start Time: " + getStartTime().format(FORMATTER) + "\n"
         + "End Time: " + getEndTime().format(FORMATTER) + "\n"
-        + "Duration In Hours: " + String.format("%.2f", getHours()) + "\n"
+        + "Duration In Hours: " + String.format("%d", getHours()) + "\n"
         + "===================================\n";
     }
 }

@@ -5,9 +5,9 @@ public class Task extends Period
 {
     private LocalDateTime deadline;
     private double daysUntilDeadline;
-    private double score;
+    private int score;
 
-    public Task(LocalDateTime deadline, double hours, String description)
+    public Task(LocalDateTime deadline, int hours, String description)
     {
         super(description);
 
@@ -44,10 +44,10 @@ public class Task extends Period
     {
         double days = this.daysUntilDeadline;
         double hours = this.getHours();
-        double score = 0;
+        int score = 0;
 
         if (days <= 1)
-            this.score = Double.POSITIVE_INFINITY;
+            this.score = Integer.MAX_VALUE;
 
         else
         {
@@ -112,7 +112,7 @@ public class Task extends Period
         + "Deadline: " + deadline.format(FORMATTER) + "\n"
         + "Days Until Deadline: " + String.format("%.2f", daysUntilDeadline) + "\n"
         + "Duration In Hours: " + getHours() + "\n"
-        + "Score: " + String.format("%.2f", score) + "\n"
+        + "Score: " + String.format("%d", score) + "\n"
         + "===================================\n";
     }
 }
