@@ -5,9 +5,9 @@ public class Task extends Period
 {
     private LocalDateTime deadline;
     private double daysUntilDeadline;
-    private int value;
+    private double value;
 
-    public Task(String description, LocalDateTime deadline, int hours)
+    public Task(String description, LocalDateTime deadline, double hours)
     {
         super(description);
         this.hours = hours;
@@ -42,7 +42,7 @@ public class Task extends Period
     {
         double days = this.daysUntilDeadline;
         double hours = this.hours;
-        int value = 0;
+        double value = 0;
 
         if (days <= 1)
             this.value = Integer.MAX_VALUE;
@@ -78,7 +78,7 @@ public class Task extends Period
         return daysUntilDeadline;
     }
 
-    public int getValue()
+    public double getValue()
     {
         return value;
     }
@@ -95,7 +95,7 @@ public class Task extends Period
     //     this.daysUntilDeadline = daysUntilDeadline;
     // }
 
-    // public void setValue(int value)
+    // public void setValue(double value)
     // {
     //     this.value = value;
     // }
@@ -109,14 +109,14 @@ public class Task extends Period
     //     + "Description: " + description + "\n"
     //     + "Deadline: " + deadline.format(FORMATTER) + "\n"
     //     + "Days Until Deadline: " + String.format("%.2f", daysUntilDeadline) + "\n"
-    //     + "Duration In Hours: " + hours + "\n"
-    //     + "Score: " + String.format("%d", value) + "\n"
+    //     + "Duration In Hours: " + String.format("%.2f", hours) + "\n"
+    //     + "Value: " + String.format("%d", value) + "\n"
     //     + "===================================\n";
     // }
 
     @Override
     public String toString()
     {
-        return getDescription() + ", Weight = " + getHours() + ", Value = " + value;
+        return getDescription() + ", Weight = " + hours + ", Value = " + String.format("%.2f", value);
     }
 }

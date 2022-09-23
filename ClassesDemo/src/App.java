@@ -13,7 +13,7 @@ public class App
         allTasks.add(new Task("Task #5", LocalDateTime.of(2022, 10, 23, 23, 59), 7));
 
 
-        Knapsack knapsack = new Knapsack(allTasks, 10);
+        Knapsack knapsack = new Knapsack(allTasks, 14);
         knapsack.display();
         Solution solution = knapsack.solve();
         solution.display();

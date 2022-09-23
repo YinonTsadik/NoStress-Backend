@@ -25,7 +25,7 @@ public class Solution
     {
         if (tasks != null && !tasks.isEmpty())
         {
-            System.out.println("\nKnapsack solution");
+            System.out.println("\nKnapsack solution:");
             System.out.println("Value = " + value);
             System.out.println("Tasks to pick: ");
 

@@ -15,7 +15,7 @@ public class Knapsack
     {
         if (tasks != null && !tasks.isEmpty())
         {
-            System.out.println("Knapsack problem");
+            System.out.println("Knapsack problem:");
             System.out.println("Capacity = " + capacity);
             System.out.println("Tasks: ");
 
@@ -39,8 +39,9 @@ public class Knapsack
                 if (tasks.get(i - 1).getHours() > j)
                     matrix[i][j] = matrix[i - 1][j];
                 else
-                    matrix[i][j] = Math.max(matrix[i - 1][j],
-                        matrix[i - 1][j - tasks.get(i - 1).getHours()] + tasks.get(i - 1).getValue());
+                    matrix[i][j] = (int) Math.max(
+                        matrix[i - 1][j],
+                        matrix[i - 1][j - (int) tasks.get(i - 1).getHours()] + (int) tasks.get(i - 1).getValue());
             }
         }
 
@@ -53,8 +54,8 @@ public class Knapsack
             if (result != matrix[i - 1][w])
             {
                 tasksSolution.add(tasks.get(i - 1));
-                result -= tasks.get(i - 1).getValue();
-                w -= tasks.get(i - 1).getHours();
+                result -= (int) tasks.get(i - 1).getValue();
+                w -= (int) tasks.get(i - 1).getHours();
             }
         }
 
