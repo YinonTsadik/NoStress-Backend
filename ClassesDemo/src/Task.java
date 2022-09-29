@@ -13,8 +13,7 @@ public class Task extends Period
         this.hours = hours;
         this.deadline = deadline;
 
-        updateDeadline();
-        updateScore();
+        updateDetails();
     }
 
     // ===========================================================================
@@ -45,7 +44,7 @@ public class Task extends Period
         double value = 0;
 
         if (days <= 1)
-            this.value = Integer.MAX_VALUE;
+            this.value = 1000;
 
         else
         {
@@ -63,7 +62,7 @@ public class Task extends Period
 
     private double hoursScore(double x)
     {
-        return Math.pow(1.7, x) - 1;
+        return Math.pow(1.5, x) - 1;
     }
 
     // ===========================================================================
@@ -110,13 +109,13 @@ public class Task extends Period
     //     + "Deadline: " + deadline.format(FORMATTER) + "\n"
     //     + "Days Until Deadline: " + String.format("%.2f", daysUntilDeadline) + "\n"
     //     + "Duration In Hours: " + String.format("%.2f", hours) + "\n"
-    //     + "Value: " + String.format("%d", value) + "\n"
+    //     + "Value: " + String.format("%.2f", value) + "\n"
     //     + "===================================\n";
     // }
 
     @Override
     public String toString()
     {
-        return getDescription() + ", Weight = " + hours + ", Value = " + String.format("%.2f", value);
+        return "\n" + getDescription() + ", Weight = " + hours + ", Value = " + String.format("%.2f", value);
     }
 }

@@ -8,7 +8,7 @@ public class Day
     private ArrayList<Period> schedule;
     private ArrayList<Task> optionalTasks;
     private double availableHours;
-    private double totalScore;
+    private double totalValue;
     
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -17,8 +17,8 @@ public class Day
         this.date = date;
         this.schedule = new ArrayList<>();
         this.optionalTasks = new ArrayList<>();
-        this.availableHours = 0;
-        this.totalScore = 0;
+        this.availableHours = 7;
+        this.totalValue = 0;
     }
 
     // ===========================================================================
@@ -43,9 +43,9 @@ public class Day
         return availableHours;
     }
 
-    public double getTotalScore()
+    public double getTotalValue()
     {
-        return totalScore;
+        return totalValue;
     }
 
     // ===========================================================================
@@ -55,24 +55,24 @@ public class Day
         this.date = date;
     }
 
-    // public void setSchedule(ArrayList<Period> schedule)
-    // {
-    //     this.schedule = schedule;
-    // }
+    public void setSchedule(ArrayList<Period> schedule)
+    {
+        this.schedule = schedule;
+    }
 
-    // public void setOptionalTasks(ArrayList<Task> optionalTasks)
-    // {
-    //     this.optionalTasks = optionalTasks;
-    // }
+    public void setOptionalTasks(ArrayList<Task> optionalTasks)
+    {
+        this.optionalTasks = optionalTasks;
+    }
 
     public void setAvailableHours(double availableHours)
     {
         this.availableHours = availableHours;
     }
 
-    public void setTotalScore(double totalScore)
+    public void setTotalValue(double totalValue)
     {
-        this.totalScore = totalScore;
+        this.totalValue = totalValue;
     }
 
     // ===========================================================================
@@ -85,7 +85,7 @@ public class Day
         + "Schedule: " + schedule + "\n"
         + "Optional Tasks: " + optionalTasks + "\n"
         + "Available Hours: " + availableHours + "\n"
-        + "Total Score: " + totalScore + "\n"
+        + "Total Value: " + totalValue + "\n"
         + "###################################\n";
     }
 }
