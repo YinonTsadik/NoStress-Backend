@@ -11,21 +11,21 @@ public class App
     public static void main(String[] args)
     {
         allTasks = new ArrayList<>();
-        allTasks.add(new Task("Task A", LocalDateTime.of(2022, 10, 2, 0, 0), 5));
-        allTasks.add(new Task("Task B", LocalDateTime.of(2022, 9, 30, 0, 0), 3));
-        allTasks.add(new Task("Task C", LocalDateTime.of(2022, 10, 1, 0, 0), 2));
-        allTasks.add(new Task("Task D", LocalDateTime.of(2022, 10, 1, 0, 0), 1));
-        allTasks.add(new Task("Task E", LocalDateTime.of(2022, 10, 2, 0, 0), 3));
-        allTasks.add(new Task("Task F", LocalDateTime.of(2022, 9, 30, 0, 0), 4));
-        allTasks.add(new Task("Task G", LocalDateTime.of(2022, 10, 3, 0, 0), 3));
-        allTasks.add(new Task("Task H", LocalDateTime.of(2022, 10, 3, 0, 0), 2));
+        allTasks.add(new Task("Task A", LocalDateTime.of(2022, 10, 5, 0, 0), 5));
+        allTasks.add(new Task("Task B", LocalDateTime.of(2022, 10, 3, 0, 0), 3));
+        allTasks.add(new Task("Task C", LocalDateTime.of(2022, 10, 4, 0, 0), 2));
+        allTasks.add(new Task("Task D", LocalDateTime.of(2022, 10, 4, 0, 0), 1));
+        allTasks.add(new Task("Task E", LocalDateTime.of(2022, 10, 5, 0, 0), 3));
+        allTasks.add(new Task("Task F", LocalDateTime.of(2022, 10, 3, 0, 0), 4));
+        allTasks.add(new Task("Task G", LocalDateTime.of(2022, 10, 6, 0, 0), 3));
+        allTasks.add(new Task("Task H", LocalDateTime.of(2022, 10, 6, 0, 0), 2));
 
 
         allDays = new ArrayList<>();
-        allDays.add(new Day(LocalDate.of(2022, 9, 29)));
-        allDays.add(new Day(LocalDate.of(2022, 9, 30)));
-        allDays.add(new Day(LocalDate.of(2022, 10, 1)));
         allDays.add(new Day(LocalDate.of(2022, 10, 2)));
+        allDays.add(new Day(LocalDate.of(2022, 10, 3)));
+        allDays.add(new Day(LocalDate.of(2022, 10, 4)));
+        allDays.add(new Day(LocalDate.of(2022, 10, 5)));
 
         for (Day day : allDays)
         {
@@ -47,6 +47,7 @@ public class App
             for (Task task : solution.getTasks())
             {
                 day.getSchedule().add(task);
+                day.setAvailableHours(day.getAvailableHours() - task.getHours());
                 removeTask(task);
             }
         }

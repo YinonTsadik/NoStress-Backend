@@ -26,13 +26,13 @@ public class Knapsack
 
     public Solution solve()
     {
-        int NB_TASKS = tasks.size();
-        int[][]matrix = new int[NB_TASKS + 1][capacity + 1];
+        int numOfTasks = tasks.size();
+        int[][]matrix = new int[numOfTasks + 1][capacity + 1];
 
         for (int i = 0; i <= capacity; i++)
             matrix[0][i] = 0;
         
-        for (int i = 1; i <= NB_TASKS; i++)
+        for (int i = 1; i <= numOfTasks; i++)
         {
             for (int j = 0; j <= capacity; j++)
             {
@@ -45,11 +45,11 @@ public class Knapsack
             }
         }
 
-        int result = matrix[NB_TASKS][capacity];
+        int result = matrix[numOfTasks][capacity];
         int w = capacity;
         ArrayList<Task> tasksSolution = new ArrayList<>();
 
-        for (int i = NB_TASKS; i > 0 && result > 0; i--)
+        for (int i = numOfTasks; i > 0 && result > 0; i--)
         {
             if (result != matrix[i - 1][w])
             {
@@ -59,6 +59,6 @@ public class Knapsack
             }
         }
 
-        return new Solution(tasksSolution, matrix[NB_TASKS][capacity]);
+        return new Solution(tasksSolution, matrix[numOfTasks][capacity]);
     }
 }

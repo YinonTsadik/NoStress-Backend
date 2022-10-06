@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class Day
 {
     private LocalDate date;
-    private ArrayList<Period> schedule;
     private ArrayList<Task> optionalTasks;
+    private ArrayList<Period> schedule;
     private double availableHours;
     private double totalValue;
     
@@ -15,8 +15,8 @@ public class Day
     public Day(LocalDate date)
     {
         this.date = date;
-        this.schedule = new ArrayList<>();
         this.optionalTasks = new ArrayList<>();
+        this.schedule = new ArrayList<>();
         this.availableHours = 7;
         this.totalValue = 0;
     }
@@ -28,14 +28,14 @@ public class Day
         return date;
     }
 
-    public ArrayList<Period> getSchedule()
-    {
-        return schedule;
-    }
-
     public ArrayList<Task> getOptionalTasks()
     {
         return optionalTasks;
+    }
+
+    public ArrayList<Period> getSchedule()
+    {
+        return schedule;
     }
 
     public double getAvailableHours()
@@ -55,14 +55,14 @@ public class Day
         this.date = date;
     }
 
-    public void setSchedule(ArrayList<Period> schedule)
-    {
-        this.schedule = schedule;
-    }
-
     public void setOptionalTasks(ArrayList<Task> optionalTasks)
     {
         this.optionalTasks = optionalTasks;
+    }
+
+    public void setSchedule(ArrayList<Period> schedule)
+    {
+        this.schedule = schedule;
     }
 
     public void setAvailableHours(double availableHours)
@@ -82,9 +82,9 @@ public class Day
     {
         return ">> Day:\n"
         + "Date: " + date.format(FORMATTER) + "\n"
-        + "Schedule: " + schedule + "\n"
-        + "Optional Tasks: " + optionalTasks + "\n"
         + "Available Hours: " + availableHours + "\n"
+        + "Optional Tasks: " + optionalTasks + "\n"
+        + "Schedule: " + schedule + "\n"
         + "Total Value: " + totalValue + "\n"
         + "###################################\n";
     }
