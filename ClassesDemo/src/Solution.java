@@ -11,6 +11,8 @@ public class Solution
         this.value = value;
     }
 
+    // ===========================================================================
+
     public ArrayList<Task> getTasks()
     {
         return tasks;
@@ -20,6 +22,8 @@ public class Solution
     {
         return value;
     }
+
+    // ===========================================================================
 
     public void display()
     {
@@ -33,4 +37,6 @@ public class Solution
                 System.out.println("- " + task);
         }
     }
+
+    // ===========================================================================
 }

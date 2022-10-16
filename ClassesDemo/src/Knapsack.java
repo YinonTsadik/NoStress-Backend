@@ -11,19 +11,6 @@ public class Knapsack
         this.capacity = capacity;
     }
 
-    public void display()
-    {
-        if (tasks != null && !tasks.isEmpty())
-        {
-            System.out.println("Knapsack problem:");
-            System.out.println("Capacity = " + capacity);
-            System.out.println("Tasks: ");
-
-            for (Task task : tasks)
-                System.out.println("- " + task);
-        }
-    }
-
     public Solution solve()
     {
         int numOfTasks = tasks.size();
@@ -61,4 +48,21 @@ public class Knapsack
 
         return new Solution(tasksSolution, matrix[numOfTasks][capacity]);
     }
+
+    // ===========================================================================
+
+    public void display()
+    {
+        if (tasks != null && !tasks.isEmpty())
+        {
+            System.out.println("Knapsack problem:");
+            System.out.println("Capacity = " + capacity);
+            System.out.println("Tasks: ");
+
+            for (Task task : tasks)
+                System.out.println("- " + task);
+        }
+    }
+
+    // ===========================================================================
 }

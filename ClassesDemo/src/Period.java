@@ -86,4 +86,6 @@ public abstract class Period
         + "End Time: " + endTime.format(FORMATTER) + "\n"
         + "Duration In Hours: " + String.format("%.2f", hours);
     }
+
+    // ===========================================================================
 }

@@ -118,4 +118,6 @@ public class Task extends Period
     {
         return "\n" + getDescription() + ", Weight = " + hours + ", Value = " + String.format("%.2f", value);
     }
+
+    // ===========================================================================
 }
