@@ -116,7 +116,10 @@ public class Task extends Period
     @Override
     public String toString()
     {
-        return "\n" + getDescription() + ", Weight = " + hours + ", Value = " + String.format("%.2f", value);
+        return "\n" + getDescription()
+        + ", Weight = " + String.format("%.2f", hours)
+        + ", Deadline = " + deadline.format(FORMATTER)
+        + ", Value = " + String.format("%.2f", value);
     }
 
     // ===========================================================================

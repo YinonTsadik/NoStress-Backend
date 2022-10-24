@@ -2,16 +2,17 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Controller
 {
     private ArrayList<Day> allDays;
     private ArrayList<Task> allTasks;
 
-    public Controller(int numOfDays)
+    public Controller(int numOfDays, int numOfTasks)
     {
         this.allDays = generateCalendar(numOfDays);
-        this.allTasks = new ArrayList<>();
+        this.allTasks = generateTasks(numOfTasks);
     }
 
     // ===========================================================================
@@ -26,6 +27,21 @@ public class Controller
             days.add(new Day(today.plusDays(i)));
 
         return days;
+    }
+
+    public ArrayList<Task> generateTasks(int numOfTasks)
+    {
+        ArrayList<Task> tasks = new ArrayList<>();
+        Random rnd = new Random();
+
+        for (int i = 1; i <= numOfTasks; i++)
+            tasks.add(new Task(
+                "Task #" + i,
+                LocalDateTime.of(LocalDate.now().plusDays(rnd.nextInt(13) + 1), LocalTime.of(0, 0)),
+                rnd.nextDouble() * 10 % 7
+            ));
+
+        return tasks;
     }
 
     public void Optimization()
@@ -74,9 +90,11 @@ public class Controller
     public String toString()
     {
         String str = "";
+
         for (Day day : allDays)
             str += day.getDate().getDayOfMonth() + " ";
         str += "\n" + allTasks.toString();
+
         return str;
     }
 
