@@ -1,11 +1,14 @@
-import express, { Application, Request, Response, NextFunction } from 'express';
+import express from 'express'
+import { knapsack } from './data'
 
-const app: Application = express();
+const app = express()
+const PORT = 5000
 
-app.get('/', (req: Request, res: Response) => {
-    res.end("Hello");
-});
+app.get('/', (req, res) => {
+    console.log(req.method, req.url);
+    res.end();
+})
 
-app.listen(5000, () => {
-    console.log("Server running on port 5000");
-});
+app.listen(PORT, () => {
+    console.log(`~ Server is running on port ${PORT}`);
+})
