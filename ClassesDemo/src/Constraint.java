@@ -1,7 +1,6 @@
 import java.time.LocalDateTime;
 
-enum constraintType
-{
+enum constraintType {
     Studies,
     Test,
     Work,
@@ -10,12 +9,10 @@ enum constraintType
     Other
 }
 
-public class Constraint extends Period
-{
+public class Constraint extends Period {
     private constraintType type;
 
-    public Constraint(String description, constraintType type, LocalDateTime startTime, LocalDateTime endTime)
-    {
+    public Constraint(String description, constraintType type, LocalDateTime startTime, LocalDateTime endTime) {
         super(description);
         this.type = type;
         this.startTime = startTime;
@@ -26,30 +23,27 @@ public class Constraint extends Period
 
     // ===========================================================================
 
-    public constraintType getType()
-    {
+    public constraintType getType() {
         return type;
     }
 
     // ===========================================================================
 
-    public void setType(constraintType type)
-    {
+    public void setType(constraintType type) {
         this.type = type;
     }
 
     // ===========================================================================
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return ">> Constraint:\n"
-        + "Description: " + description + "\n"
-        + "Type: " + type + "\n"
-        + "Start Time: " + startTime.format(FORMATTER) + "\n"
-        + "End Time: " + endTime.format(FORMATTER) + "\n"
-        + "Duration In Hours: " + String.format("%.2f", hours) + "\n"
-        + "===================================\n";
+                + "Description: " + description + "\n"
+                + "Type: " + type + "\n"
+                + "Start Time: " + startTime.format(FORMATTER) + "\n"
+                + "End Time: " + endTime.format(FORMATTER) + "\n"
+                + "Duration In Hours: " + String.format("%.2f", hours) + "\n"
+                + "===================================\n";
     }
 
     // ===========================================================================

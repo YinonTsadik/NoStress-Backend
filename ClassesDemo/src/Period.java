@@ -2,8 +2,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public abstract class Period
-{
+public abstract class Period {
     protected String description;
     protected LocalDateTime startTime;
     protected LocalDateTime endTime;
@@ -11,8 +10,7 @@ public abstract class Period
 
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-    public Period(String description)
-    {
+    public Period(String description) {
         this.description = description;
         this.startTime = LocalDateTime.now();
         this.endTime = LocalDateTime.now();
@@ -21,8 +19,7 @@ public abstract class Period
 
     // ===========================================================================
 
-    public void updateHours()
-    {
+    public void updateHours() {
         Duration duration = Duration.between(getStartTime(), getEndTime());
 
         double hours = duration.toHours();
@@ -34,57 +31,48 @@ public abstract class Period
 
     // ===========================================================================
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
-    public LocalDateTime getStartTime()
-    {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public LocalDateTime getEndTime()
-    {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public double getHours()
-    {
+    public double getHours() {
         return hours;
     }
 
     // ===========================================================================
 
-    public void setDescription(String description)
-    {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public void setStartTime(LocalDateTime startTime)
-    {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public void setEndTime(LocalDateTime endTime)
-    {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
-    public void setHours(double hours)
-    {
+    public void setHours(double hours) {
         this.hours = hours;
     }
 
     // ===========================================================================
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Description: " + description + "\n"
-        + "Start Time: " + startTime.format(FORMATTER) + "\n"
-        + "End Time: " + endTime.format(FORMATTER) + "\n"
-        + "Duration In Hours: " + String.format("%.2f", hours);
+                + "Start Time: " + startTime.format(FORMATTER) + "\n"
+                + "End Time: " + endTime.format(FORMATTER) + "\n"
+                + "Duration In Hours: " + String.format("%.2f", hours);
     }
 
     // ===========================================================================
