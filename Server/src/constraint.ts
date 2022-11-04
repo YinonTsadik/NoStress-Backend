@@ -1,4 +1,4 @@
-import { Period } from "./period"
+import { Period } from './period'
 
 enum constraintType {
     Studies,
@@ -6,7 +6,7 @@ enum constraintType {
     Work,
     Event,
     Rest,
-    Other
+    Other,
 }
 
 interface Constraint extends Period {
@@ -14,12 +14,12 @@ interface Constraint extends Period {
 }
 
 const printConstraint = (constraint: Constraint): void => {
-    console.log(">> Constraint:")
-    console.log("Type: " + constraint.type)
-    console.log("Start Time: " + constraint.startTime.toLocaleString())
-    console.log("End Time: " + constraint.endTime.toLocaleString())
-    console.log("Duration In Hours: " + constraint.hours)
-    console.log("===================================")
+    console.log('>> Constraint:')
+    console.log('Type: ' + constraint.type)
+    console.log('Start Time: ' + constraint.startTime.toLocaleString())
+    console.log('End Time: ' + constraint.endTime.toLocaleString())
+    console.log('Duration In Hours: ' + constraint.hours)
+    console.log('===================================')
 }
 
 export { Constraint, printConstraint }

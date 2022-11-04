@@ -1,15 +1,14 @@
-import { Task, printTask } from "./task"
+import { Task, printTask } from './task'
 import { Solution } from './solution'
 
 interface Knapsack {
-    tasks: Task[],
+    tasks: Task[]
     capacity: number
 }
 
 const solve = (knapsack: Knapsack): Solution => {
     const numOfTasks = knapsack.tasks.length
     const capacity = knapsack.capacity
-    console.log(knapsack)
 
     let matrix = new Array(numOfTasks + 1)
 
@@ -20,13 +19,11 @@ const solve = (knapsack: Knapsack): Solution => {
         for (let j = 0; j <= capacity; j++) {
             if (knapsack.tasks[i - 1].hours > j) {
                 matrix[i][j] = matrix[i - 1][j]
-            }
-
-            else {
+            } else {
                 matrix[i][j] = Math.max(
                     matrix[i - 1][j],
-                    matrix[i - 1][j - knapsack.tasks[i - 1].hours]
-                    + knapsack.tasks[i - 1].value
+                    matrix[i - 1][j - knapsack.tasks[i - 1].hours] +
+                        knapsack.tasks[i - 1].value
                 )
             }
         }
@@ -46,15 +43,15 @@ const solve = (knapsack: Knapsack): Solution => {
     }
 
     return { tasks: tasksSolution, value: matrix[numOfTasks][capacity] }
-};
+}
 
 const printKnapsack = (knapsack: Knapsack): void => {
     if (knapsack.tasks) {
-        console.log("Knapsack problem:")
-        console.log("Capacity: " + knapsack.capacity)
-        console.log("Tasks:")
+        console.log('Knapsack problem:')
+        console.log('Capacity: ' + knapsack.capacity)
+        console.log('Tasks:')
         knapsack.tasks.forEach((task) => printTask)
     }
-};
+}
 
 export { Knapsack, solve }
