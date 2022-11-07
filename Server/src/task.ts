@@ -6,6 +6,11 @@ interface Task extends Period {
     value: number
 }
 
+const updateDetails = (task: Task): void => {
+    updateDeadline(task)
+    updateValue(task)
+}
+
 const updateDeadline = (task: Task): void => {
     const diff: number = task.deadline.getTime() - new Date().getTime()
     task.daysUntilDeadline = diff / 1000 / 60 / 60 / 24
@@ -13,7 +18,7 @@ const updateDeadline = (task: Task): void => {
 
 const updateValue = (task: Task): void => {
     if (task.daysUntilDeadline <= 1) {
-        task.value = Number.POSITIVE_INFINITY
+        task.value = 1000
     } else {
         task.value = daysScore(task.daysUntilDeadline)
         task.value += hoursScore(task.hours)
@@ -55,4 +60,4 @@ const printTask = (task: Task): void => {
 //     console.log('===================================')
 // }
 
-export { Task, updateDeadline, updateValue, printTask }
+export { Task, updateDetails, printTask }

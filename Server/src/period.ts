@@ -1,5 +1,5 @@
 interface Period {
-    readonly id: number
+    id: number
     description: string
     startTime: Date
     endTime: Date
