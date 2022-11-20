@@ -22,7 +22,7 @@ const solve = (knapsack: Knapsack): Solution => {
             } else {
                 matrix[i][j] = Math.max(
                     matrix[i - 1][j],
-                    matrix[i - 1][j - knapsack.tasks[i - 1].hours] +
+                    matrix[i - 1][j - Math.round(knapsack.tasks[i - 1].hours)] +
                         knapsack.tasks[i - 1].value
                 )
             }
@@ -42,7 +42,13 @@ const solve = (knapsack: Knapsack): Solution => {
         }
     }
 
-    return { tasks: tasksSolution, value: matrix[numOfTasks][capacity] }
+    const tookAll: boolean = tasksSolution.length == knapsack.tasks.length
+
+    return {
+        tookAll: tookAll,
+        value: matrix[numOfTasks][capacity],
+        tasks: tasksSolution,
+    }
 }
 
 const printKnapsack = (knapsack: Knapsack): void => {

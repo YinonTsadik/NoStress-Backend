@@ -8,8 +8,8 @@ public class Task extends Period {
 
     public Task(String description, LocalDateTime deadline, double hours) {
         super(description);
-        this.hours = hours;
         this.deadline = deadline;
+        this.hours = hours;
 
         updateDetails();
     }

@@ -15,11 +15,12 @@ interface Constraint extends Period {
 
 const printConstraint = (constraint: Constraint): void => {
     console.log('>> Constraint:')
+    console.log('ID: ' + constraint.id)
+    console.log('Description: ' + constraint.description)
     console.log('Type: ' + constraint.type)
-    console.log('Start Time: ' + constraint.startTime.toLocaleString())
-    console.log('End Time: ' + constraint.endTime.toLocaleString())
-    console.log('Duration In Hours: ' + constraint.hours)
-    console.log('===================================')
+    console.log('Start Time: ' + constraint.startTime)
+    console.log('End Time: ' + constraint.endTime)
+    console.log('Duration: ' + constraint.hours + ' Hours')
 }
 
-export { Constraint, printConstraint }
+export { Constraint, constraintType, printConstraint }

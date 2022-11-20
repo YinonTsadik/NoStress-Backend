@@ -33,6 +33,13 @@ const hoursScore = (x: number): number => {
     return Math.pow(1.5, x) - 1
 }
 
+const splitTask = (task: Task, x: number): Task => {
+    const newTask: Task = { ...task }
+    newTask.hours = x
+    newTask.value = (x / task.hours) * task.value
+    return newTask
+}
+
 const printTask = (task: Task): void => {
     console.log(
         '- ' +
@@ -52,12 +59,13 @@ const printTask = (task: Task): void => {
 
 // const printTask = (task: Task): void => {
 //     console.log('>> Task:')
+//     console.log('ID: ' + task.id)
 //     console.log('Description: ' + task.description)
 //     console.log('Deadline: ' + task.deadline)
-//     console.log('Days Until Deadline: ' + task.daysUntilDeadline)
 //     console.log('Duration In Hours: ' + task.hours)
+//     console.log('Days Until Deadline: ' + task.daysUntilDeadline)
 //     console.log('Value: ' + task.value)
 //     console.log('===================================')
 // }
 
-export { Task, updateDetails, printTask }
+export { Task, updateDetails, splitTask, printTask }
