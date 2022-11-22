@@ -23,7 +23,7 @@ const solve = (knapsack: Knapsack): Solution => {
                 matrix[i][j] = Math.max(
                     matrix[i - 1][j],
                     matrix[i - 1][j - Math.round(knapsack.tasks[i - 1].hours)] +
-                        knapsack.tasks[i - 1].value
+                        Math.round(knapsack.tasks[i - 1].value)
                 )
             }
         }
@@ -48,7 +48,7 @@ const solve = (knapsack: Knapsack): Solution => {
         tookAll: tookAll,
         value: matrix[numOfTasks][capacity],
         tasks: tasksSolution,
-    }
+    } as Solution
 }
 
 const printKnapsack = (knapsack: Knapsack): void => {

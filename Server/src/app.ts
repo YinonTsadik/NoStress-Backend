@@ -4,13 +4,16 @@ import { logger } from './services/logger'
 import { updateHours } from './services/period'
 import { Task, updateDetails } from './services/task'
 import { Constraint } from './services/constraint'
+import { Day, generateCalendar } from './services/day'
 import { Knapsack, solve } from './services/knapsack'
+import { optimization } from './optimization'
 
 const app = express()
 const PORT = process.env.PORT || 5000
 app.use(express.json())
 app.use(logger)
 
+let calendar: Day[] = generateCalendar(5)
 let tasks: Task[] = new Array()
 let constraints: Constraint[] = new Array()
 
@@ -51,10 +54,10 @@ app.post('/api/tasks', (req, res) => {
         description: description,
         deadline: new Date(deadline),
         hours: hours,
-    }
+    } as Task
 
-    updateDetails(task as Task)
-    tasks.push(task as Task)
+    updateDetails(task)
+    tasks.push(task)
 
     return res.status(201).json({ success: true, msg: 'Task Created', data: tasks })
 })
@@ -144,10 +147,10 @@ app.post('/api/constraints', (req, res) => {
         type: type,
         startTime: new Date(startTime),
         endTime: new Date(endTime),
-    }
+    } as Constraint
 
-    updateHours(constraint as Constraint)
-    constraints.push(constraint as Constraint)
+    updateHours(constraint)
+    constraints.push(constraint)
 
     return res
         .status(201)
@@ -213,6 +216,20 @@ app.post('/api/knapsack', (req, res) => {
     const knapsack = req.body as Knapsack
     const solution = solve(knapsack)
     res.status(201).json({ success: true, msg: 'knapsack solution', data: solution })
+})
+
+// Performing optimization
+app.get('/api/optimization', (req, res) => {
+    optimization(calendar, tasks)
+
+    res.status(200).json({
+        success: true,
+        msg: 'Successfully optimized',
+        data: {
+            Calendar: calendar,
+            allTasks: tasks,
+        },
+    })
 })
 
 app.listen(PORT, () => {

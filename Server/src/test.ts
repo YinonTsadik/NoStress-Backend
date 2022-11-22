@@ -56,5 +56,3 @@ const knapsack: Knapsack = {
     ],
     capacity: 15,
 }
-
-console.log(solve(knapsack))
