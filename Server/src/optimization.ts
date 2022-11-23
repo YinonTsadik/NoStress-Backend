@@ -5,7 +5,7 @@ import { Solution } from './services/solution'
 
 // אלגוריתם האופטימיזציה מקבל את רשימת הימים
 // אותה נמקסם ואת רשימת המטלות הכללית
-const optimization = (allDays: Day[], allTasks: Task[]): void => {
+export default function optimization(allDays: Day[], allTasks: Task[]): void {
     // נמקסם כל יום בנפרד
     allDays.forEach((day) => {
         // רשימת המטלות שתכיל את כל המטלות בהתאם לכמות השעות הפנויות שיש לנו באותו יום
@@ -35,10 +35,10 @@ const optimization = (allDays: Day[], allTasks: Task[]): void => {
 
         // ניקח את המטלות מהפתרון ונשבץ בלוז של היום
         day.schedule = [...daySolution.tasks]
+        // נעדכן את כמות השעות שנשארה לנו באותו יום בהתאם לפתרון
+        day.availableHours -= daySolution.hours
         // נעדכן את הערך הכולל של היום לערך שחזר מהפתרון
         day.totalValue = daySolution.value
-        // נעדכן את כמות השעות שנשארה לנו באותו יום בהתאם לפתרון
-        daySolution.tasks.forEach((task) => (day.availableHours -= task.hours))
 
         // אנחנו רוצים לעבור על כל מטלה שקיבלנו מהפתרון
         // ולבצע שינויים במופע שלה ברשימת המטלות הכללית
@@ -56,7 +56,7 @@ const optimization = (allDays: Day[], allTasks: Task[]): void => {
                         /* אם המטלה הייתה ארוכה ולקחתי רק חלק ממנה
                          אחליף את המופע שלה במופע של המטלה שנשארה
                          כלומר עדכון השעות והניקוד בהתאם
-                         לכמה לקחתי מתוך המטלה*/
+                         לכמה לקחתי מתוך המטלה */
                         allTasks.splice(
                             j,
                             1,
@@ -77,7 +77,6 @@ const optimization = (allDays: Day[], allTasks: Task[]): void => {
     אופטימיזציה ניתקל בבעיה כיוון שרשימת המטלות תהיה ריקה
 
     פתרון - אולי להוסיף למטלה ערך בוליאני אם נלקחה או לא
-    
+
     להתייעץ עם יניר
 */
-export { optimization }

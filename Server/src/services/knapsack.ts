@@ -1,4 +1,4 @@
-import { Task, printTask } from './task'
+import { Task } from './task'
 import { Solution } from './solution'
 
 interface Knapsack {
@@ -6,7 +6,7 @@ interface Knapsack {
     capacity: number
 }
 
-const solve = (knapsack: Knapsack): Solution => {
+function solve(knapsack: Knapsack): Solution {
     const numOfTasks = knapsack.tasks.length
     const capacity = knapsack.capacity
 
@@ -33,31 +33,25 @@ const solve = (knapsack: Knapsack): Solution => {
     let w = capacity
 
     let tasksSolution: Task[] = new Array()
+    let numOfHours: number = 0
 
     for (let i = numOfTasks; i > 0 && result > 0; i--) {
         if (matrix[i - 1][w] !== result) {
             tasksSolution.push(knapsack.tasks[i - 1])
+            numOfHours += knapsack.tasks[i - 1].hours
+
             result -= knapsack.tasks[i - 1].value
             w -= knapsack.tasks[i - 1].hours
         }
     }
 
-    const tookAll: boolean = tasksSolution.length == knapsack.tasks.length
-
-    return {
-        tookAll: tookAll,
+    const solution: Solution = {
         value: matrix[numOfTasks][capacity],
+        hours: numOfHours,
         tasks: tasksSolution,
-    } as Solution
-}
-
-const printKnapsack = (knapsack: Knapsack): void => {
-    if (knapsack.tasks) {
-        console.log('Knapsack problem:')
-        console.log('Capacity: ' + knapsack.capacity)
-        console.log('Tasks:')
-        knapsack.tasks.forEach((task) => printTask)
     }
+
+    return solution
 }
 
 export { Knapsack, solve }

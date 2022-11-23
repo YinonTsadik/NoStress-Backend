@@ -1,12 +1,11 @@
 import express from 'express'
 import { logger } from './services/logger'
 
-import { updateHours } from './services/period'
 import { Task, updateDetails } from './services/task'
-import { Constraint } from './services/constraint'
+import { Constraint, updateHours } from './services/constraint'
 import { Day, generateCalendar } from './services/day'
-import { Knapsack, solve } from './services/knapsack'
-import { optimization } from './optimization'
+import optimization from './optimization'
+// import { Knapsack, solve } from './services/knapsack'
 
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -211,13 +210,6 @@ app.delete('/api/constraints/:id', (req, res) => {
     })
 })
 
-// knapsack solution
-app.post('/api/knapsack', (req, res) => {
-    const knapsack = req.body as Knapsack
-    const solution = solve(knapsack)
-    res.status(201).json({ success: true, msg: 'knapsack solution', data: solution })
-})
-
 // Performing optimization
 app.get('/api/optimization', (req, res) => {
     optimization(calendar, tasks)
@@ -231,6 +223,13 @@ app.get('/api/optimization', (req, res) => {
         },
     })
 })
+
+// // A single knapsack solution
+// app.post('/api/knapsack', (req, res) => {
+//     const knapsack = req.body as Knapsack
+//     const solution = solve(knapsack)
+//     res.status(201).json({ success: true, msg: 'knapsack solution', data: solution })
+// })
 
 app.listen(PORT, () => {
     console.log(`~ Server is running on port ${PORT}`)
