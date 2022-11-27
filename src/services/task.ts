@@ -4,20 +4,20 @@ interface Task extends Period {
     deadline: Date
     daysUntilDeadline: number
     value: number
-    fulllyCompleted: boolean
+    fullyCompleted: boolean
 }
 
-function updateDetails(task: Task): void {
+const updateDetails = (task: Task): void => {
     updateDeadline(task)
     updateValue(task)
 }
 
-function updateDeadline(task: Task): void {
+const updateDeadline = (task: Task): void => {
     const diff: number = task.deadline.getTime() - new Date().getTime()
     task.daysUntilDeadline = diff / 1000 / 60 / 60 / 24
 }
 
-function updateValue(task: Task): void {
+const updateValue = (task: Task): void => {
     if (task.daysUntilDeadline <= 1) {
         task.value = 1000
     } else {
@@ -26,15 +26,15 @@ function updateValue(task: Task): void {
     }
 }
 
-function daysScore(x: number): number {
+const daysScore = (x: number): number => {
     return Math.log10(x - 1) / Math.log10(0.88) + 25.8
 }
 
-function hoursScore(x: number): number {
+const hoursScore = (x: number): number => {
     return Math.pow(1.5, x) - 1
 }
 
-function splitTask(task: Task, x: number): Task {
+const splitTask = (task: Task, x: number): Task => {
     const newTask: Task = { ...task }
     newTask.hours = x
     newTask.value = (x / task.hours) * task.value

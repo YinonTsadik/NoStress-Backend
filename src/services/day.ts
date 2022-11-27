@@ -7,13 +7,13 @@ interface Day {
     totalValue: number
 }
 
-function addDays(date: Date, days: number) {
+const addDays = (date: Date, days: number): Date => {
     const copy = new Date(Number(date))
     copy.setDate(date.getDate() + days)
     return copy
 }
 
-function generateCalendar(numOfDays: number): Day[] {
+const generateCalendar = (numOfDays: number): Day[] => {
     let calendar: Day[] = new Array()
     let day: Day = {
         date: new Date(),

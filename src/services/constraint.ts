@@ -13,7 +13,7 @@ interface Constraint extends Period {
     type: constraintType
 }
 
-function updateHours(constraint: Constraint): void {
+const updateHours = (constraint: Constraint): void => {
     const diff: number =
         constraint.endTime.getTime() - constraint.startTime.getTime()
     constraint.hours = diff / 1000 / 60 / 60

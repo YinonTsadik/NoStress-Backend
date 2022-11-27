@@ -6,7 +6,7 @@ interface Knapsack {
     capacity: number
 }
 
-function solve(knapsack: Knapsack): Solution {
+const solve = (knapsack: Knapsack): Solution => {
     const numOfTasks = knapsack.tasks.length
     const capacity = knapsack.capacity
     console.log('capacity = ' + capacity)

@@ -5,7 +5,7 @@ import { Solution } from './services/solution'
 
 // אלגוריתם האופטימיזציה מקבל את רשימת הימים
 // אותה נמקסם ואת רשימת המטלות הכללית
-export default function optimization(allDays: Day[], allTasks: Task[]): void {
+const optimization = (allDays: Day[], allTasks: Task[]): void => {
     // נמקסם כל יום בנפרד
     allDays.forEach((day) => {
         // רשימת המטלות שתכיל את כל המטלות בהתאם לכמות השעות הפנויות שיש לנו באותו יום
@@ -15,7 +15,7 @@ export default function optimization(allDays: Day[], allTasks: Task[]): void {
 
         // נעבור על רשימת המטלות הכללית
         allTasks.forEach((task) => {
-            if (!task.fulllyCompleted) {
+            if (!task.fullyCompleted) {
                 // אם אורך המטלה קצר או שווה לכמות השעות ביום נכניס אותה כמו שהיא
                 if (task.hours <= x) {
                     options.push(task)
@@ -53,7 +53,7 @@ export default function optimization(allDays: Day[], allTasks: Task[]): void {
                     // אם המטלה הייתה קצרה ולקחתי את כולה
                     // אמחק לגמרי את המופע שלה מהרשימה
                     if (originalTask.hours <= x) {
-                        originalTask.fulllyCompleted = true
+                        originalTask.fullyCompleted = true
                     } else {
                         /* אם המטלה הייתה ארוכה ולקחתי רק חלק ממנה
                          אחליף את המופע שלה במופע של המטלה שנשארה
@@ -73,12 +73,4 @@ export default function optimization(allDays: Day[], allTasks: Task[]): void {
     })
 }
 
-/*
-    אם מוחקים מרשימת המטלות הכללית מטלות שהכנסו ללוז
-    של יום מסוים זה יוצר בעיה כי בפעם הבאה שנרצה להריץ
-    אופטימיזציה ניתקל בבעיה כיוון שרשימת המטלות תהיה ריקה
-
-    פתרון - אולי להוסיף למטלה ערך בוליאני אם נלקחה או לא
-
-    להתייעץ עם יניר
-*/
+export default optimization
