@@ -15,12 +15,14 @@ export default function optimization(allDays: Day[], allTasks: Task[]): void {
 
         // נעבור על רשימת המטלות הכללית
         allTasks.forEach((task) => {
-            // אם אורך המטלה קצר או שווה לכמות השעות שיש לי היום נכניס אותה כמו שהיא
-            if (task.hours <= x) {
-                options.push(task)
-            } else {
-                // אם המטלה גדולה מדי ניקח את המטלה עם מספר השעות המתאים
-                options.push(splitTask(task, x))
+            if (!task.fulllyCompleted) {
+                // אם אורך המטלה קצר או שווה לכמות השעות ביום נכניס אותה כמו שהיא
+                if (task.hours <= x) {
+                    options.push(task)
+                } else {
+                    // אם המטלה גדולה מדי ניקח את המטלה עם מספר השעות המתאים
+                    options.push(splitTask(task, x))
+                }
             }
         })
 
@@ -51,7 +53,7 @@ export default function optimization(allDays: Day[], allTasks: Task[]): void {
                     // אם המטלה הייתה קצרה ולקחתי את כולה
                     // אמחק לגמרי את המופע שלה מהרשימה
                     if (originalTask.hours <= x) {
-                        allTasks.splice(j, 1)
+                        originalTask.fulllyCompleted = true
                     } else {
                         /* אם המטלה הייתה ארוכה ולקחתי רק חלק ממנה
                          אחליף את המופע שלה במופע של המטלה שנשארה

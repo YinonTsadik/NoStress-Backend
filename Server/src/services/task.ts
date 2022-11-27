@@ -4,6 +4,7 @@ interface Task extends Period {
     deadline: Date
     daysUntilDeadline: number
     value: number
+    fulllyCompleted: boolean
 }
 
 function updateDetails(task: Task): void {

@@ -53,6 +53,7 @@ app.post('/api/tasks', (req, res) => {
         description: description,
         deadline: new Date(deadline),
         hours: hours,
+        fulllyCompleted: false,
     } as Task
 
     updateDetails(task)
@@ -72,7 +73,7 @@ app.put('/api/tasks/:id', (req, res) => {
             .json({ success: false, msg: `No task with id: ${id}` })
     }
 
-    const { description, deadline, hours } = req.body
+    const { description, deadline, hours, fulllyCompleted } = req.body
 
     if (description) {
         task.description = description
@@ -82,6 +83,9 @@ app.put('/api/tasks/:id', (req, res) => {
     }
     if (hours) {
         task.hours = hours
+    }
+    if (fulllyCompleted) {
+        task.fulllyCompleted = fulllyCompleted
     }
 
     res.status(200).json({ success: true, msg: 'Task updated', data: tasks })

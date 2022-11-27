@@ -56,3 +56,7 @@ const knapsack: Knapsack = {
     ],
     capacity: 15,
 }
+
+const solution: Solution = solve(knapsack)
+
+console.log('Solution: ', solution)

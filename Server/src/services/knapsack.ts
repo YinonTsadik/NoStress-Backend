@@ -9,6 +9,7 @@ interface Knapsack {
 function solve(knapsack: Knapsack): Solution {
     const numOfTasks = knapsack.tasks.length
     const capacity = knapsack.capacity
+    console.log('capacity = ' + capacity)
 
     let matrix = new Array(numOfTasks + 1)
 
@@ -23,7 +24,7 @@ function solve(knapsack: Knapsack): Solution {
                 matrix[i][j] = Math.max(
                     matrix[i - 1][j],
                     matrix[i - 1][j - Math.round(knapsack.tasks[i - 1].hours)] +
-                        Math.round(knapsack.tasks[i - 1].value)
+                        knapsack.tasks[i - 1].value
                 )
             }
         }
