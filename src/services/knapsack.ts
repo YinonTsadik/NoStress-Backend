@@ -9,7 +9,6 @@ interface Knapsack {
 const solve = (knapsack: Knapsack): Solution => {
     const numOfTasks = knapsack.tasks.length
     const capacity = knapsack.capacity
-    console.log('capacity = ' + capacity)
 
     let matrix = new Array(numOfTasks + 1)
 

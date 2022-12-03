@@ -4,16 +4,16 @@ interface Task extends Period {
     deadline: Date
     daysUntilDeadline: number
     value: number
-    fullyCompleted: boolean
+    scheduled: boolean
 }
 
-const updateDetails = (task: Task): void => {
-    updateDeadline(task)
+const updateDetails = (task: Task, src: Date): void => {
+    updateDeadline(task, src)
     updateValue(task)
 }
 
-const updateDeadline = (task: Task): void => {
-    const diff: number = task.deadline.getTime() - new Date().getTime()
+const updateDeadline = (task: Task, src: Date): void => {
+    const diff: number = task.deadline.getTime() - src.getTime()
     task.daysUntilDeadline = diff / 1000 / 60 / 60 / 24
 }
 

@@ -1,5 +1,5 @@
 import { Day } from './services/day'
-import { Task, splitTask } from './services/task'
+import { Task, updateDetails, splitTask } from './services/task'
 import { Knapsack, solve } from './services/knapsack'
 import { Solution } from './services/solution'
 
@@ -15,13 +15,19 @@ const optimization = (allDays: Day[], allTasks: Task[]): void => {
 
         // נעבור על רשימת המטלות הכללית
         allTasks.forEach((task) => {
-            if (!task.fullyCompleted) {
+            if (!task.scheduled) {
                 // אם אורך המטלה קצר או שווה לכמות השעות ביום נכניס אותה כמו שהיא
                 if (task.hours <= x) {
-                    options.push(task)
+                    const tempTask = { ...task }
+                    updateDetails(tempTask, day.date)
+
+                    options.push(tempTask)
                 } else {
                     // אם המטלה גדולה מדי ניקח את המטלה עם מספר השעות המתאים
-                    options.push(splitTask(task, x))
+                    const tempTask = { ...task }
+                    updateDetails(tempTask, day.date)
+
+                    options.push(splitTask(tempTask, x))
                 }
             }
         })
@@ -53,7 +59,7 @@ const optimization = (allDays: Day[], allTasks: Task[]): void => {
                     // אם המטלה הייתה קצרה ולקחתי את כולה
                     // אמחק לגמרי את המופע שלה מהרשימה
                     if (originalTask.hours <= x) {
-                        originalTask.fullyCompleted = true
+                        originalTask.scheduled = true
                     } else {
                         /* אם המטלה הייתה ארוכה ולקחתי רק חלק ממנה
                          אחליף את המופע שלה במופע של המטלה שנשארה

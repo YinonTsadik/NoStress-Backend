@@ -12,7 +12,7 @@ const knapsack: Knapsack = {
             daysUntilDeadline: 0,
             hours: 2,
             value: 2,
-            fullyCompleted: false,
+            scheduled: false,
         },
         {
             id: 2,
@@ -23,7 +23,7 @@ const knapsack: Knapsack = {
             daysUntilDeadline: 0,
             hours: 12,
             value: 4,
-            fullyCompleted: false,
+            scheduled: false,
         },
         {
             id: 3,
@@ -34,7 +34,7 @@ const knapsack: Knapsack = {
             daysUntilDeadline: 0,
             hours: 1,
             value: 2,
-            fullyCompleted: false,
+            scheduled: false,
         },
         {
             id: 4,
@@ -45,7 +45,7 @@ const knapsack: Knapsack = {
             daysUntilDeadline: 0,
             hours: 4,
             value: 10,
-            fullyCompleted: false,
+            scheduled: false,
         },
         {
             id: 5,
@@ -56,7 +56,7 @@ const knapsack: Knapsack = {
             daysUntilDeadline: 0,
             hours: 1,
             value: 1,
-            fullyCompleted: false,
+            scheduled: false,
         },
     ],
     capacity: 15,
