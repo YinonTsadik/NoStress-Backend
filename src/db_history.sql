@@ -19,6 +19,8 @@ CREATE TABLE tasks (
     description VARCHAR(50) NOT NULL,
     deadline TIMESTAMP NOT NULL,
     hours INTEGER NOT NULL,
+    start_time TIMESTAMP,
+    end_time TIMESTAMP,
     
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id)
@@ -38,8 +40,8 @@ CREATE TABLE constraints (
     user_id UUID NOT NULL,
     description VARCHAR(50) NOT NULL,
     type constraint_type DEFAULT 'Other',
-    startTime TIMESTAMP NOT NULL,
-    endTime TIMESTAMP NOT NULL,
+    start_time TIMESTAMP NOT NULL,
+    end_time TIMESTAMP NOT NULL,
     
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id)

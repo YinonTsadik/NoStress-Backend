@@ -1,5 +1,4 @@
 import express from 'express'
-import pool from './db'
 import logger from './modules/Logger'
 
 import Task from './modules/Task'
