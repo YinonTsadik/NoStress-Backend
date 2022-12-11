@@ -1,9 +1,10 @@
 import express from 'express'
-import logger from './modules/logger'
+import pool from './db'
+import logger from './modules/Logger'
 
-import Task from './modules/task'
-import Constraint from './modules/constraint'
-import Day from './modules/day'
+import Task from './modules/Task'
+import Constraint from './modules/Constraint'
+import Day from './modules/Day'
 import optimization from './optimization'
 
 const app = express()
@@ -79,11 +80,15 @@ app.put('/api/tasks/:id', (req, res) => {
         task.setHours = hours
     }
 
+    task.updateDetails(new Date())
+
     res.status(200).json({ success: true, msg: 'Task updated', data: tasks })
 })
 
 // Remove a task
 app.delete('/api/tasks/:id', (req, res) => {
+    console.log('delete')
+
     const { id } = req.params
     const task = tasks.find((task) => task.id === id)
 

@@ -1,4 +1,4 @@
-import { v4 as uuid } from 'uuid'
+// import { v4 as uuid } from 'uuid'
 
 export default abstract class Period {
     readonly id: string
@@ -7,11 +7,14 @@ export default abstract class Period {
     protected end: Date
     protected hours: number
 
+    static count = 0
+
     constructor(description: string) {
-        this.id = uuid()
+        // this.id = uuid()
+        this.id = (++Period.count).toString()
         this.description = description
-        this.start = new Date()
-        this.end = new Date()
+        this.start = new Date(0)
+        this.end = new Date(0)
         this.hours = 0
     }
 

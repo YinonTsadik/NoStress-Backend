@@ -1,4 +1,4 @@
-import Period from './period'
+import Period from './Period'
 
 enum constraintType {
     Studies,

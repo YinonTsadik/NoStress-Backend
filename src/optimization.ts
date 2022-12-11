@@ -1,7 +1,7 @@
-import Day from './modules/day'
-import Task from './modules/task'
-import Knapsack from './modules/knapsack'
-import Solution from './modules/solution'
+import Day from './modules/Day'
+import Task from './modules/Task'
+import Knapsack from './modules/Knapsack'
+import Solution from './modules/Solution'
 
 export default function optimization(allDays: Day[], allTasks: Task[]): void {
     allDays.forEach((day) => {

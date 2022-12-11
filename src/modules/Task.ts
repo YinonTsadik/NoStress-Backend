@@ -1,4 +1,4 @@
-import Period from './period'
+import Period from './Period'
 
 export default class Task extends Period {
     private deadline: Date

@@ -1,5 +1,5 @@
-import Task from './task'
-import Solution from './solution'
+import Task from './Task'
+import Solution from './Solution'
 
 export default class Knapsack {
     private tasks: Task[]
