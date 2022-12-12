@@ -1,4 +1,5 @@
-import { getAllUsers, getAllTasks, getAllConstraints } from '../db/queries'
+import * as db from '../db'
+
 import { GraphQLScalarType } from 'graphql'
 
 const dateScalar = new GraphQLScalarType({
@@ -16,15 +17,44 @@ const resolvers = {
 
     Query: {
         users: () => {
-            return getAllUsers()
+            return db.getAllUsers()
+        },
+
+        user: (_: any, args: any) => {
+            const { id } = args
+            return db.getUser(id)
         },
 
         tasks: () => {
-            return getAllTasks()
+            return db.getAllTasks()
+        },
+
+        task: (_: any, args: any) => {
+            const { id } = args
+            return db.getTask(id)
         },
 
         constraints: () => {
-            return getAllConstraints()
+            return db.getAllConstraints()
+        },
+
+        constraint: (_: any, args: any) => {
+            const { id } = args
+            return db.getConstraint(id)
+        },
+    },
+
+    Mutation: {
+        createUser: (_: any, args: any) => {
+            return db.createUser(args.input)
+        },
+
+        createTask: (_: any, args: any) => {
+            return db.createTask(args.input)
+        },
+
+        createConstraint: (_: any, args: any) => {
+            return db.createConstraint(args.input)
         },
     },
 }
