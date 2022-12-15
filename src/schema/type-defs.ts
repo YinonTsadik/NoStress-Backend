@@ -40,22 +40,20 @@ const typeDefs = gql`
         end_time: Date!
     }
 
-    type Query {
-        users: [User!]
-        user(id: String!): User
-
-        tasks: [Task!]
-        task(id: String!): Task
-
-        constraints: [Constraint!]
-        constraint(id: String!): Constraint
-    }
-
     input CreateUserInput {
         first_name: String!
         last_name: String!
         username: String!
         password: String!
+        birthday: Date
+    }
+
+    input UpdateUserInput {
+        id: String!
+        first_name: String
+        last_name: String
+        username: String
+        password: String
         birthday: Date
     }
 
@@ -68,6 +66,15 @@ const typeDefs = gql`
         end_time: Date
     }
 
+    input UpdateTaskInput {
+        id: String!
+        description: String
+        deadline: Date
+        hours: Int
+        start_time: Date
+        end_time: Date
+    }
+
     input CreateConstraintInput {
         user_id: String!
         description: String!
@@ -76,12 +83,39 @@ const typeDefs = gql`
         end_time: Date!
     }
 
+    input UpdateConstraintInput {
+        id: String!
+        description: String
+        type: Type
+        start_time: Date
+        end_time: Date
+    }
+
+    type Query {
+        users: [User!]
+        user(id: String!): User
+
+        tasks: [Task!]
+        userTasks(user_id: String!): [Task!]
+        task(id: String!): Task
+
+        constraints: [Constraint!]
+        userConstraints(user_id: String!): [Constraint!]
+        constraint(id: String!): Constraint
+    }
+
     type Mutation {
         createUser(input: CreateUserInput!): User
+        updateUser(input: UpdateUserInput!): User
+        deleteUser(id: String!): User
 
         createTask(input: CreateTaskInput!): Task
+        updateTask(input: UpdateTaskInput!): Task
+        deleteTask(id: String!): Task
 
         createConstraint(input: CreateConstraintInput!): Constraint
+        updateConstraint(input: UpdateConstraintInput!): Constraint
+        deleteConstraint(id: String!): Constraint
     }
 `
 

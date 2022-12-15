@@ -42,7 +42,6 @@ CREATE TABLE constraints (
     type constraint_type DEFAULT 'Other',
     start_time TIMESTAMP NOT NULL,
     end_time TIMESTAMP NOT NULL,
-    hours INTEGER NOT NULL,
     
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id)
