@@ -10,7 +10,7 @@ export default class Knapsack {
         this.capacity = capacity
     }
 
-    public solve(): Solution {
+    solve(): Solution {
         const numOfTasks = this.tasks.length
         const capacity = this.capacity
 
@@ -33,8 +33,8 @@ export default class Knapsack {
             }
         }
 
-        const tasksSolution: Task[] = new Array<Task>()
-        let numOfHours: number = 0
+        const tasksSolution = new Array<Task>()
+        let numOfHours = 0
         let result = matrix[numOfTasks][capacity]
         let w = capacity
 
@@ -51,11 +51,11 @@ export default class Knapsack {
         return new Solution(matrix[numOfTasks][capacity], numOfHours, tasksSolution)
     }
 
-    get getTasks(): Task[] {
+    get getTasks() {
         return this.tasks
     }
 
-    get getCapacity(): number {
+    get getCapacity() {
         return this.capacity
     }
 

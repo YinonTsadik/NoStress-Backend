@@ -14,7 +14,9 @@ app.use(logger)
 let calendar: Day[] = Day.generateCalendar(5)
 
 let tasks: Task[] = new Array<Task>()
+let tasksCount = 0
 let constraints: Constraint[] = new Array<Constraint>()
+let constraintsCount = 0
 
 // ============================== Tasks ==============================
 
@@ -48,7 +50,12 @@ app.post('/api/tasks', (req, res) => {
             .json({ success: false, msg: 'Please provide a legal task' })
     }
 
-    const task: Task = new Task(description, new Date(deadline), hours)
+    const task: Task = new Task(
+        (++tasksCount).toString(),
+        description,
+        new Date(deadline),
+        hours
+    )
 
     task.updateDetails(new Date())
     tasks.push(task)
@@ -140,6 +147,7 @@ app.post('/api/constraints', (req, res) => {
     }
 
     const constraint: Constraint = new Constraint(
+        (++constraintsCount).toString(),
         description,
         type,
         new Date(start),

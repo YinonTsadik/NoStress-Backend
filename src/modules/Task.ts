@@ -6,8 +6,8 @@ export default class Task extends Period {
     private value: number
     private scheduled: boolean
 
-    constructor(description: string, deadline: Date, hours: number) {
-        super(description)
+    constructor(id: string, description: string, deadline: Date, hours: number) {
+        super(id, description)
         this.hours = hours
         this.deadline = deadline
 
@@ -16,17 +16,17 @@ export default class Task extends Period {
         this.scheduled = false
     }
 
-    public updateDetails(src: Date): void {
+    public updateDetails(src: Date) {
         this.updateDeadline(src)
         this.updateValue()
     }
 
-    private updateDeadline(src: Date): void {
+    private updateDeadline(src: Date) {
         const diff: number = this.deadline.getTime() - src.getTime()
         this.daysUntilDeadline = diff / 1000 / 60 / 60 / 24
     }
 
-    private updateValue(): void {
+    private updateValue() {
         if (this.daysUntilDeadline <= 1) {
             this.value = 1000
         } else {
@@ -44,25 +44,25 @@ export default class Task extends Period {
     }
 
     public splitTask(x: number): Task {
-        const newTask: Task = { ...this }
+        const newTask = JSON.parse(JSON.stringify(this)) as Task
         newTask.hours = x
         newTask.value = (x / this.hours) * this.value
         return newTask
     }
 
-    get getDeadline(): Date {
+    get getDeadline() {
         return this.deadline
     }
 
-    get getDaysUntilDeadline(): number {
+    get getDaysUntilDeadline() {
         return this.daysUntilDeadline
     }
 
-    get getValue(): number {
+    get getValue() {
         return this.value
     }
 
-    get getScheduled(): boolean {
+    get getScheduled() {
         return this.scheduled
     }
 

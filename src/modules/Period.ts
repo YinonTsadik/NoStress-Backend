@@ -1,5 +1,3 @@
-// import { v4 as uuid } from 'uuid'
-
 export default abstract class Period {
     readonly id: string
     protected description: string
@@ -7,35 +5,32 @@ export default abstract class Period {
     protected end: Date
     protected hours: number
 
-    static count = 0
-
-    constructor(description: string) {
-        // this.id = uuid()
-        this.id = (++Period.count).toString()
+    constructor(id: string, description: string) {
+        this.id = id
         this.description = description
         this.start = new Date(0)
         this.end = new Date(0)
         this.hours = 0
     }
 
-    public updateHours(): void {
+    public updateHours() {
         const diff: number = this.end.getTime() - this.start.getTime()
         this.hours = diff / 1000 / 60 / 60
     }
 
-    get getDescription(): string {
+    get getDescription() {
         return this.description
     }
 
-    get getStart(): Date {
+    get getStart() {
         return this.start
     }
 
-    get getEnd(): Date {
+    get getEnd() {
         return this.end
     }
 
-    get getHours(): number {
+    get getHours() {
         return this.hours
     }
 

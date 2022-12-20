@@ -8,17 +8,18 @@ export default class Day {
 
     constructor(date: Date) {
         this.date = date
-        this.schedule = new Array<Period>()
+        this.schedule = new Array<Period>(24)
         this.availableHours = 24
         this.totalValue = 0
     }
 
     static generateCalendar(numOfDays: number): Day[] {
-        let calendar: Day[] = new Array<Day>()
-        calendar.push(new Day(new Date()))
+        let calendar = new Array<Day>()
+        const today = new Date()
+        calendar.push(new Day(today))
 
         for (let i = 1; i < numOfDays; i++) {
-            const day = new Day(this.addDays(new Date(), i))
+            const day = new Day(this.addDays(today, i))
             calendar.push(day)
         }
 
@@ -31,19 +32,19 @@ export default class Day {
         return copy
     }
 
-    get getDate(): Date {
+    get getDate() {
         return this.date
     }
 
-    get getSchedule(): Period[] {
+    get getSchedule() {
         return this.schedule
     }
 
-    get getAvailableHours(): number {
+    get getAvailableHours() {
         return this.availableHours
     }
 
-    get getTotalValue(): number {
+    get getTotalValue() {
         return this.totalValue
     }
 

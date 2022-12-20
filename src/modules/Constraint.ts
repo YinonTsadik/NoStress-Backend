@@ -12,14 +12,20 @@ enum constraintType {
 export default class Constraint extends Period {
     type: constraintType
 
-    constructor(description: string, type: constraintType, start: Date, end: Date) {
-        super(description)
+    constructor(
+        id: string,
+        description: string,
+        type: constraintType,
+        start: Date,
+        end: Date
+    ) {
+        super(id, description)
         this.type = type
         this.start = start
         this.end = end
     }
 
-    get getType(): constraintType {
+    get getType() {
         return this.type
     }
 

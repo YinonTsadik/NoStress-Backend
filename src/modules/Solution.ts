@@ -11,15 +11,15 @@ export default class Solution {
         this.tasks = tasks
     }
 
-    get getValue(): number {
+    get getValue() {
         return this.value
     }
 
-    get getHours(): number {
+    get getHours() {
         return this.hours
     }
 
-    get getTasks(): Task[] {
+    get getTasks() {
         return this.tasks
     }
 
