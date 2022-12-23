@@ -9,18 +9,6 @@ export async function getAllConstraints() {
     }
 }
 
-export async function getUserConstraints(user_id: string) {
-    try {
-        const userConstraints = await pool.query(
-            'SELECT * FROM constraints WHERE user_id = $1',
-            [user_id]
-        )
-        return userConstraints.rows
-    } catch (error: any) {
-        console.error(error.message)
-    }
-}
-
 export async function getConstraint(id: string) {
     try {
         const constraint = await pool.query(
@@ -33,19 +21,44 @@ export async function getConstraint(id: string) {
     }
 }
 
+export async function getUserConstraints(user_id: string) {
+    try {
+        const userConstraints = await pool.query(
+            'SELECT * FROM constraints WHERE user_id = $1',
+            [user_id]
+        )
+        return userConstraints.rows
+    } catch (error: any) {
+        console.error(error.message)
+    }
+}
+
+export async function getCalendarConstraints(calendar_id: string) {
+    try {
+        const calendarConstraints = await pool.query(
+            'SELECT * FROM constraints WHERE calendar_id = $1',
+            [calendar_id]
+        )
+        return calendarConstraints.rows
+    } catch (error: any) {
+        console.error(error.message)
+    }
+}
+
 export async function createConstraint(input: any) {
     try {
-        const constraint = await pool.query(
-            'INSERT INTO constraints (user_id, description, type, start_time, end_time) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+        const newConstraint = await pool.query(
+            'INSERT INTO constraints (user_id, calendar_id, description, type, start_time, end_time) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
             [
                 input.user_id,
+                input.calendar_id,
                 input.description,
                 input.type,
                 input.start_time,
                 input.end_time,
             ]
         )
-        return constraint.rows[0]
+        return newConstraint.rows[0]
     } catch (error: any) {
         console.error(error.message)
     }
@@ -83,11 +96,11 @@ export async function updateConstraint(input: any) {
             ])
         }
 
-        const newConstraint = await pool.query(
+        const updatedConstraint = await pool.query(
             'SELECT * FROM constraints WHERE id = $1',
             [id]
         )
-        return newConstraint.rows[0]
+        return updatedConstraint.rows[0]
     } catch (error: any) {
         console.error(error.message)
     }
@@ -99,7 +112,6 @@ export async function deleteConstraint(id: string) {
             'DELETE FROM constraints WHERE id = $1 RETURNING *',
             [id]
         )
-        console.log(deletedConstraint.rows)
         return deletedConstraint.rows[0]
     } catch (error: any) {
         console.error(error.message)

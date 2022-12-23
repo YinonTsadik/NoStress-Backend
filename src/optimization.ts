@@ -5,12 +5,13 @@ import Knapsack from './modules/Knapsack'
 export default function optimization(allDays: Day[], allTasks: Task[]) {
     allDays.forEach((day) => {
         const options = new Array<Task>()
-        const x = day.availableHours
+        const x = day.getAvailableHours
 
         allTasks.forEach((task) => {
             if (!task.getScheduled) {
                 const tempTask = JSON.parse(JSON.stringify(task)) as Task
-                tempTask.updateDetails(day.date)
+                tempTask.updateDetails(day.getDate)
+                3
 
                 if (task.getHours <= x) {
                     options.push(tempTask)
@@ -23,9 +24,9 @@ export default function optimization(allDays: Day[], allTasks: Task[]) {
         const dayKnapsack = new Knapsack(options, x)
         const daySolution = dayKnapsack.solve()
 
-        day.schedule = [...daySolution.getTasks]
-        day.availableHours -= daySolution.getHours
-        day.totalValue = daySolution.getValue
+        day.setSchedule = [...daySolution.getTasks]
+        day.setAvailableHours -= daySolution.getHours
+        day.setTotalValue = daySolution.getValue
 
         for (let i = 0; i < daySolution.getTasks.length; i++) {
             let solutionTask = daySolution.getTasks[i]

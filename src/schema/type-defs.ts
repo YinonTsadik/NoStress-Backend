@@ -21,19 +21,27 @@ const typeDefs = gql`
         birthday: Date
     }
 
+    type Calendar {
+        id: String!
+        user_id: String!
+        name: String!
+        start_date: Date!
+        end_date: Date!
+    }
+
     type Task {
         id: String!
         user_id: String!
+        calendar_id: String!
         description: String!
         deadline: Date!
         hours: Int!
-        start_time: Date
-        end_time: Date
     }
 
     type Constraint {
         id: String!
         user_id: String!
+        calendar_id: String!
         description: String!
         type: Type!
         start_time: Date!
@@ -57,13 +65,26 @@ const typeDefs = gql`
         birthday: Date
     }
 
+    input CreateCalendarInput {
+        user_id: String!
+        name: String!
+        start_date: Date!
+        end_date: Date!
+    }
+
+    input UpdateCalendarInput {
+        id: String!
+        name: String
+        start_time: Date
+        end_time: Date
+    }
+
     input CreateTaskInput {
         user_id: String!
+        calendar_id: String!
         description: String!
         deadline: Date!
         hours: Int!
-        start_time: Date
-        end_time: Date
     }
 
     input UpdateTaskInput {
@@ -71,12 +92,11 @@ const typeDefs = gql`
         description: String
         deadline: Date
         hours: Int
-        start_time: Date
-        end_time: Date
     }
 
     input CreateConstraintInput {
         user_id: String!
+        calendar_id: String!
         description: String!
         type: Type = Other
         start_time: Date!
@@ -95,19 +115,28 @@ const typeDefs = gql`
         users: [User!]
         user(id: String!): User
 
+        calendars: [Calendar!]
+        calendar(id: String!): Calendar
+
         tasks: [Task!]
-        userTasks(user_id: String!): [Task!]
         task(id: String!): Task
+        userTasks(user_id: String!): [Task!]
+        calendarTasks(calendar_id: String!): [Task!]
 
         constraints: [Constraint!]
-        userConstraints(user_id: String!): [Constraint!]
         constraint(id: String!): Constraint
+        userConstraints(user_id: String!): [Constraint!]
+        calendarConstraints(calendar_id: String!): [Constraint!]
     }
 
     type Mutation {
         createUser(input: CreateUserInput!): User
         updateUser(input: UpdateUserInput!): User
         deleteUser(id: String!): User
+
+        createCalendar(input: CreateCalendarInput!): Calendar
+        updateCalendar(input: UpdateCalendarInput!): Calendar
+        deleteCalendar(id: String!): Calendar
 
         createTask(input: CreateTaskInput!): Task
         updateTask(input: UpdateTaskInput!): Task
@@ -116,6 +145,8 @@ const typeDefs = gql`
         createConstraint(input: CreateConstraintInput!): Constraint
         updateConstraint(input: UpdateConstraintInput!): Constraint
         deleteConstraint(id: String!): Constraint
+
+        optimize(calendar_id: String!): String!
     }
 `
 

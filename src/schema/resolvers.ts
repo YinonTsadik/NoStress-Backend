@@ -1,4 +1,5 @@
 import * as db from '../db'
+import Manager from '../modules/Manager'
 
 import { GraphQLScalarType } from 'graphql'
 
@@ -24,28 +25,44 @@ const resolvers = {
             return db.getUser(args.id)
         },
 
-        tasks: () => {
-            return db.getAllTasks()
+        calendars: () => {
+            return db.getCalendars()
         },
 
-        userTasks: (_: any, args: any) => {
-            return db.getUserTasks(args.user_id)
+        calendar: (_: any, args: any) => {
+            return db.getCalendar(args.id)
+        },
+
+        tasks: () => {
+            return db.getAllTasks()
         },
 
         task: (_: any, args: any) => {
             return db.getTask(args.id)
         },
 
+        userTasks: (_: any, args: any) => {
+            return db.getUserTasks(args.user_id)
+        },
+
+        calendarTasks: (_: any, args: any) => {
+            return db.getCalendarTasks(args.calendar_id)
+        },
+
         constraints: () => {
             return db.getAllConstraints()
+        },
+
+        constraint: (_: any, args: any) => {
+            return db.getConstraint(args.id)
         },
 
         userConstraints: (_: any, args: any) => {
             return db.getUserConstraints(args.user_id)
         },
 
-        constraint: (_: any, args: any) => {
-            return db.getConstraint(args.id)
+        calendarConstraints: (_: any, args: any) => {
+            return db.getCalendarConstraints(args.calendar_id)
         },
     },
 
@@ -60,6 +77,18 @@ const resolvers = {
 
         deleteUser: (_: any, args: any) => {
             return db.deleteUser(args.id)
+        },
+
+        createCalendar: (_: any, args: any) => {
+            return db.createCalendar(args.input)
+        },
+
+        updateCalendar: (_: any, args: any) => {
+            return db.updateCalendar(args.input)
+        },
+
+        deleteCalendar: (_: any, args: any) => {
+            return db.deleteCalendar(args.id)
         },
 
         createTask: (_: any, args: any) => {
@@ -84,6 +113,11 @@ const resolvers = {
 
         deleteConstraint: (_: any, args: any) => {
             return db.deleteConstraint(args.id)
+        },
+
+        optimize: (_: any, args: any) => {
+            const manager = new Manager(args.calendar_id)
+            return '123'
         },
     },
 }

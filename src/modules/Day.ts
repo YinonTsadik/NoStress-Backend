@@ -1,10 +1,10 @@
 import Period from './Period'
 
 export default class Day {
-    date: Date
-    schedule: Period[]
-    availableHours: number
-    totalValue: number
+    private date: Date
+    private schedule: Period[]
+    private availableHours: number
+    private totalValue: number
 
     constructor(date: Date) {
         this.date = date
@@ -13,23 +13,14 @@ export default class Day {
         this.totalValue = 0
     }
 
-    static generateCalendar(numOfDays: number): Day[] {
-        let calendar = new Array<Day>()
-        const today = new Date()
-        calendar.push(new Day(today))
+    public static generateCalendar(start: Date, end: Date): Day[] {
+        const calendar = new Array<Day>()
 
-        for (let i = 1; i < numOfDays; i++) {
-            const day = new Day(this.addDays(today, i))
-            calendar.push(day)
+        for (let date = start; date <= end; date.setDate(date.getDate() + 1)) {
+            calendar.push(new Day(new Date(date)))
         }
 
         return calendar
-    }
-
-    static addDays(date: Date, days: number): Date {
-        const copy = new Date(Number(date))
-        copy.setDate(date.getDate() + days)
-        return copy
     }
 
     get getDate() {

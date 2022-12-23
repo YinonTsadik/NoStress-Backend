@@ -20,17 +20,17 @@ export async function getUser(id: string) {
 
 export async function createUser(input: any) {
     try {
-        const user = await pool.query(
-            'INSERT INTO users (first_name, last_name, birthday, username, password) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+        const newUser = await pool.query(
+            'INSERT INTO users (first_name, last_name, username, password, birthday) VALUES ($1, $2, $3, $4, $5) RETURNING *',
             [
                 input.first_name,
                 input.last_name,
-                input.birthday,
                 input.username,
                 input.password,
+                input.birthday,
             ]
         )
-        return user.rows[0]
+        return newUser.rows[0]
     } catch (error: any) {
         console.error(error.message)
     }
@@ -75,8 +75,10 @@ export async function updateUser(input: any) {
             ])
         }
 
-        const newUser = await pool.query('SELECT * FROM users WHERE id = $1', [id])
-        return newUser.rows[0]
+        const updatedUser = await pool.query('SELECT * FROM users WHERE id = $1', [
+            id,
+        ])
+        return updatedUser.rows[0]
     } catch (error: any) {
         console.error(error.message)
     }
