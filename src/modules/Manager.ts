@@ -1,6 +1,6 @@
-import Day from './Day'
 import Task from './Task'
 import Constraint from './Constraint'
+import Day from './Day'
 import * as db from '../db'
 
 export default class Manager {
@@ -16,18 +16,42 @@ export default class Manager {
         this.allDays = new Array<Day>()
         this.allTasks = new Array<Task>()
         this.allConstraints = new Array<Constraint>()
-
-        this.createManager()
     }
 
-    private async createManager() {
+    public async createManager() {
         const calendar = await db.getCalendar(this.calendarID)
         this.userID = calendar.user_id
 
         this.allDays = Day.generateCalendar(calendar.start_date, calendar.end_date)
+        this.allDays.forEach((day: Day) => day.updateAvailableHours())
 
         const dbTasks = await db.getCalendarTasks(this.calendarID)
-        console.log(dbTasks)
-        // Add tasks to the new calendar and  coding
+        dbTasks?.forEach((dbTask: any) => {
+            const task = new Task(
+                dbTask.id,
+                dbTask.description,
+                dbTask.deadline,
+                dbTask.hours
+            )
+            task.updateDetails(new Date())
+            this.allTasks.push(task)
+        })
+
+        const dbConstraints = await db.getCalendarConstraints(this.calendarID)
+        dbConstraints?.forEach((dbConstraint: any) => {
+            const constraint = new Constraint(
+                dbConstraint.id,
+                dbConstraint.description,
+                dbConstraint.type,
+                dbConstraint.start_time,
+                dbConstraint.end_time
+            )
+            constraint.updateHours()
+            this.allConstraints.push(constraint)
+        })
+    }
+
+    public optimize(): string {
+        return 'optimize'
     }
 }

@@ -14,7 +14,7 @@ export default abstract class Period {
     }
 
     public updateHours() {
-        const diff: number = this.end.getTime() - this.start.getTime()
+        const diff = this.end.getTime() - this.start.getTime()
         this.hours = diff / 1000 / 60 / 60
     }
 

@@ -115,9 +115,11 @@ const resolvers = {
             return db.deleteConstraint(args.id)
         },
 
-        optimize: (_: any, args: any) => {
+        optimize: async (_: any, args: any) => {
             const manager = new Manager(args.calendar_id)
-            return '123'
+            await manager.createManager()
+            console.log(manager)
+            return manager.optimize()
         },
     },
 }

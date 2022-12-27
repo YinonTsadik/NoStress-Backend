@@ -1,4 +1,6 @@
 import Period from './Period'
+import Constraint from './Constraint'
+import * as db from '../db'
 
 export default class Day {
     private date: Date
@@ -21,6 +23,26 @@ export default class Day {
         }
 
         return calendar
+    }
+
+    public async updateAvailableHours() {
+        const dbDayConstraints = await db.getDayConstraints(this.date)
+        let hoursSum = 0
+
+        dbDayConstraints?.forEach((dbConstraint: any) => {
+            const constraint = new Constraint(
+                dbConstraint.id,
+                dbConstraint.description,
+                dbConstraint.type,
+                dbConstraint.start_time,
+                dbConstraint.end_time
+            )
+
+            constraint.updateHours()
+            hoursSum += constraint.getHours
+        })
+
+        this.availableHours -= hoursSum
     }
 
     get getDate() {
