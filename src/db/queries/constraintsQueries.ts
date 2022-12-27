@@ -50,10 +50,9 @@ export async function getDayConstraints(date: Date) {
         const startDay = new Date(
             date.getFullYear(),
             date.getMonth(),
-            date.getDate(),
-            0,
-            0
+            date.getDate()
         )
+
         const endDay = new Date(
             date.getFullYear(),
             date.getMonth(),
@@ -64,7 +63,7 @@ export async function getDayConstraints(date: Date) {
         )
 
         const dayConstraints = await pool.query(
-            'SELECT * FROM constraints WHERE start_time BETWEEN $1 AND $2',
+            'SELECT * FROM constraints WHERE (start_time BETWEEN $1 AND $2) OR (end_time BETWEEN $1 AND $2)',
             [startDay, endDay]
         )
         return dayConstraints.rows

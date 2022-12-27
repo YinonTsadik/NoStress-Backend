@@ -27,6 +27,8 @@ export default class Day {
 
     public async updateAvailableHours() {
         const dbDayConstraints = await db.getDayConstraints(this.date)
+        console.log(dbDayConstraints?.length)
+
         let hoursSum = 0
 
         dbDayConstraints?.forEach((dbConstraint: any) => {
@@ -39,7 +41,45 @@ export default class Day {
             )
 
             constraint.updateHours()
-            hoursSum += constraint.getHours
+
+            const start = constraint.getStart
+            const end = constraint.getEnd
+            const startDay = new Date(
+                start.getFullYear(),
+                start.getMonth(),
+                start.getDate()
+            )
+            const endDay = new Date(end.getFullYear(), end.getMonth(), end.getDate())
+
+            if (startDay.getTime() === endDay.getTime()) {
+                hoursSum += constraint.getHours
+            } else {
+                // Pay attention to the case that the constraint does not start and end on the same day!
+                if (
+                    startDay.getTime() === this.date.getTime() &&
+                    endDay.getTime() !== this.date.getTime()
+                ) {
+                    const temp = new Date(
+                        start.getFullYear(),
+                        start.getMonth(),
+                        start.getDate() + 1
+                    )
+
+                    hoursSum += (temp.getTime() - start.getTime()) / 1000 / 60 / 60
+                }
+                if (
+                    endDay.getTime() === this.date.getTime() &&
+                    startDay.getTime() !== this.date.getTime()
+                ) {
+                    const temp = new Date(
+                        endDay.getFullYear(),
+                        endDay.getMonth(),
+                        endDay.getDate()
+                    )
+
+                    hoursSum += (end.getTime() - temp.getTime()) / 1000 / 60 / 60
+                }
+            }
         })
 
         this.availableHours -= hoursSum

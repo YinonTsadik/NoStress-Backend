@@ -118,7 +118,8 @@ const resolvers = {
         optimize: async (_: any, args: any) => {
             const manager = new Manager(args.calendar_id)
             await manager.createManager()
-            console.log(manager)
+            // console.log(manager)
+            setTimeout(() => console.log(manager), 1000)
             return manager.optimize()
         },
     },
