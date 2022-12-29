@@ -25,11 +25,9 @@ export default class Day {
         return calendar
     }
 
-    public async updateAvailableHours() {
+    public async updateConstraints() {
         const dbDayConstraints = await db.getDayConstraints(this.date)
-        console.log(dbDayConstraints?.length)
-
-        let hoursSum = 0
+        let constraintsHoursSum = 0
 
         dbDayConstraints?.forEach((dbConstraint: any) => {
             const constraint = new Constraint(
@@ -41,9 +39,11 @@ export default class Day {
             )
 
             constraint.updateHours()
+            this.schedule.push(constraint)
 
             const start = constraint.getStart
             const end = constraint.getEnd
+
             const startDay = new Date(
                 start.getFullYear(),
                 start.getMonth(),
@@ -52,9 +52,10 @@ export default class Day {
             const endDay = new Date(end.getFullYear(), end.getMonth(), end.getDate())
 
             if (startDay.getTime() === endDay.getTime()) {
-                hoursSum += constraint.getHours
+                constraintsHoursSum += constraint.getHours
             } else {
-                // Pay attention to the case that the constraint does not start and end on the same day!
+                // Pay attention to the case that the constraint
+                // does not start and end on the same day!
                 if (
                     startDay.getTime() === this.date.getTime() &&
                     endDay.getTime() !== this.date.getTime()
@@ -65,7 +66,8 @@ export default class Day {
                         start.getDate() + 1
                     )
 
-                    hoursSum += (temp.getTime() - start.getTime()) / 1000 / 60 / 60
+                    constraintsHoursSum +=
+                        (temp.getTime() - start.getTime()) / 1000 / 60 / 60
                 }
                 if (
                     endDay.getTime() === this.date.getTime() &&
@@ -77,12 +79,13 @@ export default class Day {
                         endDay.getDate()
                     )
 
-                    hoursSum += (end.getTime() - temp.getTime()) / 1000 / 60 / 60
+                    constraintsHoursSum +=
+                        (end.getTime() - temp.getTime()) / 1000 / 60 / 60
                 }
             }
         })
 
-        this.availableHours -= hoursSum
+        this.availableHours -= constraintsHoursSum
     }
 
     get getDate() {

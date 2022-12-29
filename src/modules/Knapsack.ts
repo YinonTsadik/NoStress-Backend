@@ -10,7 +10,7 @@ export default class Knapsack {
         this.capacity = capacity
     }
 
-    solve(): Solution {
+    public solve(): Solution {
         const numOfTasks = this.tasks.length
         const capacity = this.capacity
 

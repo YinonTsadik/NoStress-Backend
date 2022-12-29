@@ -119,8 +119,10 @@ const resolvers = {
             const manager = new Manager(args.calendar_id)
             await manager.createManager()
             // console.log(manager)
-            setTimeout(() => console.log(manager), 1000)
-            return manager.optimize()
+
+            manager.optimize()
+            // console.log(manager.getAllDays)
+            return manager.getAllDays.toString()
         },
     },
 }

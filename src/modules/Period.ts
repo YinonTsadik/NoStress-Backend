@@ -1,5 +1,5 @@
 export default abstract class Period {
-    readonly id: string
+    protected id: string
     protected description: string
     protected start: Date
     protected end: Date
@@ -18,6 +18,10 @@ export default abstract class Period {
         this.hours = diff / 1000 / 60 / 60
     }
 
+    get getID() {
+        return this.id
+    }
+
     get getDescription() {
         return this.description
     }
@@ -32,6 +36,10 @@ export default abstract class Period {
 
     get getHours() {
         return this.hours
+    }
+
+    set setID(id: string) {
+        this.id = id
     }
 
     set setDescription(description: string) {

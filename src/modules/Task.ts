@@ -35,12 +35,12 @@ export default class Task extends Period {
         }
     }
 
-    private daysScore(x: number): number {
-        return Math.log10(x - 1) / Math.log10(0.88) + 25.8
+    private daysScore(days: number): number {
+        return Math.log10(days - 1) / Math.log10(0.88) + 25.8
     }
 
-    private hoursScore(x: number): number {
-        return Math.pow(1.5, x) - 1
+    private hoursScore(hours: number): number {
+        return Math.pow(1.5, hours) - 1
     }
 
     public splitTask(x: number): Task {
