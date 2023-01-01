@@ -48,7 +48,7 @@ export default class Knapsack {
             }
         }
 
-        return new Solution(matrix[numOfTasks][capacity], numOfHours, tasksSolution)
+        return new Solution(tasksSolution, matrix[numOfTasks][capacity], numOfHours)
     }
 
     get getTasks() {

@@ -1,29 +1,20 @@
-export default abstract class Period {
-    protected id: string
-    protected description: string
+import Event from './Event'
+
+export default abstract class Period extends Event {
     protected start: Date
     protected end: Date
-    protected hours: number
 
-    constructor(id: string, description: string) {
-        this.id = id
-        this.description = description
-        this.start = new Date(0)
-        this.end = new Date(0)
-        this.hours = 0
+    constructor(id: string, description: string, start: Date, end: Date) {
+        super(id, description)
+
+        this.start = new Date(start)
+        this.end = new Date(end)
+        this.updateHours()
     }
 
-    public updateHours() {
+    private updateHours() {
         const diff = this.end.getTime() - this.start.getTime()
         this.hours = diff / 1000 / 60 / 60
-    }
-
-    get getID() {
-        return this.id
-    }
-
-    get getDescription() {
-        return this.description
     }
 
     get getStart() {
@@ -34,27 +25,11 @@ export default abstract class Period {
         return this.end
     }
 
-    get getHours() {
-        return this.hours
-    }
-
-    set setID(id: string) {
-        this.id = id
-    }
-
-    set setDescription(description: string) {
-        this.description = description
-    }
-
     set setStart(start: Date) {
         this.start = start
     }
 
     set setEnd(end: Date) {
         this.end = end
-    }
-
-    set setHours(hours: number) {
-        this.hours = hours
     }
 }

@@ -1,4 +1,5 @@
 import pool from '../connection'
+import { v4 as uuid } from 'uuid'
 
 export async function getCalendars() {
     try {
@@ -23,8 +24,8 @@ export async function getCalendar(id: string) {
 export async function createCalendar(input: any) {
     try {
         const newCalendar = await pool.query(
-            'INSERT INTO calendars (user_id, name, start_date, end_date) VALUES ($1, $2, $3, $4) RETURNING *',
-            [input.user_id, input.name, input.start_date, input.end_date]
+            'INSERT INTO calendars (id, user_id, name, start_date, end_date) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+            [uuid(), input.user_id, input.name, input.start_date, input.end_date]
         )
         return newCalendar.rows[0]
     } catch (error: any) {

@@ -1,9 +1,7 @@
 CREATE DATABASE no_stress;
 
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
 CREATE TABLE users (
-    id UUID DEFAULT uuid_generate_v4(),
+    id UUID,
     first_name VARCHAR(20) NOT NULL,
     last_name VARCHAR(20) NOT NULL,
     username VARCHAR(20) NOT NULL,
@@ -15,7 +13,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE calendars (
-    id UUID DEFAULT uuid_generate_v4(),
+    id UUID,
     user_id UUID NOT NULL,
     name VARCHAR(50) NOT NULL,
     start_date DATE NOT NULL,
@@ -26,7 +24,7 @@ CREATE TABLE calendars (
 );
 
 CREATE TABLE tasks (
-    id UUID DEFAULT uuid_generate_v4(),
+    id UUID,
     user_id UUID NOT NULL,
     calendar_id UUID NOT NULL,
     description VARCHAR(50) NOT NULL,
@@ -48,7 +46,7 @@ CREATE TYPE constraint_type AS ENUM (
 );
 
 CREATE TABLE constraints (
-    id UUID DEFAULT uuid_generate_v4(),
+    id UUID,
     user_id UUID NOT NULL,
     calendar_id UUID NOT NULL,
     description VARCHAR(50) NOT NULL,
@@ -62,7 +60,7 @@ CREATE TABLE constraints (
 );
 
 CREATE TABLE scheduled_tasks (
-    id UUID DEFAULT uuid_generate_v4(),
+    id UUID,
     master_id UUID NOT NULL,
     calendar_id UUID NOT NULL,
     day_of_week INTEGER,

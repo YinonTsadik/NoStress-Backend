@@ -1,4 +1,5 @@
 import pool from '../connection'
+import { v4 as uuid } from 'uuid'
 
 export async function getAllUsers() {
     try {
@@ -21,8 +22,9 @@ export async function getUser(id: string) {
 export async function createUser(input: any) {
     try {
         const newUser = await pool.query(
-            'INSERT INTO users (first_name, last_name, username, password, birthday) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+            'INSERT INTO users (id, first_name, last_name, username, password, birthday) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
             [
+                uuid(),
                 input.first_name,
                 input.last_name,
                 input.username,

@@ -1,4 +1,5 @@
 import pool from '../connection'
+import { v4 as uuid } from 'uuid'
 
 export async function getAllTasks() {
     try {
@@ -45,8 +46,9 @@ export async function getCalendarTasks(calendar_id: string) {
 export async function createTask(input: any) {
     try {
         const newTask = await pool.query(
-            'INSERT INTO tasks (user_id, calendar_id, description, deadline, hours) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+            'INSERT INTO tasks (id, user_id, calendar_id, description, deadline, hours) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
             [
+                uuid(),
                 input.user_id,
                 input.calendar_id,
                 input.description,

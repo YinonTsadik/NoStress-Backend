@@ -1,4 +1,5 @@
 import pool from '../connection'
+import { v4 as uuid } from 'uuid'
 
 export async function getAllConstraints() {
     try {
@@ -75,8 +76,9 @@ export async function getDayConstraints(date: Date) {
 export async function createConstraint(input: any) {
     try {
         const newConstraint = await pool.query(
-            'INSERT INTO constraints (user_id, calendar_id, description, type, start_time, end_time) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+            'INSERT INTO constraints (id, user_id, calendar_id, description, type, start_time, end_time) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
             [
+                uuid(),
                 input.user_id,
                 input.calendar_id,
                 input.description,

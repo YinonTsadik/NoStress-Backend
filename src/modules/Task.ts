@@ -1,19 +1,18 @@
-import Period from './Period'
+import Event from './Event'
 
-export default class Task extends Period {
+export default class Task extends Event {
     private deadline: Date
     private daysUntilDeadline: number
     private value: number
-    private scheduled: boolean
+    private fullyScheduled: boolean
 
-    constructor(id: string, description: string, deadline: Date, hours: number) {
-        super(id, description)
-        this.hours = hours
-        this.deadline = deadline
+    constructor(id: string, description: string, hours: number, deadline: Date) {
+        super(id, description, hours)
 
+        this.deadline = new Date(deadline)
         this.daysUntilDeadline = 0
         this.value = 0
-        this.scheduled = false
+        this.fullyScheduled = false
     }
 
     public updateDetails(src: Date) {
@@ -22,13 +21,13 @@ export default class Task extends Period {
     }
 
     private updateDeadline(src: Date) {
-        const diff: number = this.deadline.getTime() - src.getTime()
+        const diff = this.deadline.getTime() - src.getTime()
         this.daysUntilDeadline = diff / 1000 / 60 / 60 / 24
     }
 
     private updateValue() {
         if (this.daysUntilDeadline <= 1) {
-            this.value = 1000
+            this.value = 10000
         } else {
             this.value = this.daysScore(this.daysUntilDeadline)
             this.value += this.hoursScore(this.hours)
@@ -62,15 +61,15 @@ export default class Task extends Period {
         return this.value
     }
 
-    get getScheduled() {
-        return this.scheduled
+    get getFullyScheduled() {
+        return this.fullyScheduled
     }
 
     set setDeadline(deadline: Date) {
         this.deadline = deadline
     }
 
-    set setScheduled(scheduled: boolean) {
-        this.scheduled = scheduled
+    set setFullyScheduled(fullyScheduled: boolean) {
+        this.fullyScheduled = fullyScheduled
     }
 }

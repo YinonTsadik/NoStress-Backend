@@ -1,14 +1,18 @@
 import Task from './Task'
 
 export default class Solution {
+    private tasks: Task[]
     private value: number
     private hours: number
-    private tasks: Task[]
 
-    constructor(value: number, hours: number, tasks: Task[]) {
+    constructor(tasks: Task[], value: number, hours: number) {
+        this.tasks = tasks
         this.value = value
         this.hours = hours
-        this.tasks = tasks
+    }
+
+    get getTasks() {
+        return this.tasks
     }
 
     get getValue() {
@@ -19,8 +23,8 @@ export default class Solution {
         return this.hours
     }
 
-    get getTasks() {
-        return this.tasks
+    set setTasks(tasks: Task[]) {
+        this.tasks = tasks
     }
 
     set setValue(value: number) {
@@ -29,9 +33,5 @@ export default class Solution {
 
     set setHours(hours: number) {
         this.hours = hours
-    }
-
-    set setTasks(tasks: Task[]) {
-        this.tasks = tasks
     }
 }

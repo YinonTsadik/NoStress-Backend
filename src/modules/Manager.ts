@@ -44,7 +44,6 @@ export default class Manager {
                 dbConstraint.start_time,
                 dbConstraint.end_time
             )
-            constraint.updateHours()
 
             this.allConstraints.push(constraint)
         })
@@ -56,12 +55,12 @@ export default class Manager {
             const x = day.getAvailableHours
 
             this.allTasks.forEach((task) => {
-                if (!task.getScheduled) {
+                if (!task.getFullyScheduled) {
                     const tempTask = new Task(
                         task.getID,
                         task.getDescription,
-                        task.getDeadline,
-                        task.getHours
+                        task.getHours,
+                        task.getDeadline
                     )
                     tempTask.updateDetails(day.getDate)
 
@@ -76,7 +75,10 @@ export default class Manager {
             const dayKnapsack = new Knapsack(options, x)
             const daySolution = dayKnapsack.solve()
 
-            day.getSchedule.push(...daySolution.getTasks)
+            // Set the task time (create a new ScheduledTask,
+            // and add it to the schedule field on that day).
+
+            // day.getSchedule.push(...daySolution.getTasks)
             day.setAvailableHours = day.getAvailableHours - daySolution.getHours
             day.setTotalValue = daySolution.getValue
 
@@ -86,7 +88,7 @@ export default class Manager {
                     if (this.allTasks[j].getID === solutionTask.getID) {
                         const originalTask = this.allTasks[j]
                         if (originalTask.getHours <= x) {
-                            originalTask.setScheduled = true
+                            originalTask.setFullyScheduled = true
                         } else {
                             this.allTasks.splice(
                                 j,

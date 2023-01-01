@@ -38,7 +38,7 @@ export default class Day {
                 dbConstraint.end_time
             )
 
-            constraint.updateHours()
+            // Change to set at the appropriate time!
             this.schedule.push(constraint)
 
             const start = constraint.getStart
@@ -54,8 +54,7 @@ export default class Day {
             if (startDay.getTime() === endDay.getTime()) {
                 constraintsHoursSum += constraint.getHours
             } else {
-                // Pay attention to the case that the constraint
-                // does not start and end on the same day!
+                // The case where the constraint does not begin and end on the same day:
                 if (
                     startDay.getTime() === this.date.getTime() &&
                     endDay.getTime() !== this.date.getTime()
