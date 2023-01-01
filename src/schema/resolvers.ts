@@ -121,8 +121,8 @@ const resolvers = {
             // console.log(manager)
 
             manager.optimize()
-            // console.log(manager.getAllDays)
-            return manager.getAllDays.toString()
+            console.log(manager.getAllDays)
+            return JSON.stringify(manager.getAllDays)
         },
     },
 }

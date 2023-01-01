@@ -76,7 +76,7 @@ export default class Manager {
             const dayKnapsack = new Knapsack(options, x)
             const daySolution = dayKnapsack.solve()
 
-            day.setSchedule = [...daySolution.getTasks]
+            day.getSchedule.push(...daySolution.getTasks)
             day.setAvailableHours = day.getAvailableHours - daySolution.getHours
             day.setTotalValue = daySolution.getValue
 
@@ -99,8 +99,7 @@ export default class Manager {
                 }
             }
         })
-
-        return this.allDays.toString()
+        return this.allDays
     }
 
     get getCalendarID() {
