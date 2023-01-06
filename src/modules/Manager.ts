@@ -8,7 +8,7 @@ export default class Manager {
     private calendarID: string
     private allDays: Day[]
     private allTasks: Task[]
-    private allConstraints: Constraint[]
+    private allConstraints: Constraint[] // Probably unnecessary - save for now
 
     constructor(calendarID: string) {
         this.calendarID = calendarID
@@ -28,8 +28,8 @@ export default class Manager {
             const task = new Task(
                 dbTask.id,
                 dbTask.description,
-                dbTask.deadline,
-                dbTask.hours
+                dbTask.hours,
+                dbTask.deadline
             )
             task.updateDetails(new Date())
             this.allTasks.push(task)
@@ -40,9 +40,9 @@ export default class Manager {
             const constraint = new Constraint(
                 dbConstraint.id,
                 dbConstraint.description,
-                dbConstraint.type,
                 dbConstraint.start_time,
-                dbConstraint.end_time
+                dbConstraint.end_time,
+                dbConstraint.type
             )
 
             this.allConstraints.push(constraint)

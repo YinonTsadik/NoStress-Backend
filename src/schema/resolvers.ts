@@ -2,7 +2,6 @@ import * as db from '../db'
 import Manager from '../modules/Manager'
 
 import { GraphQLScalarType } from 'graphql'
-
 const dateScalar = new GraphQLScalarType({
     name: 'Date',
     parseValue(value: any) {
@@ -118,11 +117,10 @@ const resolvers = {
         optimize: async (_: any, args: any) => {
             const manager = new Manager(args.calendar_id)
             await manager.createManager()
-            // console.log(manager)
-
             manager.optimize()
+
             console.log(manager.getAllDays)
-            return JSON.stringify(manager.getAllDays)
+            return JSON.stringify(manager.getAllDays) // Not returning properly
         },
     },
 }

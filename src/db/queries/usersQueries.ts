@@ -88,6 +88,10 @@ export async function updateUser(input: any) {
 
 export async function deleteUser(id: string) {
     try {
+        await pool.query('DELETE FROM calendars WHERE user_id = $1', [id])
+        await pool.query('DELETE FROM tasks WHERE user_id = $1', [id])
+        await pool.query('DELETE FROM constraints WHERE user_id = $1', [id])
+        await pool.query('DELETE FROM scheduled_tasks WHERE user_id = $1', [id])
         const deletedUser = await pool.query(
             'DELETE FROM users WHERE id = $1 RETURNING *',
             [id]

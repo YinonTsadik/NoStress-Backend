@@ -33,58 +33,76 @@ export default class Day {
             const constraint = new Constraint(
                 dbConstraint.id,
                 dbConstraint.description,
-                dbConstraint.type,
                 dbConstraint.start_time,
-                dbConstraint.end_time
+                dbConstraint.end_time,
+                dbConstraint.type
             )
 
-            // Change to set at the appropriate time!
-            this.schedule.push(constraint)
-
-            const start = constraint.getStart
-            const end = constraint.getEnd
+            const startTime = constraint.getStart
+            const endTime = constraint.getEnd
 
             const startDay = new Date(
-                start.getFullYear(),
-                start.getMonth(),
-                start.getDate()
+                startTime.getFullYear(),
+                startTime.getMonth(),
+                startTime.getDate()
             )
-            const endDay = new Date(end.getFullYear(), end.getMonth(), end.getDate())
+            const endDay = new Date(
+                endTime.getFullYear(),
+                endTime.getMonth(),
+                endTime.getDate()
+            )
 
+            // Add documentation - not clear enough
+            let startHour: number, endHour: number
             if (startDay.getTime() === endDay.getTime()) {
                 constraintsHoursSum += constraint.getHours
-            } else {
-                // The case where the constraint does not begin and end on the same day:
-                if (
-                    startDay.getTime() === this.date.getTime() &&
-                    endDay.getTime() !== this.date.getTime()
-                ) {
-                    const temp = new Date(
-                        start.getFullYear(),
-                        start.getMonth(),
-                        start.getDate() + 1
-                    )
 
-                    constraintsHoursSum +=
-                        (temp.getTime() - start.getTime()) / 1000 / 60 / 60
-                }
-                if (
-                    endDay.getTime() === this.date.getTime() &&
-                    startDay.getTime() !== this.date.getTime()
-                ) {
-                    const temp = new Date(
-                        endDay.getFullYear(),
-                        endDay.getMonth(),
-                        endDay.getDate()
-                    )
+                startHour = startTime.getHours()
+                endHour = endTime.getHours() - 1
+            } else if (
+                startDay.getTime() === this.date.getTime() &&
+                endDay.getTime() !== this.date.getTime()
+            ) {
+                const nextDay = new Date(
+                    startDay.getFullYear(),
+                    startDay.getMonth(),
+                    startDay.getDate() + 1
+                )
 
-                    constraintsHoursSum +=
-                        (end.getTime() - temp.getTime()) / 1000 / 60 / 60
-                }
+                constraintsHoursSum +=
+                    (nextDay.getTime() - startTime.getTime()) / 1000 / 60 / 60
+
+                startHour = startTime.getHours()
+                endHour = 23
+            } else if (
+                endDay.getTime() === this.date.getTime() &&
+                startDay.getTime() !== this.date.getTime()
+            ) {
+                constraintsHoursSum +=
+                    (endTime.getTime() - endDay.getTime()) / 1000 / 60 / 60
+
+                startHour = 0
+                endHour = endTime.getHours() - 1
+            } else if (
+                startDay.getTime() !== this.date.getTime() &&
+                endDay.getTime() !== this.date.getTime()
+            ) {
+                constraintsHoursSum += 24
+
+                startHour = 0
+                endHour = 23
             }
+
+            this.periodScheduling(constraint, startHour, endHour)
         })
 
         this.availableHours -= constraintsHoursSum
+    }
+
+    public periodScheduling(period: Period, startIndex: number, endIndex: number) {
+        for (let i = startIndex; i <= endIndex; i++) {
+            this.schedule[i] = period
+        }
     }
 
     get getDate() {

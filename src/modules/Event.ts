@@ -6,6 +6,7 @@ export default abstract class Event {
     constructor(id: string, description: string, hours: number = 0) {
         this.id = id
         this.description = description
+        this.hours = hours
     }
 
     get getID() {

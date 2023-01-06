@@ -48,27 +48,13 @@ export async function getCalendarConstraints(calendar_id: string) {
 
 export async function getDayConstraints(date: Date) {
     try {
-        const startDay = new Date(
-            date.getFullYear(),
-            date.getMonth(),
-            date.getDate()
-        )
-
-        const endDay = new Date(
-            date.getFullYear(),
-            date.getMonth(),
-            date.getDate(),
-            23,
-            59,
-            59
-        )
-
         const dayConstraints = await pool.query(
-            'SELECT * FROM constraints WHERE (start_time BETWEEN $1 AND $2) OR (end_time BETWEEN $1 AND $2)',
-            [startDay, endDay]
+            `SELECT * FROM constraints WHERE
+            (date_trunc('day', start_time) <= $1 AND date_trunc('day', end_time) >= $1)`,
+            [date]
         )
         return dayConstraints.rows
-    } catch (error: any) {
+    } catch (error) {
         console.error(error.message)
     }
 }

@@ -15,6 +15,7 @@
     "dependencies": {
         "@types/node": "^18.11.13",
         "@types/pg": "^8.6.5",
+        "@types/uuid": "^9.0.0",
         "apollo-server": "^3.11.1",
         "graphql": "^16.6.0",
         "uuid": "^9.0.0"

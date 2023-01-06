@@ -14,8 +14,7 @@ export default class Knapsack {
         const numOfTasks = this.tasks.length
         const capacity = this.capacity
 
-        let matrix = new Array<Array<number>>(numOfTasks + 1)
-
+        const matrix = new Array<Array<number>>(numOfTasks + 1)
         for (let i = 0; i < matrix.length; i++)
             matrix[i] = new Array<number>(capacity + 1).fill(0)
 
