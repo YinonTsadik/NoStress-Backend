@@ -120,6 +120,8 @@ const resolvers = {
             manager.optimize()
 
             console.log(manager.getAllDays)
+            // console.dir(manager.getAllDays)
+            // console.log(JSON.stringify(manager.getAllDays, null, 2))
             return JSON.stringify(manager.getAllDays) // Not returning properly
         },
     },

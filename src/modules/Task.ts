@@ -15,6 +15,10 @@ export default class Task extends Event {
         this.fullyScheduled = false
     }
 
+    public static copyConstructor(other: Task) {
+        return new Task(other.id, other.description, other.hours, other.deadline)
+    }
+
     public updateDetails(src: Date) {
         this.updateDeadline(src)
         this.updateValue()
@@ -43,7 +47,7 @@ export default class Task extends Event {
     }
 
     public splitTask(x: number): Task {
-        const newTask = JSON.parse(JSON.stringify(this)) as Task
+        const newTask = Task.copyConstructor(this)
         newTask.hours = x
         newTask.value = (x / this.hours) * this.value
         return newTask

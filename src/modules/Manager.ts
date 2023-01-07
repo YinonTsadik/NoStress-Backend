@@ -50,18 +50,13 @@ export default class Manager {
     }
 
     public optimize() {
-        this.allDays.forEach((day) => {
+        this.allDays.forEach((day: Day) => {
             const options = new Array<Task>()
             const x = day.getAvailableHours
 
-            this.allTasks.forEach((task) => {
+            this.allTasks.forEach((task: Task) => {
                 if (!task.getFullyScheduled) {
-                    const tempTask = new Task(
-                        task.getID,
-                        task.getDescription,
-                        task.getHours,
-                        task.getDeadline
-                    )
+                    const tempTask = Task.copyConstructor(task)
                     tempTask.updateDetails(day.getDate)
 
                     if (task.getHours <= x) {
@@ -75,10 +70,7 @@ export default class Manager {
             const dayKnapsack = new Knapsack(options, x)
             const daySolution = dayKnapsack.solve()
 
-            // Set the task time (create a new ScheduledTask,
-            // and add it to the schedule field on that day).
-
-            // day.getSchedule.push(...daySolution.getTasks)
+            day.tasksScheduling(daySolution.getTasks)
             day.setAvailableHours = day.getAvailableHours - daySolution.getHours
             day.setTotalValue = daySolution.getValue
 
@@ -101,7 +93,6 @@ export default class Manager {
                 }
             }
         })
-        return this.allDays
     }
 
     get getCalendarID() {

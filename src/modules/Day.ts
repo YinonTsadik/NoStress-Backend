@@ -1,5 +1,7 @@
 import Period from './Period'
+import Task from './Task'
 import Constraint from './Constraint'
+import ScheduledTask from './ScheduledTask'
 import * as db from '../db'
 
 export default class Day {
@@ -99,10 +101,57 @@ export default class Day {
         this.availableHours -= constraintsHoursSum
     }
 
-    public periodScheduling(period: Period, startIndex: number, endIndex: number) {
+    private periodScheduling(period: Period, startIndex: number, endIndex: number) {
         for (let i = startIndex; i <= endIndex; i++) {
             this.schedule[i] = period
         }
+    }
+
+    public tasksScheduling(tasks: Task[]) {
+        tasks.forEach((task: Task) => {
+            while (task.getHours > 0) {
+                let startIndex = 0
+                for (; startIndex < this.schedule.length; startIndex++) {
+                    if (this.schedule[startIndex] == null) {
+                        break
+                    }
+                }
+
+                let endIndex = startIndex
+                for (
+                    let j = 1;
+                    endIndex < this.schedule.length && j <= task.getHours;
+                    endIndex++, j++
+                ) {
+                    if (this.schedule[endIndex] != null) {
+                        break
+                    }
+                }
+
+                endIndex--
+                task.setHours = task.getHours - (endIndex - startIndex + 1)
+
+                const description = task.getDescription
+                const taskID = task.getID
+
+                const start = new Date(this.date)
+                start.setHours(startIndex)
+
+                const end = new Date(this.date)
+                end.setHours(endIndex)
+
+                const scheduledTask = new ScheduledTask(
+                    description,
+                    start,
+                    end,
+                    taskID
+                )
+
+                this.periodScheduling(scheduledTask, startIndex, endIndex)
+
+                // Insert scheduledTask to DB
+            }
+        })
     }
 
     get getDate() {
