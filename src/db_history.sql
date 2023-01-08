@@ -25,14 +25,12 @@ CREATE TABLE calendars (
 
 CREATE TABLE tasks (
     id UUID,
-    user_id UUID NOT NULL,
     calendar_id UUID NOT NULL,
     description VARCHAR(50) NOT NULL,
     deadline TIMESTAMP NOT NULL,
-    hours INTEGER NOT NULL,
+    work_hours INTEGER NOT NULL,
     
     PRIMARY KEY (id),
-    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id),
     CONSTRAINT fk_calendar FOREIGN KEY (calendar_id) REFERENCES calendars(id)
 );
 
@@ -47,15 +45,13 @@ CREATE TYPE constraint_type AS ENUM (
 
 CREATE TABLE constraints (
     id UUID,
-    user_id UUID NOT NULL,
     calendar_id UUID NOT NULL,
     description VARCHAR(50) NOT NULL,
-    type constraint_type DEFAULT 'Other',
     start_time TIMESTAMP NOT NULL,
     end_time TIMESTAMP NOT NULL,
+    type constraint_type DEFAULT 'Other',
     
     PRIMARY KEY (id),
-    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id),
     CONSTRAINT fk_calendar FOREIGN KEY (calendar_id) REFERENCES calendars(id)
 );
 
@@ -63,7 +59,6 @@ CREATE TABLE scheduled_tasks (
     id UUID,
     master_task_id UUID NOT NULL,
     calendar_id UUID NOT NULL,
-    user_id UUID NOT NULL,
     day_of_week INTEGER,
     start_time TIMESTAMP NOT NULL,
     end_time TIMESTAMP NOT NULL,
@@ -72,5 +67,4 @@ CREATE TABLE scheduled_tasks (
     PRIMARY KEY (id),
     CONSTRAINT fk_master FOREIGN KEY (master_task_id) REFERENCES tasks(id),
     CONSTRAINT fk_calendar FOREIGN KEY (calendar_id) REFERENCES calendars(id),
-    CONSTRAINT fk_calendar FOREIGN KEY (user_id) REFERENCES users(id)
 );

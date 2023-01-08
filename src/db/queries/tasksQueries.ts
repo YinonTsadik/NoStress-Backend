@@ -1,31 +1,10 @@
 import pool from '../connection'
 import { v4 as uuid } from 'uuid'
 
-export async function getAllTasks() {
-    try {
-        const tasks = await pool.query('SELECT * FROM tasks')
-        return tasks.rows
-    } catch (error: any) {
-        console.error(error.message)
-    }
-}
-
 export async function getTask(id: string) {
     try {
         const task = await pool.query('SELECT * FROM tasks WHERE id = $1', [id])
         return task.rows[0]
-    } catch (error: any) {
-        console.error(error.message)
-    }
-}
-
-export async function getUserTasks(user_id: string) {
-    try {
-        const userTasks = await pool.query(
-            'SELECT * FROM tasks WHERE user_id = $1',
-            [user_id]
-        )
-        return userTasks.rows
     } catch (error: any) {
         console.error(error.message)
     }
@@ -46,10 +25,9 @@ export async function getCalendarTasks(calendar_id: string) {
 export async function createTask(input: any) {
     try {
         const newTask = await pool.query(
-            'INSERT INTO tasks (id, user_id, calendar_id, description, deadline, hours) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+            'INSERT INTO tasks (id, calendar_id, description, deadline, work_hours) VALUES ($1, $2, $3, $4, $5) RETURNING *',
             [
                 uuid(),
-                input.user_id,
                 input.calendar_id,
                 input.description,
                 input.deadline,
@@ -80,7 +58,7 @@ export async function updateTask(input: any) {
             ])
         }
 
-        if (input.hours) {
+        if (input.work_hours) {
             await pool.query('UPDATE tasks SET hours = $1 WHERE id = $2', [
                 input.hours,
                 id,

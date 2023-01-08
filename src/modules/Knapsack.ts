@@ -20,13 +20,14 @@ export default class Knapsack {
 
         for (let i = 1; i <= numOfTasks; i++) {
             for (let j = 0; j <= capacity; j++) {
-                if (this.tasks[i - 1].getHours > j) {
+                if (this.tasks[i - 1].getWorkHours > j) {
                     matrix[i][j] = matrix[i - 1][j]
                 } else {
                     matrix[i][j] = Math.max(
                         matrix[i - 1][j],
-                        matrix[i - 1][j - Math.round(this.tasks[i - 1].getHours)] +
-                            this.tasks[i - 1].getValue
+                        matrix[i - 1][
+                            j - Math.round(this.tasks[i - 1].getWorkHours)
+                        ] + this.tasks[i - 1].getValue
                     )
                 }
             }
@@ -40,10 +41,10 @@ export default class Knapsack {
         for (let i = numOfTasks; i > 0 && result > 0; i--) {
             if (matrix[i - 1][w] !== result) {
                 tasksSolution.push(this.tasks[i - 1])
-                numOfHours += this.tasks[i - 1].getHours
+                numOfHours += this.tasks[i - 1].getWorkHours
 
                 result -= this.tasks[i - 1].getValue
-                w -= this.tasks[i - 1].getHours
+                w -= this.tasks[i - 1].getWorkHours
             }
         }
 

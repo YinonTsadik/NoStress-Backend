@@ -1,14 +1,6 @@
 import pool from '../connection'
+import { deleteCalendar } from './calendarQueries'
 import { v4 as uuid } from 'uuid'
-
-export async function getAllUsers() {
-    try {
-        const allUsers = await pool.query('SELECT * FROM users')
-        return allUsers.rows
-    } catch (error: any) {
-        console.error(error.message)
-    }
-}
 
 export async function getUser(id: string) {
     try {
@@ -88,10 +80,14 @@ export async function updateUser(input: any) {
 
 export async function deleteUser(id: string) {
     try {
-        await pool.query('DELETE FROM calendars WHERE user_id = $1', [id])
-        await pool.query('DELETE FROM tasks WHERE user_id = $1', [id])
-        await pool.query('DELETE FROM constraints WHERE user_id = $1', [id])
-        await pool.query('DELETE FROM scheduled_tasks WHERE user_id = $1', [id])
+        const calendarsIDs = await pool.query(
+            'SELECT id FROM calendars WHERE user_id = $1',
+            [id]
+        )
+        calendarsIDs?.rows?.forEach((calendar_id: any) =>
+            deleteCalendar(calendar_id)
+        )
+
         const deletedUser = await pool.query(
             'DELETE FROM users WHERE id = $1 RETURNING *',
             [id]

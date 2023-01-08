@@ -3,6 +3,7 @@ import Event from './Event'
 export default abstract class Period extends Event {
     protected start: Date
     protected end: Date
+    protected hours: number
 
     constructor(id: string, description: string, start: Date, end: Date) {
         super(id, description)
@@ -25,11 +26,19 @@ export default abstract class Period extends Event {
         return this.end
     }
 
+    get getHours() {
+        return this.hours
+    }
+
     set setStart(start: Date) {
         this.start = start
     }
 
     set setEnd(end: Date) {
         this.end = end
+    }
+
+    set setHours(hours: number) {
+        this.hours = hours
     }
 }

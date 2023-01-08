@@ -8,48 +8,35 @@ export default class Manager {
     private calendarID: string
     private allDays: Day[]
     private allTasks: Task[]
-    private allConstraints: Constraint[] // Probably unnecessary - save for now
 
     constructor(calendarID: string) {
         this.calendarID = calendarID
         this.allDays = new Array<Day>()
         this.allTasks = new Array<Task>()
-        this.allConstraints = new Array<Constraint>()
     }
 
     public async createManager() {
         const calendar = await db.getCalendar(this.calendarID)
 
         this.allDays = Day.generateCalendar(calendar.start_date, calendar.end_date)
-        this.allDays.forEach((day: Day) => day.updateConstraints())
+        this.allDays.forEach((day: Day) => day.updateConstraints(this.calendarID))
 
         const dbTasks = await db.getCalendarTasks(this.calendarID)
         dbTasks?.forEach((dbTask: any) => {
             const task = new Task(
                 dbTask.id,
                 dbTask.description,
-                dbTask.hours,
-                dbTask.deadline
+                dbTask.deadline,
+                dbTask.work_hours
             )
             task.updateDetails(new Date())
             this.allTasks.push(task)
         })
-
-        const dbConstraints = await db.getCalendarConstraints(this.calendarID)
-        dbConstraints?.forEach((dbConstraint: any) => {
-            const constraint = new Constraint(
-                dbConstraint.id,
-                dbConstraint.description,
-                dbConstraint.start_time,
-                dbConstraint.end_time,
-                dbConstraint.type
-            )
-
-            this.allConstraints.push(constraint)
-        })
     }
 
     public optimize() {
+        db.deleteCalendarScheduledTasks(this.calendarID)
+
         this.allDays.forEach((day: Day) => {
             const options = new Array<Task>()
             const x = day.getAvailableHours
@@ -59,7 +46,7 @@ export default class Manager {
                     const tempTask = Task.copyConstructor(task)
                     tempTask.updateDetails(day.getDate)
 
-                    if (task.getHours <= x) {
+                    if (task.getWorkHours <= x) {
                         options.push(tempTask)
                     } else {
                         options.push(tempTask.splitTask(x))
@@ -70,7 +57,7 @@ export default class Manager {
             const dayKnapsack = new Knapsack(options, x)
             const daySolution = dayKnapsack.solve()
 
-            day.tasksScheduling(daySolution.getTasks)
+            day.tasksScheduling(this.calendarID, daySolution.getTasks)
             day.setAvailableHours = day.getAvailableHours - daySolution.getHours
             day.setTotalValue = daySolution.getValue
 
@@ -79,13 +66,13 @@ export default class Manager {
                 for (let j = 0; j < this.allTasks.length; j++) {
                     if (this.allTasks[j].getID === solutionTask.getID) {
                         const originalTask = this.allTasks[j]
-                        if (originalTask.getHours <= x) {
+                        if (originalTask.getWorkHours <= x) {
                             originalTask.setFullyScheduled = true
                         } else {
                             this.allTasks.splice(
                                 j,
                                 1,
-                                originalTask.splitTask(originalTask.getHours - x)
+                                originalTask.splitTask(originalTask.getWorkHours - x)
                             )
                         }
                         break
@@ -105,9 +92,5 @@ export default class Manager {
 
     get getAllTasks() {
         return this.allTasks
-    }
-
-    get getAllConstraints() {
-        return this.allConstraints
     }
 }

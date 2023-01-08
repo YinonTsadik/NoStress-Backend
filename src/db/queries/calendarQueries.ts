@@ -1,21 +1,24 @@
 import pool from '../connection'
 import { v4 as uuid } from 'uuid'
 
-export async function getCalendars() {
-    try {
-        const allCalendars = await pool.query('SELECT * FROM calendars')
-        return allCalendars.rows
-    } catch (error: any) {
-        console.error(error.message)
-    }
-}
-
 export async function getCalendar(id: string) {
     try {
         const calendar = await pool.query('SELECT * FROM calendars WHERE id = $1', [
             id,
         ])
         return calendar.rows[0]
+    } catch (error: any) {
+        console.error(error.message)
+    }
+}
+
+export async function getUserCalendars(user_id: string) {
+    try {
+        const userCalendars = await pool.query(
+            'SELECT * FROM calendars WHERE user_id = $1',
+            [user_id]
+        )
+        return userCalendars.rows
     } catch (error: any) {
         console.error(error.message)
     }
@@ -73,6 +76,7 @@ export async function deleteCalendar(id: string) {
         await pool.query('DELETE FROM tasks WHERE calendar_id = $1', [id])
         await pool.query('DELETE FROM constraints WHERE calendar_id = $1', [id])
         await pool.query('DELETE FROM scheduled_tasks WHERE calendar_id = $1', [id])
+
         const deletedCalendar = await pool.query(
             'DELETE FROM calendars WHERE id = $1 RETURNING *',
             [id]

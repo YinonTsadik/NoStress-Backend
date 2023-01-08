@@ -31,21 +31,19 @@ const typeDefs = gql`
 
     type Task {
         id: String!
-        user_id: String!
         calendar_id: String!
         description: String!
         deadline: Date!
-        hours: Int!
+        work_hours: Int!
     }
 
     type Constraint {
         id: String!
-        user_id: String!
         calendar_id: String!
         description: String!
-        type: Type!
         start_time: Date!
         end_time: Date!
+        type: Type!
     }
 
     input CreateUserInput {
@@ -80,52 +78,45 @@ const typeDefs = gql`
     }
 
     input CreateTaskInput {
-        user_id: String!
         calendar_id: String!
         description: String!
         deadline: Date!
-        hours: Int!
+        work_hours: Int!
     }
 
     input UpdateTaskInput {
         id: String!
         description: String
         deadline: Date
-        hours: Int
+        eork_hours: Int
     }
 
     input CreateConstraintInput {
-        user_id: String!
         calendar_id: String!
         description: String!
-        type: Type = Other
         start_time: Date!
         end_time: Date!
+        type: Type = Other
     }
 
     input UpdateConstraintInput {
         id: String!
         description: String
-        type: Type
         start_time: Date
         end_time: Date
+        type: Type
     }
 
     type Query {
-        users: [User!]
         user(id: String!): User
 
-        calendars: [Calendar!]
         calendar(id: String!): Calendar
+        userCalendars(id: String!): [Calendar!]
 
-        tasks: [Task!]
         task(id: String!): Task
-        userTasks(user_id: String!): [Task!]
         calendarTasks(calendar_id: String!): [Task!]
 
-        constraints: [Constraint!]
         constraint(id: String!): Constraint
-        userConstraints(user_id: String!): [Constraint!]
         calendarConstraints(calendar_id: String!): [Constraint!]
     }
 

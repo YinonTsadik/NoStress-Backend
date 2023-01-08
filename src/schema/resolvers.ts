@@ -16,53 +16,37 @@ const resolvers = {
     Date: dateScalar,
 
     Query: {
-        users: () => {
-            return db.getAllUsers()
-        },
-
         user: (_: any, args: any) => {
             return db.getUser(args.id)
-        },
-
-        calendars: () => {
-            return db.getCalendars()
         },
 
         calendar: (_: any, args: any) => {
             return db.getCalendar(args.id)
         },
 
-        tasks: () => {
-            return db.getAllTasks()
+        userCalendars: (_: any, args: any) => {
+            return db.getUserCalendars(args.user_id)
         },
 
         task: (_: any, args: any) => {
             return db.getTask(args.id)
         },
 
-        userTasks: (_: any, args: any) => {
-            return db.getUserTasks(args.user_id)
-        },
-
         calendarTasks: (_: any, args: any) => {
             return db.getCalendarTasks(args.calendar_id)
-        },
-
-        constraints: () => {
-            return db.getAllConstraints()
         },
 
         constraint: (_: any, args: any) => {
             return db.getConstraint(args.id)
         },
 
-        userConstraints: (_: any, args: any) => {
-            return db.getUserConstraints(args.user_id)
-        },
-
         calendarConstraints: (_: any, args: any) => {
             return db.getCalendarConstraints(args.calendar_id)
         },
+
+        // calendarScheduledTasks: (_: any, args: any) => {
+        //     return db.getCalendarScheduledTasks(args.calendar_id)
+        // },
     },
 
     Mutation: {

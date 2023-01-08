@@ -1,14 +1,16 @@
 import Event from './Event'
 
 export default class Task extends Event {
+    private workHours: number
     private deadline: Date
     private daysUntilDeadline: number
     private value: number
     private fullyScheduled: boolean
 
-    constructor(id: string, description: string, hours: number, deadline: Date) {
-        super(id, description, hours)
+    constructor(id: string, description: string, deadline: Date, workHours: number) {
+        super(id, description)
 
+        this.workHours = workHours
         this.deadline = new Date(deadline)
         this.daysUntilDeadline = 0
         this.value = 0
@@ -16,7 +18,7 @@ export default class Task extends Event {
     }
 
     public static copyConstructor(other: Task) {
-        return new Task(other.id, other.description, other.hours, other.deadline)
+        return new Task(other.id, other.description, other.deadline, other.workHours)
     }
 
     public updateDetails(src: Date) {
@@ -34,7 +36,7 @@ export default class Task extends Event {
             this.value = 10000
         } else {
             this.value = this.daysScore(this.daysUntilDeadline)
-            this.value += this.hoursScore(this.hours)
+            this.value += this.hoursScore(this.workHours)
         }
     }
 
@@ -48,9 +50,13 @@ export default class Task extends Event {
 
     public splitTask(x: number): Task {
         const newTask = Task.copyConstructor(this)
-        newTask.hours = x
-        newTask.value = (x / this.hours) * this.value
+        newTask.workHours = x
+        newTask.value = (x / this.workHours) * this.value
         return newTask
+    }
+
+    get getWorkHours() {
+        return this.workHours
     }
 
     get getDeadline() {
@@ -67,6 +73,10 @@ export default class Task extends Event {
 
     get getFullyScheduled() {
         return this.fullyScheduled
+    }
+
+    set setWorkHours(workHours: number) {
+        this.workHours = workHours
     }
 
     set setDeadline(deadline: Date) {

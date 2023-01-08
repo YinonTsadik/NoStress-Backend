@@ -13,7 +13,7 @@ export default class Day {
     constructor(date: Date) {
         this.date = date
         this.schedule = new Array<Period>(24)
-        this.availableHours = 24
+        this.availableHours = this.schedule.length
         this.totalValue = 0
     }
 
@@ -27,8 +27,8 @@ export default class Day {
         return calendar
     }
 
-    public async updateConstraints() {
-        const dbDayConstraints = await db.getDayConstraints(this.date)
+    public async updateConstraints(calendarID: string) {
+        const dbDayConstraints = await db.getDayConstraints(calendarID, this.date)
         let constraintsHoursSum = 0
 
         dbDayConstraints?.forEach((dbConstraint: any) => {
@@ -60,7 +60,7 @@ export default class Day {
                 constraintsHoursSum += constraint.getHours
 
                 startHour = startTime.getHours()
-                endHour = endTime.getHours() - 1
+                endHour = endTime.getHours()
             } else if (
                 startDay.getTime() === this.date.getTime() &&
                 endDay.getTime() !== this.date.getTime()
@@ -75,7 +75,7 @@ export default class Day {
                     (nextDay.getTime() - startTime.getTime()) / 1000 / 60 / 60
 
                 startHour = startTime.getHours()
-                endHour = 23
+                endHour = 24
             } else if (
                 endDay.getTime() === this.date.getTime() &&
                 startDay.getTime() !== this.date.getTime()
@@ -84,7 +84,7 @@ export default class Day {
                     (endTime.getTime() - endDay.getTime()) / 1000 / 60 / 60
 
                 startHour = 0
-                endHour = endTime.getHours() - 1
+                endHour = endTime.getHours()
             } else if (
                 startDay.getTime() !== this.date.getTime() &&
                 endDay.getTime() !== this.date.getTime()
@@ -92,7 +92,7 @@ export default class Day {
                 constraintsHoursSum += 24
 
                 startHour = 0
-                endHour = 23
+                endHour = 24
             }
 
             this.periodScheduling(constraint, startHour, endHour)
@@ -102,14 +102,14 @@ export default class Day {
     }
 
     private periodScheduling(period: Period, startIndex: number, endIndex: number) {
-        for (let i = startIndex; i <= endIndex; i++) {
+        for (let i = startIndex; i < endIndex; i++) {
             this.schedule[i] = period
         }
     }
 
-    public tasksScheduling(tasks: Task[]) {
+    public tasksScheduling(calendarID: string, tasks: Task[]) {
         tasks.forEach((task: Task) => {
-            while (task.getHours > 0) {
+            while (task.getWorkHours > 0) {
                 let startIndex = 0
                 for (; startIndex < this.schedule.length; startIndex++) {
                     if (this.schedule[startIndex] == null) {
@@ -120,7 +120,7 @@ export default class Day {
                 let endIndex = startIndex
                 for (
                     let j = 1;
-                    endIndex < this.schedule.length && j <= task.getHours;
+                    endIndex < this.schedule.length && j <= task.getWorkHours;
                     endIndex++, j++
                 ) {
                     if (this.schedule[endIndex] != null) {
@@ -128,8 +128,7 @@ export default class Day {
                     }
                 }
 
-                endIndex--
-                task.setHours = task.getHours - (endIndex - startIndex + 1)
+                task.setWorkHours = task.getWorkHours - (endIndex - startIndex)
 
                 const description = task.getDescription
                 const taskID = task.getID
@@ -144,12 +143,12 @@ export default class Day {
                     description,
                     start,
                     end,
-                    taskID
+                    taskID,
+                    calendarID
                 )
 
                 this.periodScheduling(scheduledTask, startIndex, endIndex)
-
-                // Insert scheduledTask to DB
+                db.createScheduledTask(scheduledTask)
             }
         })
     }
