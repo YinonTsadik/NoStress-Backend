@@ -44,9 +44,9 @@ const resolvers = {
             return db.getCalendarConstraints(args.calendar_id)
         },
 
-        // calendarScheduledTasks: (_: any, args: any) => {
-        //     return db.getCalendarScheduledTasks(args.calendar_id)
-        // },
+        calendarScheduledTasks: (_: any, args: any) => {
+            return db.getCalendarScheduledTasks(args.calendar_id)
+        },
     },
 
     Mutation: {
@@ -101,12 +101,10 @@ const resolvers = {
         optimize: async (_: any, args: any) => {
             const manager = new Manager(args.calendar_id)
             await manager.createManager()
-            manager.optimize()
+            await manager.optimize()
 
             console.log(manager.getAllDays)
-            // console.dir(manager.getAllDays)
-            // console.log(JSON.stringify(manager.getAllDays, null, 2))
-            return JSON.stringify(manager.getAllDays) // Not returning properly
+            return null
         },
     },
 }

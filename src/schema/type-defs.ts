@@ -46,6 +46,14 @@ const typeDefs = gql`
         type: Type!
     }
 
+    type ScheduledTask {
+        id: String!
+        description: String!
+        start_time: Date!
+        end_time: Date!
+        hours: Int!
+    }
+
     input CreateUserInput {
         first_name: String!
         last_name: String!
@@ -88,7 +96,7 @@ const typeDefs = gql`
         id: String!
         description: String
         deadline: Date
-        eork_hours: Int
+        work_hours: Int
     }
 
     input CreateConstraintInput {
@@ -118,6 +126,8 @@ const typeDefs = gql`
 
         constraint(id: String!): Constraint
         calendarConstraints(calendar_id: String!): [Constraint!]
+
+        calendarScheduledTasks(calendar_id: String!): [ScheduledTask!]
     }
 
     type Mutation {
@@ -137,7 +147,7 @@ const typeDefs = gql`
         updateConstraint(input: UpdateConstraintInput!): Constraint
         deleteConstraint(id: String!): Constraint
 
-        optimize(calendar_id: String!): String!
+        optimize(calendar_id: String!): Boolean
     }
 `
 

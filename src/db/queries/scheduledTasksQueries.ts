@@ -16,7 +16,7 @@ export async function getScheduledTask(id: string) {
 export async function getCalendarScheduledTasks(calendar_id: string) {
     try {
         const calendarScheduledTasks = await pool.query(
-            'SELECT * FROM scheduled_tasks WHERE calendar_id = $1',
+            'SELECT st.id, t.description, st.start_time, st.end_time, st.hours FROM scheduled_tasks AS st LEFT JOIN tasks as t ON st.task_id = t.id WHERE st.calendar_id = $1',
             [calendar_id]
         )
         return calendarScheduledTasks.rows

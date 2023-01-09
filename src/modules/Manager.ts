@@ -1,7 +1,6 @@
 import Day from './Day'
-import Task from './Task'
-import Constraint from './Constraint'
 import Knapsack from './Knapsack'
+import Task from './Task'
 import * as db from '../db'
 
 export default class Manager {
