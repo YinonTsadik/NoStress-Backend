@@ -31,7 +31,7 @@ export async function createTask(input: any) {
                 input.calendar_id,
                 input.description,
                 input.deadline,
-                input.hours,
+                input.work_hours,
             ]
         )
         return newTask.rows[0]
@@ -59,8 +59,8 @@ export async function updateTask(input: any) {
         }
 
         if (input.work_hours) {
-            await pool.query('UPDATE tasks SET hours = $1 WHERE id = $2', [
-                input.hours,
+            await pool.query('UPDATE tasks SET work_hours = $1 WHERE id = $2', [
+                input.work_hours,
                 id,
             ])
         }

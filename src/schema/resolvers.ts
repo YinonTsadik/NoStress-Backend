@@ -104,7 +104,7 @@ const resolvers = {
             await manager.optimize()
 
             console.log(manager.getAllDays)
-            return null
+            return true
         },
     },
 }

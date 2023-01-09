@@ -1,6 +1,6 @@
 import pool from '../connection'
-import { deleteCalendar } from './calendarQueries'
 import { v4 as uuid } from 'uuid'
+import { deleteCalendar } from './calendarQueries'
 
 export async function getUser(id: string) {
     try {

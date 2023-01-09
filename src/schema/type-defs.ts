@@ -81,8 +81,8 @@ const typeDefs = gql`
     input UpdateCalendarInput {
         id: String!
         name: String
-        start_time: Date
-        end_time: Date
+        start_date: Date
+        end_date: Date
     }
 
     input CreateTaskInput {

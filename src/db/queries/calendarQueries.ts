@@ -47,16 +47,16 @@ export async function updateCalendar(input: any) {
             ])
         }
 
-        if (input.start_time) {
-            await pool.query('UPDATE calendars SET start_time = $1 WHERE id = $2', [
-                input.start_time,
+        if (input.start_date) {
+            await pool.query('UPDATE calendars SET start_date = $1 WHERE id = $2', [
+                input.start_date,
                 id,
             ])
         }
 
-        if (input.end_time) {
-            await pool.query('UPDATE calendars SET end_time = $1 WHERE id = $2', [
-                input.end_time,
+        if (input.end_date) {
+            await pool.query('UPDATE calendars SET end_date = $1 WHERE id = $2', [
+                input.end_date,
                 id,
             ])
         }
