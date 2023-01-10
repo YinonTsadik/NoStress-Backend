@@ -57,7 +57,7 @@ CREATE TABLE constraints (
 
 CREATE TABLE scheduled_tasks (
     id UUID,
-    master_task_id UUID NOT NULL,
+    task_id UUID NOT NULL,
     calendar_id UUID NOT NULL,
     day_of_week INTEGER,
     start_time TIMESTAMP NOT NULL,
@@ -66,5 +66,5 @@ CREATE TABLE scheduled_tasks (
 
     PRIMARY KEY (id),
     CONSTRAINT fk_master FOREIGN KEY (master_task_id) REFERENCES tasks(id),
-    CONSTRAINT fk_calendar FOREIGN KEY (calendar_id) REFERENCES calendars(id),
+    CONSTRAINT fk_calendar FOREIGN KEY (calendar_id) REFERENCES calendars(id)
 );
