@@ -65,6 +65,6 @@ CREATE TABLE scheduled_tasks (
     hours INTEGER NOT NULL,
 
     PRIMARY KEY (id),
-    CONSTRAINT fk_master FOREIGN KEY (master_task_id) REFERENCES tasks(id),
+    CONSTRAINT fk_master FOREIGN KEY (task_id) REFERENCES tasks(id),
     CONSTRAINT fk_calendar FOREIGN KEY (calendar_id) REFERENCES calendars(id)
 );
