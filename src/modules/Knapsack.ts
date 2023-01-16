@@ -19,7 +19,7 @@ export default class Knapsack {
             matrix[i] = new Array<number>(capacity + 1).fill(0)
 
         for (let i = 1; i <= numOfTasks; i++) {
-            for (let j = 1; j <= capacity; j++) {
+            for (let j = 0; j <= capacity; j++) {
                 if (this.tasks[i - 1].getWorkHours > j) {
                     matrix[i][j] = matrix[i - 1][j]
                 } else {
