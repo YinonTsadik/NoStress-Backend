@@ -29,16 +29,4 @@ export default abstract class Period extends Event {
     get getHours() {
         return this.hours
     }
-
-    set setStart(start: Date) {
-        this.start = start
-    }
-
-    set setEnd(end: Date) {
-        this.end = end
-    }
-
-    set setHours(hours: number) {
-        this.hours = hours
-    }
 }

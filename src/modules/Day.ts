@@ -157,24 +157,8 @@ export default class Day {
         return this.date
     }
 
-    get getSchedule() {
-        return this.schedule
-    }
-
     get getAvailableHours() {
         return this.availableHours
-    }
-
-    get getTotalValue() {
-        return this.totalValue
-    }
-
-    set setDate(date: Date) {
-        this.date = date
-    }
-
-    set setSchedule(schedule: Period[]) {
-        this.schedule = schedule
     }
 
     set setAvailableHours(availableHours: number) {

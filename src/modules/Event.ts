@@ -14,12 +14,4 @@ export default abstract class Event {
     get getDescription() {
         return this.description
     }
-
-    set setID(id: string) {
-        this.id = id
-    }
-
-    set setDescription(description: string) {
-        this.description = description
-    }
 }

@@ -22,16 +22,4 @@ export default class Solution {
     get getHours() {
         return this.hours
     }
-
-    set setTasks(tasks: Task[]) {
-        this.tasks = tasks
-    }
-
-    set setValue(value: number) {
-        this.value = value
-    }
-
-    set setHours(hours: number) {
-        this.hours = hours
-    }
 }

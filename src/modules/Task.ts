@@ -59,14 +59,6 @@ export default class Task extends Event {
         return this.workHours
     }
 
-    get getDeadline() {
-        return this.deadline
-    }
-
-    get getDaysUntilDeadline() {
-        return this.daysUntilDeadline
-    }
-
     get getValue() {
         return this.value
     }
@@ -77,10 +69,6 @@ export default class Task extends Event {
 
     set setWorkHours(workHours: number) {
         this.workHours = workHours
-    }
-
-    set setDeadline(deadline: Date) {
-        this.deadline = deadline
     }
 
     set setFullyScheduled(fullyScheduled: boolean) {

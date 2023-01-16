@@ -87,10 +87,6 @@ export default class Manager {
         })
     }
 
-    get getCalendarID() {
-        return this.calendarID
-    }
-
     get getAllDays() {
         return this.allDays
     }

@@ -105,6 +105,7 @@ const resolvers = {
 
             // console.log(manager)
             console.log(manager.getAllDays)
+            // console.log(manager.getAllTasks)
             return true
         },
     },

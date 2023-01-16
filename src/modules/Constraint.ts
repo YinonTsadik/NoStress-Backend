@@ -22,12 +22,4 @@ export default class Constraint extends Period {
         super(id, description, start, end)
         this.type = type
     }
-
-    get getType() {
-        return this.type
-    }
-
-    set setType(type: constraintType) {
-        this.type = type
-    }
 }

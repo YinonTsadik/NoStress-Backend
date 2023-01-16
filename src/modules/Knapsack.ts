@@ -49,20 +49,4 @@ export default class Knapsack {
 
         return new Solution(tasksSolution, matrix[numOfTasks][capacity], numOfHours)
     }
-
-    get getTasks() {
-        return this.tasks
-    }
-
-    get getCapacity() {
-        return this.capacity
-    }
-
-    set setTasks(tasks: Task[]) {
-        this.tasks = tasks
-    }
-
-    set setCapacity(capacity: number) {
-        this.capacity = capacity
-    }
 }
