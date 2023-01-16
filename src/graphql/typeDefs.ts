@@ -18,7 +18,6 @@ const typeDefs = gql`
         last_name: String!
         username: String!
         password: String!
-        birthday: Date
     }
 
     type Calendar {
@@ -59,7 +58,6 @@ const typeDefs = gql`
         last_name: String!
         username: String!
         password: String!
-        birthday: Date
     }
 
     input UpdateUserInput {
@@ -68,7 +66,6 @@ const typeDefs = gql`
         last_name: String
         username: String
         password: String
-        birthday: Date
     }
 
     input CreateCalendarInput {
@@ -151,4 +148,4 @@ const typeDefs = gql`
     }
 `
 
-export { typeDefs }
+export default typeDefs

@@ -38,25 +38,29 @@ export default class Manager {
 
         this.allDays.forEach((day: Day) => {
             const options = new Array<Task>()
-            const x = day.getAvailableHours
+            const availableHours = day.getAvailableHours
 
             this.allTasks.forEach((task: Task) => {
                 if (!task.getFullyScheduled) {
                     const tempTask = Task.copyConstructor(task)
                     tempTask.updateDetails(day.getDate)
 
-                    if (task.getWorkHours <= x) {
+                    if (task.getWorkHours <= availableHours) {
                         options.push(tempTask)
                     } else {
-                        options.push(tempTask.splitTask(x))
+                        options.push(tempTask.splitTask(availableHours))
                     }
                 }
             })
 
-            const dayKnapsack = new Knapsack(options, x)
+            const dayKnapsack = new Knapsack(options, availableHours)
             const daySolution = dayKnapsack.solve()
 
-            day.tasksScheduling(this.calendarID, daySolution.getTasks)
+            if (daySolution.getHours > availableHours) {
+                throw new Error('Knapsack Error')
+            }
+
+            // day.tasksScheduling(this.calendarID, daySolution.getTasks)
             day.setAvailableHours = day.getAvailableHours - daySolution.getHours
             day.setTotalValue = daySolution.getValue
 
@@ -65,13 +69,15 @@ export default class Manager {
                 for (let j = 0; j < this.allTasks.length; j++) {
                     if (this.allTasks[j].getID === solutionTask.getID) {
                         const originalTask = this.allTasks[j]
-                        if (originalTask.getWorkHours <= x) {
+                        if (originalTask.getWorkHours <= availableHours) {
                             originalTask.setFullyScheduled = true
                         } else {
                             this.allTasks.splice(
                                 j,
                                 1,
-                                originalTask.splitTask(originalTask.getWorkHours - x)
+                                originalTask.splitTask(
+                                    originalTask.getWorkHours - availableHours
+                                )
                             )
                         }
                         break

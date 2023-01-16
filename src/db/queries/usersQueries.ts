@@ -14,14 +14,13 @@ export async function getUser(id: string) {
 export async function createUser(input: any) {
     try {
         const newUser = await pool.query(
-            'INSERT INTO users (id, first_name, last_name, username, password, birthday) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+            'INSERT INTO users (id, first_name, last_name, username, password) VALUES ($1, $2, $3, $4, $5) RETURNING *',
             [
                 uuid(),
                 input.first_name,
                 input.last_name,
                 input.username,
                 input.password,
-                input.birthday,
             ]
         )
         return newUser.rows[0]
@@ -62,13 +61,6 @@ export async function updateUser(input: any) {
             ])
         }
 
-        if (input.birthday) {
-            await pool.query('UPDATE users SET birthday = $1 WHERE id = $2', [
-                input.birthday,
-                id,
-            ])
-        }
-
         const updatedUser = await pool.query('SELECT * FROM users WHERE id = $1', [
             id,
         ])
@@ -84,9 +76,7 @@ export async function deleteUser(id: string) {
             'SELECT id FROM calendars WHERE user_id = $1',
             [id]
         )
-        calendarsIDs?.rows?.forEach((calendar_id: any) =>
-            deleteCalendar(calendar_id)
-        )
+        calendarsIDs?.rows?.forEach((calendar: any) => deleteCalendar(calendar.id))
 
         const deletedUser = await pool.query(
             'DELETE FROM users WHERE id = $1 RETURNING *',

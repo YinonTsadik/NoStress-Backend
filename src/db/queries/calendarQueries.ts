@@ -47,6 +47,12 @@ export async function updateCalendar(input: any) {
             ])
         }
 
+        /*
+            Add:
+            Deleting the tasks, constraints and scheduledTasks that
+            are not in the new date range after updating the dates.
+        */
+
         if (input.start_date) {
             await pool.query('UPDATE calendars SET start_date = $1 WHERE id = $2', [
                 input.start_date,
@@ -73,9 +79,9 @@ export async function updateCalendar(input: any) {
 
 export async function deleteCalendar(id: string) {
     try {
+        await pool.query('DELETE FROM scheduled_tasks WHERE calendar_id = $1', [id])
         await pool.query('DELETE FROM tasks WHERE calendar_id = $1', [id])
         await pool.query('DELETE FROM constraints WHERE calendar_id = $1', [id])
-        await pool.query('DELETE FROM scheduled_tasks WHERE calendar_id = $1', [id])
 
         const deletedCalendar = await pool.query(
             'DELETE FROM calendars WHERE id = $1 RETURNING *',

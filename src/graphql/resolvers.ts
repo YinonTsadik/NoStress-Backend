@@ -103,10 +103,11 @@ const resolvers = {
             await manager.createManager()
             await manager.optimize()
 
+            // console.log(manager)
             console.log(manager.getAllDays)
             return true
         },
     },
 }
 
-export { resolvers }
+export default resolvers
