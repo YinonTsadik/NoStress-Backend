@@ -16,6 +16,14 @@ const resolvers = {
     Date: dateScalar,
 
     Query: {
+        usersNames: () => {
+            return db.getAllUsersNames()
+        },
+
+        checkAuthDetails: (_: any, args: any) => {
+            return db.checkAuthDetails(args.username, args.password)
+        },
+
         user: (_: any, args: any) => {
             return db.getUser(args.id)
         },

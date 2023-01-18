@@ -65,7 +65,7 @@ export default class Manager {
             day.setTotalValue = daySolution.getValue
 
             for (let i = 0; i < daySolution.getTasks.length; i++) {
-                let solutionTask = daySolution.getTasks[i]
+                const solutionTask = daySolution.getTasks[i]
                 for (let j = 0; j < this.allTasks.length; j++) {
                     if (this.allTasks[j].getID === solutionTask.getID) {
                         const originalTask = this.allTasks[j]

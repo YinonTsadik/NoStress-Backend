@@ -113,6 +113,9 @@ const typeDefs = gql`
     }
 
     type Query {
+        usersNames: [String!]
+        checkAuthDetails(username: String!, password: String!): String
+
         user(id: String!): User
 
         calendar(id: String!): Calendar

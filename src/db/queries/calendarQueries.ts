@@ -26,9 +26,11 @@ export async function getUserCalendars(user_id: string) {
 
 export async function createCalendar(input: any) {
     try {
+        const { user_id, name, start_date, end_date } = input
+
         const newCalendar = await pool.query(
             'INSERT INTO calendars (id, user_id, name, start_date, end_date) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-            [uuid(), input.user_id, input.name, input.start_date, input.end_date]
+            [uuid(), user_id, name, start_date, end_date]
         )
         return newCalendar.rows[0]
     } catch (error: any) {
@@ -38,11 +40,11 @@ export async function createCalendar(input: any) {
 
 export async function updateCalendar(input: any) {
     try {
-        const { id } = input
+        const { id, name, start_date, end_date } = input
 
-        if (input.name) {
+        if (name) {
             await pool.query('UPDATE calendars SET name = $1 WHERE id = $2', [
-                input.name,
+                name,
                 id,
             ])
         }
@@ -53,16 +55,16 @@ export async function updateCalendar(input: any) {
             are not in the new date range after updating the dates.
         */
 
-        if (input.start_date) {
+        if (start_date) {
             await pool.query('UPDATE calendars SET start_date = $1 WHERE id = $2', [
-                input.start_date,
+                start_date,
                 id,
             ])
         }
 
-        if (input.end_date) {
+        if (end_date) {
             await pool.query('UPDATE calendars SET end_date = $1 WHERE id = $2', [
-                input.end_date,
+                end_date,
                 id,
             ])
         }

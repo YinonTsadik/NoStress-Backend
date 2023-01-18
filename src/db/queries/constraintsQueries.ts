@@ -42,16 +42,11 @@ export async function getDayConstraints(calendar_id: string, date: Date) {
 
 export async function createConstraint(input: any) {
     try {
+        const { calendar_id, description, start_time, end_time, type } = input
+
         const newConstraint = await pool.query(
             'INSERT INTO constraints (id, calendar_id, description, start_time, end_time, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-            [
-                uuid(),
-                input.calendar_id,
-                input.description,
-                input.start_time,
-                input.end_time,
-                input.type,
-            ]
+            [uuid(), calendar_id, description, start_time, end_time, type]
         )
         return newConstraint.rows[0]
     } catch (error: any) {
@@ -61,32 +56,32 @@ export async function createConstraint(input: any) {
 
 export async function updateConstraint(input: any) {
     try {
-        const { id } = input
+        const { id, description, start_time, end_time, type } = input
 
-        if (input.description) {
+        if (description) {
             await pool.query(
                 'UPDATE constraints SET description = $1 WHERE id = $2',
-                [input.description, id]
+                [description, id]
             )
         }
 
-        if (input.start_time) {
+        if (start_time) {
             await pool.query(
                 'UPDATE constraints SET start_time = $1 WHERE id = $2',
-                [input.start_time, id]
+                [start_time, id]
             )
         }
 
-        if (input.end_time) {
+        if (end_time) {
             await pool.query('UPDATE constraints SET end_time = $1 WHERE id = $2', [
-                input.end_time,
+                end_time,
                 id,
             ])
         }
 
-        if (input.type) {
+        if (type) {
             await pool.query('UPDATE constraints SET type = $1 WHERE id = $2', [
-                input.type,
+                type,
                 id,
             ])
         }

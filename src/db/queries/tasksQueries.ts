@@ -24,15 +24,11 @@ export async function getCalendarTasks(calendar_id: string) {
 
 export async function createTask(input: any) {
     try {
+        const { calendar_id, description, deadline, work_hours } = input
+
         const newTask = await pool.query(
             'INSERT INTO tasks (id, calendar_id, description, deadline, work_hours) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-            [
-                uuid(),
-                input.calendar_id,
-                input.description,
-                input.deadline,
-                input.work_hours,
-            ]
+            [uuid(), calendar_id, description, deadline, work_hours]
         )
         return newTask.rows[0]
     } catch (error: any) {
@@ -42,25 +38,25 @@ export async function createTask(input: any) {
 
 export async function updateTask(input: any) {
     try {
-        const { id } = input
+        const { id, description, deadline, work_hours } = input
 
-        if (input.description) {
+        if (description) {
             await pool.query('UPDATE tasks SET description = $1 WHERE id = $2', [
-                input.description,
+                description,
                 id,
             ])
         }
 
-        if (input.deadline) {
+        if (deadline) {
             await pool.query('UPDATE tasks SET deadline = $1 WHERE id = $2', [
-                input.deadline,
+                deadline,
                 id,
             ])
         }
 
-        if (input.work_hours) {
+        if (work_hours) {
             await pool.query('UPDATE tasks SET work_hours = $1 WHERE id = $2', [
-                input.work_hours,
+                work_hours,
                 id,
             ])
         }

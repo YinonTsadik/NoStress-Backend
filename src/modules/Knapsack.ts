@@ -32,18 +32,32 @@ export default class Knapsack {
             }
         }
 
+        // for (let i = 1; i <= numOfTasks; i++) {
+        //     const weight = this.tasks[i - 1].getWorkHours
+        //     const value = this.tasks[i - 1].getValue
+        //     for (let j = 1; j <= this.capacity; j++) {
+        //         matrix[i][j] = matrix[i - 1][j]
+        //         if (
+        //             j >= weight &&
+        //             matrix[i - 1][j - weight] + value > matrix[i][j]
+        //         ) {
+        //             matrix[i][j] = matrix[i - 1][j - weight] + value
+        //         }
+        //     }
+        // }
+
         const tasksSolution = new Array<Task>()
         let numOfHours = 0
         let result = matrix[numOfTasks][capacity]
-        let w = capacity
+        let j = capacity
 
         for (let i = numOfTasks; i > 0 && result > 0; i--) {
-            if (matrix[i - 1][w] !== result) {
+            if (matrix[i - 1][j] !== result) {
                 tasksSolution.push(this.tasks[i - 1])
                 numOfHours += this.tasks[i - 1].getWorkHours
 
                 result -= this.tasks[i - 1].getValue
-                w -= this.tasks[i - 1].getWorkHours
+                j -= this.tasks[i - 1].getWorkHours
             }
         }
 
