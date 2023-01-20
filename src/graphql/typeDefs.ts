@@ -113,7 +113,7 @@ const typeDefs = gql`
     }
 
     type Query {
-        usersNames: [String!]
+        usernames: [String!]
         checkAuthDetails(username: String!, password: String!): String
 
         user(id: String!): User

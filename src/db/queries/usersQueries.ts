@@ -2,7 +2,7 @@ import pool from '../connection'
 import { v4 as uuid } from 'uuid'
 import { deleteCalendar } from './calendarQueries'
 
-export async function getAllUsersNames() {
+export async function getAllUsernames() {
     try {
         const allUsersNames = await pool.query('SELECT username FROM users')
         return allUsersNames.rows.map((user: any) => user.username)
