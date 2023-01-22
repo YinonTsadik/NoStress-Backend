@@ -13,20 +13,11 @@ export async function getAllUsernames() {
 
 export async function checkAuthDetails(username: string, password: string) {
     try {
-        const userID = await pool.query(
-            'SELECT id FROM users WHERE username = $1 AND password = $2',
+        const user = await pool.query(
+            'SELECT * FROM users WHERE username = $1 AND password = $2',
             [username, password]
         )
-        return userID.rows[0]?.id || null
-    } catch (error: any) {
-        console.error(error.message)
-    }
-}
-
-export async function getUser(id: string) {
-    try {
-        const user = await pool.query('SELECT * FROM users WHERE id = $1', [id])
-        return user.rows[0]
+        return user.rows[0] || null
     } catch (error: any) {
         console.error(error.message)
     }

@@ -24,10 +24,6 @@ const resolvers = {
             return db.checkAuthDetails(args.username, args.password)
         },
 
-        user: (_: any, args: any) => {
-            return db.getUser(args.id)
-        },
-
         calendar: (_: any, args: any) => {
             return db.getCalendar(args.id)
         },
