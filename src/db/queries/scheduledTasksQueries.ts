@@ -1,25 +1,16 @@
 import pool from '../connection'
 import ScheduledTask from '../../modules/ScheduledTask'
+import { ScheduledTask as ScheduledTaskInterface } from '../interfaces'
 
-export async function getScheduledTask(id: string) {
-    try {
-        const scheduledTask = await pool.query(
-            'SELECT * FROM scheduled_tasks WHERE id = $1',
-            [id]
-        )
-        return scheduledTask.rows[0]
-    } catch (error: any) {
-        console.error(error.message)
-    }
-}
-
-export async function getCalendarScheduledTasks(calendar_id: string) {
+export async function getCalendarScheduledTasks(calendarID: string) {
     try {
         const calendarScheduledTasks = await pool.query(
             'SELECT st.id, t.description, st.start_time, st.end_time, st.hours FROM scheduled_tasks AS st LEFT JOIN tasks as t ON st.task_id = t.id WHERE st.calendar_id = $1',
-            [calendar_id]
+            [calendarID]
         )
-        return calendarScheduledTasks.rows
+        return calendarScheduledTasks.rows.map((scheduledTasks) =>
+            scheduledTaskAsInterface(scheduledTasks)
+        )
     } catch (error: any) {
         console.error(error.message)
     }
@@ -38,20 +29,31 @@ export async function createScheduledTask(input: ScheduledTask) {
                 input.getHours,
             ]
         )
-        return newScheduledTask.rows[0]
+        return scheduledTaskAsInterface(newScheduledTask.rows[0])
     } catch (error: any) {
         console.error(error.message)
     }
 }
 
-export async function deleteCalendarScheduledTasks(calendar_id: string) {
+export async function deleteCalendarScheduledTasks(calendarID: string) {
     try {
         const numOfDeleted = await pool.query(
             'DELETE FROM scheduled_tasks WHERE calendar_id = $1',
-            [calendar_id]
+            [calendarID]
         )
         return numOfDeleted.rowCount
     } catch (error: any) {
         console.error(error.message)
     }
+}
+
+function scheduledTaskAsInterface(dbScheduledTask: any) {
+    const scheduledTask: ScheduledTaskInterface = {
+        id: dbScheduledTask.id,
+        description: dbScheduledTask.description,
+        startTime: new Date(dbScheduledTask.start_time),
+        endTime: new Date(dbScheduledTask.end_time),
+        hours: dbScheduledTask.hours,
+    }
+    return scheduledTask
 }

@@ -17,39 +17,27 @@ const resolvers = {
 
     Query: {
         usernames: () => {
-            return db.getAllUsernames()
+            return db.getUsernames()
         },
 
-        checkAuthDetails: (_: any, args: any) => {
-            return db.checkAuthDetails(args.username, args.password)
-        },
-
-        calendar: (_: any, args: any) => {
-            return db.getCalendar(args.id)
+        user: (_: any, args: any) => {
+            return db.getUser(args.username, args.password)
         },
 
         userCalendars: (_: any, args: any) => {
-            return db.getUserCalendars(args.user_id)
-        },
-
-        task: (_: any, args: any) => {
-            return db.getTask(args.id)
+            return db.getUserCalendars(args.userID)
         },
 
         calendarTasks: (_: any, args: any) => {
-            return db.getCalendarTasks(args.calendar_id)
-        },
-
-        constraint: (_: any, args: any) => {
-            return db.getConstraint(args.id)
+            return db.getCalendarTasks(args.calendarID)
         },
 
         calendarConstraints: (_: any, args: any) => {
-            return db.getCalendarConstraints(args.calendar_id)
+            return db.getCalendarConstraints(args.calendarID)
         },
 
         calendarScheduledTasks: (_: any, args: any) => {
-            return db.getCalendarScheduledTasks(args.calendar_id)
+            return db.getCalendarScheduledTasks(args.calendarID)
         },
     },
 
@@ -103,7 +91,7 @@ const resolvers = {
         },
 
         optimize: async (_: any, args: any) => {
-            const manager = new Manager(args.calendar_id)
+            const manager = new Manager(args.calendarID)
             await manager.createManager()
             await manager.optimize()
 

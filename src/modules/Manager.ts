@@ -17,7 +17,7 @@ export default class Manager {
     public async createManager() {
         const calendar = await db.getCalendar(this.calendarID)
 
-        this.allDays = Day.generateCalendar(calendar.start_date, calendar.end_date)
+        this.allDays = Day.generateCalendar(calendar.startDate, calendar.endDate)
         this.allDays.forEach((day: Day) => day.updateConstraints(this.calendarID))
 
         const dbTasks = await db.getCalendarTasks(this.calendarID)

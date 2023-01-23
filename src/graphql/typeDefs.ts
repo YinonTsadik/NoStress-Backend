@@ -3,6 +3,30 @@ import { gql } from 'apollo-server'
 const typeDefs = gql`
     scalar Date
 
+    type User {
+        id: String!
+        firstName: String!
+        lastName: String!
+        username: String!
+        password: String!
+    }
+
+    type Calendar {
+        id: String!
+        userID: String!
+        name: String!
+        startDate: Date!
+        endDate: Date!
+    }
+
+    type Task {
+        id: String!
+        calendarID: String!
+        description: String!
+        deadline: Date!
+        workHours: Int!
+    }
+
     enum Type {
         Studies
         Test
@@ -12,120 +36,94 @@ const typeDefs = gql`
         Other
     }
 
-    type User {
-        id: String!
-        first_name: String!
-        last_name: String!
-        username: String!
-        password: String!
-    }
-
-    type Calendar {
-        id: String!
-        user_id: String!
-        name: String!
-        start_date: Date!
-        end_date: Date!
-    }
-
-    type Task {
-        id: String!
-        calendar_id: String!
-        description: String!
-        deadline: Date!
-        work_hours: Int!
-    }
-
     type Constraint {
         id: String!
-        calendar_id: String!
+        calendarID: String!
         description: String!
-        start_time: Date!
-        end_time: Date!
+        startTime: Date!
+        endTime: Date!
         type: Type!
     }
 
     type ScheduledTask {
         id: String!
         description: String!
-        start_time: Date!
-        end_time: Date!
+        startTime: Date!
+        endTime: Date!
         hours: Int!
     }
 
     input CreateUserInput {
-        first_name: String!
-        last_name: String!
+        firstName: String!
+        lastName: String!
         username: String!
         password: String!
     }
 
     input UpdateUserInput {
         id: String!
-        first_name: String
-        last_name: String
+        firstName: String
+        lastName: String
         username: String
         password: String
     }
 
     input CreateCalendarInput {
-        user_id: String!
+        userID: String!
         name: String!
-        start_date: Date!
-        end_date: Date!
+        startDate: Date!
+        endDate: Date!
     }
 
     input UpdateCalendarInput {
         id: String!
         name: String
-        start_date: Date
-        end_date: Date
+        startDate: Date
+        endDate: Date
     }
 
     input CreateTaskInput {
-        calendar_id: String!
+        calendarID: String!
         description: String!
         deadline: Date!
-        work_hours: Int!
+        workHours: Int!
     }
 
     input UpdateTaskInput {
         id: String!
         description: String
         deadline: Date
-        work_hours: Int
+        workHours: Int
     }
 
     input CreateConstraintInput {
-        calendar_id: String!
+        calendarID: String!
         description: String!
-        start_time: Date!
-        end_time: Date!
+        startTime: Date!
+        endTime: Date!
         type: Type = Other
     }
 
     input UpdateConstraintInput {
         id: String!
         description: String
-        start_time: Date
-        end_time: Date
+        startTime: Date
+        endTime: Date
         type: Type
     }
 
     type Query {
         usernames: [String!]
-        checkAuthDetails(username: String!, password: String!): User
 
-        calendar(id: String!): Calendar
-        userCalendars(id: String!): [Calendar!]
+        user(username: String!, password: String!): User
 
-        task(id: String!): Task
-        calendarTasks(calendar_id: String!): [Task!]
+        userCalendars(userID: String!): [Calendar!]
 
-        constraint(id: String!): Constraint
-        calendarConstraints(calendar_id: String!): [Constraint!]
+        calendarTasks(calendarID: String!): [Task!]
 
-        calendarScheduledTasks(calendar_id: String!): [ScheduledTask!]
+        calendarConstraints(calendarID: String!): [Constraint!]
+
+        calendarScheduledTasks(calendarID: String!): [ScheduledTask!]
     }
 
     type Mutation {
@@ -145,7 +143,7 @@ const typeDefs = gql`
         updateConstraint(input: UpdateConstraintInput!): Constraint
         deleteConstraint(id: String!): Constraint
 
-        optimize(calendar_id: String!): Boolean
+        optimize(calendarID: String!): Boolean
     }
 `
 

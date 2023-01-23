@@ -1,46 +1,49 @@
 import pool from '../connection'
 import { v4 as uuid } from 'uuid'
+import { Calendar, CreateCalendar, UpdateCalendar } from '../interfaces'
 
 export async function getCalendar(id: string) {
     try {
-        const calendar = await pool.query('SELECT * FROM calendars WHERE id = $1', [
+        const calendar = await pool.query('SELECT * FROM calendar WHERE id = $1', [
             id,
         ])
-        return calendar.rows[0]
+        return calendarAsInterface(calendar.rows[0])
     } catch (error: any) {
         console.error(error.message)
     }
 }
 
-export async function getUserCalendars(user_id: string) {
+export async function getUserCalendars(userID: string) {
     try {
         const userCalendars = await pool.query(
             'SELECT * FROM calendars WHERE user_id = $1',
-            [user_id]
+            [userID]
         )
-        return userCalendars.rows
+        return userCalendars.rows.map((userCalendar) =>
+            calendarAsInterface(userCalendar)
+        )
     } catch (error: any) {
         console.error(error.message)
     }
 }
 
-export async function createCalendar(input: any) {
+export async function createCalendar(input: CreateCalendar) {
     try {
-        const { user_id, name, start_date, end_date } = input
+        const { userID, name, startDate, endDate } = input
 
         const newCalendar = await pool.query(
             'INSERT INTO calendars (id, user_id, name, start_date, end_date) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-            [uuid(), user_id, name, start_date, end_date]
+            [uuid(), userID, name, startDate, endDate]
         )
-        return newCalendar.rows[0]
+        return calendarAsInterface(newCalendar.rows[0])
     } catch (error: any) {
         console.error(error.message)
     }
 }
 
-export async function updateCalendar(input: any) {
+export async function updateCalendar(input: UpdateCalendar) {
     try {
-        const { id, name, start_date, end_date } = input
+        const { id, name, startDate, endDate } = input
 
         if (name) {
             await pool.query('UPDATE calendars SET name = $1 WHERE id = $2', [
@@ -55,16 +58,16 @@ export async function updateCalendar(input: any) {
             are not in the new date range after updating the dates.
         */
 
-        if (start_date) {
+        if (startDate) {
             await pool.query('UPDATE calendars SET start_date = $1 WHERE id = $2', [
-                start_date,
+                startDate,
                 id,
             ])
         }
 
-        if (end_date) {
+        if (endDate) {
             await pool.query('UPDATE calendars SET end_date = $1 WHERE id = $2', [
-                end_date,
+                endDate,
                 id,
             ])
         }
@@ -73,7 +76,7 @@ export async function updateCalendar(input: any) {
             'SELECT * FROM calendars WHERE id = $1',
             [id]
         )
-        return updatedCalendar.rows[0]
+        return calendarAsInterface(updatedCalendar.rows[0])
     } catch (error: any) {
         console.error(error.message)
     }
@@ -89,8 +92,19 @@ export async function deleteCalendar(id: string) {
             'DELETE FROM calendars WHERE id = $1 RETURNING *',
             [id]
         )
-        return deletedCalendar.rows[0]
+        return calendarAsInterface(deletedCalendar.rows[0])
     } catch (error: any) {
         console.error(error.message)
     }
+}
+
+function calendarAsInterface(dbCalendar: any) {
+    const calendar: Calendar = {
+        id: dbCalendar.id,
+        userID: dbCalendar.user_id,
+        name: dbCalendar.name,
+        startDate: new Date(dbCalendar.start_date),
+        endDate: new Date(dbCalendar.end_date),
+    }
+    return calendar
 }

@@ -1,44 +1,38 @@
 import pool from '../connection'
 import { v4 as uuid } from 'uuid'
+import { Task, CreateTask, UpdateTask } from '../interfaces'
 
-export async function getTask(id: string) {
-    try {
-        const task = await pool.query('SELECT * FROM tasks WHERE id = $1', [id])
-        return task.rows[0]
-    } catch (error: any) {
-        console.error(error.message)
-    }
-}
-
-export async function getCalendarTasks(calendar_id: string) {
+export async function getCalendarTasks(calendarID: string) {
     try {
         const calendarTasks = await pool.query(
             'SELECT * FROM tasks WHERE calendar_id = $1',
-            [calendar_id]
+            [calendarID]
         )
-        return calendarTasks.rows
+        return calendarTasks.rows.map((calendarTask) =>
+            taskAsInterface(calendarTask)
+        )
     } catch (error: any) {
         console.error(error.message)
     }
 }
 
-export async function createTask(input: any) {
+export async function createTask(input: CreateTask) {
     try {
-        const { calendar_id, description, deadline, work_hours } = input
+        const { calendarID, description, deadline, workHours } = input
 
         const newTask = await pool.query(
             'INSERT INTO tasks (id, calendar_id, description, deadline, work_hours) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-            [uuid(), calendar_id, description, deadline, work_hours]
+            [uuid(), calendarID, description, deadline, workHours]
         )
-        return newTask.rows[0]
+        return taskAsInterface(newTask.rows[0])
     } catch (error: any) {
         console.error(error.message)
     }
 }
 
-export async function updateTask(input: any) {
+export async function updateTask(input: UpdateTask) {
     try {
-        const { id, description, deadline, work_hours } = input
+        const { id, description, deadline, workHours } = input
 
         if (description) {
             await pool.query('UPDATE tasks SET description = $1 WHERE id = $2', [
@@ -54,9 +48,9 @@ export async function updateTask(input: any) {
             ])
         }
 
-        if (work_hours) {
+        if (workHours) {
             await pool.query('UPDATE tasks SET work_hours = $1 WHERE id = $2', [
-                work_hours,
+                workHours,
                 id,
             ])
         }
@@ -64,7 +58,7 @@ export async function updateTask(input: any) {
         const updatedTask = await pool.query('SELECT * FROM tasks WHERE id = $1', [
             id,
         ])
-        return updatedTask.rows[0]
+        return taskAsInterface(updatedTask.rows[0])
     } catch (error: any) {
         console.error(error.message)
     }
@@ -76,8 +70,19 @@ export async function deleteTask(id: string) {
             'DELETE FROM tasks WHERE id = $1 RETURNING *',
             [id]
         )
-        return deletedTask.rows[0]
+        return taskAsInterface(deletedTask.rows[0])
     } catch (error: any) {
         console.error(error.message)
     }
+}
+
+function taskAsInterface(dbTask: any) {
+    const task: Task = {
+        id: dbTask.id,
+        calendarID: dbTask.calendar_id,
+        description: dbTask.description,
+        deadline: new Date(dbTask.deadline),
+        workHours: dbTask.work_hours,
+    }
+    return task
 }
