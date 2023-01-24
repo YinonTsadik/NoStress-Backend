@@ -1,8 +1,8 @@
 import Event from './Event'
 
 export default class Task extends Event {
-    private workHours: number
     private deadline: Date
+    private workHours: number
     private daysUntilDeadline: number
     private value: number
     private fullyScheduled: boolean
@@ -10,8 +10,8 @@ export default class Task extends Event {
     constructor(id: string, description: string, deadline: Date, workHours: number) {
         super(id, description)
 
-        this.workHours = workHours
         this.deadline = new Date(deadline)
+        this.workHours = workHours
         this.daysUntilDeadline = 0
         this.value = 0
         this.fullyScheduled = false
@@ -32,9 +32,9 @@ export default class Task extends Event {
     }
 
     private updateValue() {
-        if (this.daysUntilDeadline <= 1) {
-            this.value = 10000
-        } else {
+        if (this.daysUntilDeadline <= 0) this.value = -1
+        else if (this.daysUntilDeadline <= 1) this.value = 10000
+        else {
             this.value = this.daysScore(this.daysUntilDeadline)
             this.value += this.hoursScore(this.workHours)
         }
@@ -69,6 +69,10 @@ export default class Task extends Event {
 
     set setWorkHours(workHours: number) {
         this.workHours = workHours
+    }
+
+    set setValue(value: number) {
+        this.value = value
     }
 
     set setFullyScheduled(fullyScheduled: boolean) {

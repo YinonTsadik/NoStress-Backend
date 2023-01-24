@@ -4,7 +4,7 @@ import { Calendar, CreateCalendar, UpdateCalendar } from '../interfaces'
 
 export async function getCalendar(id: string) {
     try {
-        const calendar = await pool.query('SELECT * FROM calendar WHERE id = $1', [
+        const calendar = await pool.query('SELECT * FROM calendars WHERE id = $1', [
             id,
         ])
         return calendarAsInterface(calendar.rows[0])

@@ -2,6 +2,7 @@ import Period from './Period'
 import Task from './Task'
 import Constraint from './Constraint'
 import ScheduledTask from './ScheduledTask'
+import { Constraint as ConstraintInterface } from '../db/interfaces'
 import * as db from '../db'
 
 export default class Day {
@@ -28,20 +29,20 @@ export default class Day {
     }
 
     public async updateConstraints(calendarID: string) {
-        const dbDayConstraints = await db.getDayConstraints(calendarID, this.date)
+        const dayConstraints = await db.getDayConstraints(calendarID, this.date)
         let constraintsHoursSum = 0
 
-        dbDayConstraints?.forEach((dbConstraint: any) => {
-            const constraint = new Constraint(
-                dbConstraint.id,
-                dbConstraint.description,
-                dbConstraint.start_time,
-                dbConstraint.end_time,
-                dbConstraint.type
+        dayConstraints.forEach((constraint: ConstraintInterface) => {
+            const newConstraint = new Constraint(
+                constraint.id,
+                constraint.description,
+                constraint.startTime,
+                constraint.endTime,
+                constraint.type
             )
 
-            const startTime = constraint.getStart
-            const endTime = constraint.getEnd
+            const startTime = newConstraint.getStart
+            const endTime = newConstraint.getEnd
 
             const startDay = new Date(
                 startTime.getFullYear(),
@@ -57,7 +58,7 @@ export default class Day {
             // Add documentation - not clear enough
             let startHour: number, endHour: number
             if (startDay.getTime() === endDay.getTime()) {
-                constraintsHoursSum += constraint.getHours
+                constraintsHoursSum += newConstraint.getHours
 
                 startHour = startTime.getHours()
                 endHour = endTime.getHours()
@@ -95,7 +96,7 @@ export default class Day {
                 endHour = 24
             }
 
-            this.periodScheduling(constraint, startHour, endHour)
+            this.periodScheduling(newConstraint, startHour, endHour)
         })
 
         this.availableHours -= constraintsHoursSum

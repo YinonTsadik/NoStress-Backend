@@ -1,23 +1,15 @@
 import Period from './Period'
-
-enum constraintType {
-    Studies,
-    Test,
-    Work,
-    Event,
-    Rest,
-    Other,
-}
+import { Type } from '../db/interfaces'
 
 export default class Constraint extends Period {
-    private type: constraintType
+    private type: Type
 
     constructor(
         id: string,
         description: string,
         start: Date,
         end: Date,
-        type: constraintType
+        type: Type
     ) {
         super(id, description, start, end)
         this.type = type

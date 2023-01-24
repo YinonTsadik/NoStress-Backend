@@ -6,7 +6,7 @@ import { deleteCalendar } from './calendarQueries'
 export async function getUsernames() {
     try {
         const allUsersNames = await pool.query('SELECT username FROM users')
-        return allUsersNames.rows.map((user: any) => user.username) as string[]
+        return allUsersNames.rows.map((user) => user.username) as string[]
     } catch (error: any) {
         console.error(error.message)
     }
@@ -87,7 +87,7 @@ export async function deleteUser(id: string) {
             'SELECT id FROM calendars WHERE user_id = $1',
             [id]
         )
-        calendarsIDs.rows.forEach((calendar: any) => deleteCalendar(calendar.id))
+        calendarsIDs.rows.forEach((calendar) => deleteCalendar(calendar.id))
 
         const deletedUser = await pool.query(
             'DELETE FROM users WHERE id = $1 RETURNING *',

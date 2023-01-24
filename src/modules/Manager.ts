@@ -1,6 +1,7 @@
 import Day from './Day'
-import Knapsack from './Knapsack'
 import Task from './Task'
+import Knapsack from './Knapsack'
+import { Task as TaskInterface } from '../db/interfaces'
 import * as db from '../db'
 
 export default class Manager {
@@ -20,16 +21,16 @@ export default class Manager {
         this.allDays = Day.generateCalendar(calendar.startDate, calendar.endDate)
         this.allDays.forEach((day: Day) => day.updateConstraints(this.calendarID))
 
-        const dbTasks = await db.getCalendarTasks(this.calendarID)
-        dbTasks?.forEach((dbTask: any) => {
-            const task = new Task(
-                dbTask.id,
-                dbTask.description,
-                dbTask.deadline,
-                dbTask.work_hours
+        const tasks = await db.getCalendarTasks(this.calendarID)
+        tasks.forEach((task: TaskInterface) => {
+            const newTask = new Task(
+                task.id,
+                task.description,
+                task.deadline,
+                task.workHours
             )
-            task.updateDetails(new Date())
-            this.allTasks.push(task)
+            newTask.updateDetails(new Date())
+            this.allTasks.push(newTask)
         })
     }
 
