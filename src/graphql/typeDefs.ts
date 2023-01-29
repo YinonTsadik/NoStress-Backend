@@ -53,6 +53,13 @@ const typeDefs = gql`
         hours: Int!
     }
 
+    type Event {
+        id: String!
+        description: String!
+        startTime: Date!
+        endTime: Date!
+    }
+
     input CreateUserInput {
         firstName: String!
         lastName: String!
@@ -123,7 +130,7 @@ const typeDefs = gql`
 
         calendarConstraints(calendarID: String!): [Constraint!]
 
-        calendarScheduledTasks(calendarID: String!): [ScheduledTask!]
+        calendarEvents(calendarID: String!): [Event!]
     }
 
     type Mutation {

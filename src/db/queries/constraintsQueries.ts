@@ -1,6 +1,10 @@
 import pool from '../connection'
 import { v4 as uuid } from 'uuid'
-import { Constraint, CreateConstraint, UpdateConstraint } from '../interfaces'
+import {
+    Constraint,
+    CreateConstraint,
+    UpdateConstraint,
+} from '../interfaces/Constraint'
 
 export async function getCalendarConstraints(calendarID: string) {
     try {

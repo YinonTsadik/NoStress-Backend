@@ -1,6 +1,6 @@
 import pool from '../connection'
 import { v4 as uuid } from 'uuid'
-import { User, CreateUser, UpdateUser } from '../interfaces'
+import { User, CreateUser, UpdateUser } from '../interfaces/User'
 import { deleteCalendar } from './calendarQueries'
 
 export async function getUsernames() {

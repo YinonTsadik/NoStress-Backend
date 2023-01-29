@@ -36,8 +36,8 @@ const resolvers = {
             return db.getCalendarConstraints(args.calendarID)
         },
 
-        calendarScheduledTasks: (_: any, args: any) => {
-            return db.getCalendarScheduledTasks(args.calendarID)
+        calendarEvents: (_: any, args: any) => {
+            return db.getCalendarEvents(args.calendarID)
         },
     },
 

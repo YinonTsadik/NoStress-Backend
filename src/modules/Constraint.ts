@@ -1,5 +1,5 @@
 import Period from './Period'
-import { Type } from '../db/interfaces'
+import { Type } from '../db/interfaces/Constraint'
 
 export default class Constraint extends Period {
     private type: Type

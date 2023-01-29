@@ -1,6 +1,6 @@
 import pool from '../connection'
 import { v4 as uuid } from 'uuid'
-import { Task, CreateTask, UpdateTask } from '../interfaces'
+import { Task, CreateTask, UpdateTask } from '../interfaces/Task'
 
 export async function getCalendarTasks(calendarID: string) {
     try {

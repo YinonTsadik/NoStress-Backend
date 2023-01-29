@@ -1,6 +1,7 @@
 import pool from '../connection'
 import { v4 as uuid } from 'uuid'
-import { Calendar, CreateCalendar, UpdateCalendar } from '../interfaces'
+import { Calendar, CreateCalendar, UpdateCalendar } from '../interfaces/Calendar'
+import { Event } from '../interfaces/Event'
 
 export async function getCalendar(id: string) {
     try {
@@ -36,6 +37,29 @@ export async function createCalendar(input: CreateCalendar) {
             [uuid(), userID, name, startDate, endDate]
         )
         return calendarAsInterface(newCalendar.rows[0])
+    } catch (error: any) {
+        console.error(error.message)
+    }
+}
+
+export async function getCalendarEvents(calendarID: string) {
+    try {
+        const calendarEvents = await pool.query(
+            `SELECT 
+            COALESCE(c.id, st.id) AS id, 
+            COALESCE(c.description, t.description) AS description,
+            COALESCE(c.start_time, st.start_time) AS start_time, 
+            COALESCE(c.end_time, st.end_time) AS end_time
+            FROM constraints as c
+            FULL OUTER JOIN scheduled_tasks as st
+            ON c.calendar_id = st.calendar_id
+            LEFT JOIN tasks as t ON st.task_id = t.id
+            WHERE c.calendar_id = $1 OR st.calendar_id = $1`,
+            [calendarID]
+        )
+        return calendarEvents.rows.map((calendarEvent) =>
+            eventAsInterface(calendarEvent)
+        )
     } catch (error: any) {
         console.error(error.message)
     }
@@ -107,4 +131,14 @@ function calendarAsInterface(dbCalendar: any) {
         endDate: new Date(dbCalendar.end_date),
     }
     return calendar
+}
+
+function eventAsInterface(dbEvent: any) {
+    const event: Event = {
+        id: dbEvent.id,
+        description: dbEvent.description,
+        startTime: dbEvent.start_time,
+        endTime: dbEvent.end_time,
+    }
+    return event
 }

@@ -1,20 +1,6 @@
 import pool from '../connection'
 import ScheduledTask from '../../modules/ScheduledTask'
-import { ScheduledTask as ScheduledTaskInterface } from '../interfaces'
-
-export async function getCalendarScheduledTasks(calendarID: string) {
-    try {
-        const calendarScheduledTasks = await pool.query(
-            'SELECT st.id, t.description, st.start_time, st.end_time, st.hours FROM scheduled_tasks AS st LEFT JOIN tasks as t ON st.task_id = t.id WHERE st.calendar_id = $1',
-            [calendarID]
-        )
-        return calendarScheduledTasks.rows.map((scheduledTasks) =>
-            scheduledTaskAsInterface(scheduledTasks)
-        )
-    } catch (error: any) {
-        console.error(error.message)
-    }
-}
+import { ScheduledTask as ScheduledTaskInterface } from '../interfaces/ScheduledTask'
 
 export async function createScheduledTask(input: ScheduledTask) {
     try {
