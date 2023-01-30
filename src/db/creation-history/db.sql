@@ -1,14 +1,5 @@
 CREATE DATABASE no_stress;
 
-CREATE TYPE constraint_type AS ENUM (
-    'Studies',
-    'Test',
-    'Work',
-    'Event',
-    'Rest',
-    'Other'
-);
-
 CREATE TABLE users (
     id UUID NOT NULL,
     first_name VARCHAR(20) NOT NULL,
@@ -40,6 +31,15 @@ CREATE TABLE tasks (
     
     PRIMARY KEY (id),
     CONSTRAINT fk_calendar FOREIGN KEY (calendar_id) REFERENCES calendars(id)
+);
+
+CREATE TYPE constraint_type AS ENUM (
+    'Studies',
+    'Test',
+    'Work',
+    'Event',
+    'Rest',
+    'Other'
 );
 
 CREATE TABLE constraints (

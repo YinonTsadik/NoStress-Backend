@@ -1,7 +1,7 @@
 import Day from './Day'
 import Task from './Task'
 import Knapsack from './Knapsack'
-import { Task as TaskInterface } from '../db/interfaces/Task'
+import { Task as TaskInterface } from '../db'
 import * as db from '../db'
 
 export default class Manager {
