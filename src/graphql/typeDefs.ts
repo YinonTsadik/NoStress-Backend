@@ -120,9 +120,6 @@ const typeDefs = gql`
     }
 
     type Query {
-        getUsers: [User!]
-        getUserByName(name: String!): User
-
         usernames: [String!]
 
         user(username: String!, password: String!): User
@@ -137,8 +134,6 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        deleteUsersByStart(start: String!): [User!]
-
         createUser(input: CreateUserInput!): User
         updateUser(input: UpdateUserInput!): User
         deleteUser(id: String!): User

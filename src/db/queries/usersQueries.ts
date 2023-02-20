@@ -3,38 +3,6 @@ import { v4 as uuid } from 'uuid'
 import { User, CreateUser, UpdateUser } from '../interfaces/User'
 import { deleteCalendar } from './calendarQueries'
 
-export async function getUsers() {
-    try {
-        const users = await pool.query('SELECT * FROM users')
-        return users.rows.map((user) => userAsInterface(user))
-    } catch (error: any) {
-        console.error(error.message)
-    }
-}
-
-export async function getUserByName(name: string) {
-    try {
-        const user = await pool.query('SELECT * FROM users WHERE first_name = $1', [
-            name,
-        ])
-        if (!user.rows[0]) return null
-        return userAsInterface(user.rows[0])
-    } catch (error: any) {
-        console.error(error.message)
-    }
-}
-
-export async function deleteUsersByStart(start: string) {
-    try {
-        const deletedUsers = await pool.query(
-            `DELETE FROM users WHERE first_name LIKE '${start}%' RETURNING *`
-        )
-        return deletedUsers.rows.map((user) => userAsInterface(user))
-    } catch (error: any) {
-        console.error(error.message)
-    }
-}
-
 export async function getUsernames() {
     try {
         const allUsersNames = await pool.query('SELECT username FROM users')

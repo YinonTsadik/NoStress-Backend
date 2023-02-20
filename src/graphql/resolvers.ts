@@ -16,14 +16,6 @@ const resolvers = {
     Date: dateScalar,
 
     Query: {
-        getUsers: () => {
-            return db.getUsers()
-        },
-
-        getUserByName: (_: any, args: any) => {
-            return db.getUserByName(args.name)
-        },
-
         usernames: () => {
             return db.getUsernames()
         },
@@ -50,10 +42,6 @@ const resolvers = {
     },
 
     Mutation: {
-        deleteUsersByStart: (_: any, args: any) => {
-            return db.deleteUsersByStart(args.start)
-        },
-
         createUser: (_: any, args: any) => {
             return db.createUser(args.input)
         },
