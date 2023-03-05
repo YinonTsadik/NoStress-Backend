@@ -2,7 +2,7 @@ import pool from '../connection'
 import ScheduledTask from '../../modules/ScheduledTask'
 import { ScheduledTask as ScheduledTaskInterface } from '../interfaces/ScheduledTask'
 
-export async function createScheduledTask(input: ScheduledTask) {
+export const createScheduledTask = async (input: ScheduledTask) => {
     try {
         const newScheduledTask = await pool.query(
             'INSERT INTO scheduled_tasks (id, task_id, calendar_id, start_time, end_time, hours) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
@@ -21,7 +21,7 @@ export async function createScheduledTask(input: ScheduledTask) {
     }
 }
 
-export async function deleteCalendarScheduledTasks(calendarID: string) {
+export const deleteCalendarScheduledTasks = async (calendarID: string) => {
     try {
         const numOfDeleted = await pool.query(
             'DELETE FROM scheduled_tasks WHERE calendar_id = $1',
@@ -33,7 +33,7 @@ export async function deleteCalendarScheduledTasks(calendarID: string) {
     }
 }
 
-function scheduledTaskAsInterface(dbScheduledTask: any) {
+const scheduledTaskAsInterface = (dbScheduledTask: any) => {
     const scheduledTask: ScheduledTaskInterface = {
         id: dbScheduledTask.id,
         description: dbScheduledTask.description,

@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid'
 import { Calendar, CreateCalendar, UpdateCalendar } from '../interfaces/Calendar'
 import { Event } from '../interfaces/Event'
 
-export async function getCalendar(id: string) {
+export const getCalendar = async (id: string) => {
     try {
         const calendar = await pool.query('SELECT * FROM calendars WHERE id = $1', [
             id,
@@ -14,7 +14,7 @@ export async function getCalendar(id: string) {
     }
 }
 
-export async function getUserCalendars(userID: string) {
+export const getUserCalendars = async (userID: string) => {
     try {
         const userCalendars = await pool.query(
             'SELECT * FROM calendars WHERE user_id = $1',
@@ -28,7 +28,7 @@ export async function getUserCalendars(userID: string) {
     }
 }
 
-export async function createCalendar(input: CreateCalendar) {
+export const createCalendar = async (input: CreateCalendar) => {
     try {
         const { userID, name, startDate, endDate } = input
 
@@ -42,7 +42,7 @@ export async function createCalendar(input: CreateCalendar) {
     }
 }
 
-export async function getCalendarEvents(calendarID: string) {
+export const getCalendarEvents = async (calendarID: string) => {
     try {
         const calendarEvents = await pool.query(
             `SELECT 
@@ -65,7 +65,7 @@ export async function getCalendarEvents(calendarID: string) {
     }
 }
 
-export async function updateCalendar(input: UpdateCalendar) {
+export const updateCalendar = async (input: UpdateCalendar) => {
     try {
         const { id, name, startDate, endDate } = input
 
@@ -106,7 +106,7 @@ export async function updateCalendar(input: UpdateCalendar) {
     }
 }
 
-export async function deleteCalendar(id: string) {
+export const deleteCalendar = async (id: string) => {
     try {
         await pool.query('DELETE FROM scheduled_tasks WHERE calendar_id = $1', [id])
         await pool.query('DELETE FROM tasks WHERE calendar_id = $1', [id])
@@ -122,7 +122,7 @@ export async function deleteCalendar(id: string) {
     }
 }
 
-function calendarAsInterface(dbCalendar: any) {
+const calendarAsInterface = (dbCalendar: any) => {
     const calendar: Calendar = {
         id: dbCalendar.id,
         userID: dbCalendar.user_id,
@@ -133,7 +133,7 @@ function calendarAsInterface(dbCalendar: any) {
     return calendar
 }
 
-function eventAsInterface(dbEvent: any) {
+const eventAsInterface = (dbEvent: any) => {
     const event: Event = {
         id: dbEvent.id,
         description: dbEvent.description,

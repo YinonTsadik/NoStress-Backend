@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid'
 import { User, CreateUser, UpdateUser } from '../interfaces/User'
 import { deleteCalendar } from './calendarQueries'
 
-export async function getUsernames() {
+export const getUsernames = async () => {
     try {
         const allUsersNames = await pool.query('SELECT username FROM users')
         return allUsersNames.rows.map((user) => user.username) as string[]
@@ -12,7 +12,7 @@ export async function getUsernames() {
     }
 }
 
-export async function getUser(username: string, password: string) {
+export const getUser = async (username: string, password: string) => {
     try {
         const user = await pool.query(
             'SELECT * FROM users WHERE username = $1 AND password = $2',
@@ -26,7 +26,7 @@ export async function getUser(username: string, password: string) {
     }
 }
 
-export async function createUser(input: CreateUser) {
+export const createUser = async (input: CreateUser) => {
     try {
         const { firstName, lastName, username, password } = input
 
@@ -40,7 +40,7 @@ export async function createUser(input: CreateUser) {
     }
 }
 
-export async function updateUser(input: UpdateUser) {
+export const updateUser = async (input: UpdateUser) => {
     try {
         const { id, firstName, lastName, username, password } = input
 
@@ -81,7 +81,7 @@ export async function updateUser(input: UpdateUser) {
     }
 }
 
-export async function deleteUser(id: string) {
+export const deleteUser = async (id: string) => {
     try {
         const calendarsIDs = await pool.query(
             'SELECT id FROM calendars WHERE user_id = $1',
@@ -99,7 +99,7 @@ export async function deleteUser(id: string) {
     }
 }
 
-function userAsInterface(dbUser: any) {
+const userAsInterface = (dbUser: any) => {
     const user: User = {
         id: dbUser.id,
         firstName: dbUser.first_name,

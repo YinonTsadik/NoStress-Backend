@@ -2,10 +2,10 @@ import pool from '../connection'
 import { v4 as uuid } from 'uuid'
 import { Task, CreateTask, UpdateTask } from '../interfaces/Task'
 
-export async function getCalendarTasks(calendarID: string) {
+export const getCalendarTasks = async (calendarID: string) => {
     try {
         const calendarTasks = await pool.query(
-            'SELECT * FROM tasks WHERE calendar_id = $1',
+            'SELECT * FROM tasks WHERE calendar_id = $1 AND deadline > NOW()',
             [calendarID]
         )
         return calendarTasks.rows.map((calendarTask) =>
@@ -16,7 +16,7 @@ export async function getCalendarTasks(calendarID: string) {
     }
 }
 
-export async function createTask(input: CreateTask) {
+export const createTask = async (input: CreateTask) => {
     try {
         const { calendarID, description, deadline, workHours } = input
 
@@ -30,7 +30,7 @@ export async function createTask(input: CreateTask) {
     }
 }
 
-export async function updateTask(input: UpdateTask) {
+export const updateTask = async (input: UpdateTask) => {
     try {
         const { id, description, deadline, workHours } = input
 
@@ -64,7 +64,7 @@ export async function updateTask(input: UpdateTask) {
     }
 }
 
-export async function deleteTask(id: string) {
+export const deleteTask = async (id: string) => {
     try {
         const deletedTask = await pool.query(
             'DELETE FROM tasks WHERE id = $1 RETURNING *',
@@ -76,7 +76,7 @@ export async function deleteTask(id: string) {
     }
 }
 
-function taskAsInterface(dbTask: any) {
+const taskAsInterface = (dbTask: any) => {
     const task: Task = {
         id: dbTask.id,
         calendarID: dbTask.calendar_id,

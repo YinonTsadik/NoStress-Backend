@@ -6,10 +6,10 @@ import {
     UpdateConstraint,
 } from '../interfaces/Constraint'
 
-export async function getCalendarConstraints(calendarID: string) {
+export const getCalendarConstraints = async (calendarID: string) => {
     try {
         const calendarConstraints = await pool.query(
-            'SELECT * FROM constraints WHERE calendar_id = $1',
+            'SELECT * FROM constraints WHERE calendar_id = $1 AND end_time > NOW()',
             [calendarID]
         )
         return calendarConstraints.rows.map((calendarConstraint) =>
@@ -20,7 +20,7 @@ export async function getCalendarConstraints(calendarID: string) {
     }
 }
 
-export async function getDayConstraints(calendarID: string, date: Date) {
+export const getDayConstraints = async (calendarID: string, date: Date) => {
     try {
         const dayConstraints = await pool.query(
             `SELECT * FROM constraints WHERE
@@ -37,7 +37,7 @@ export async function getDayConstraints(calendarID: string, date: Date) {
     }
 }
 
-export async function createConstraint(input: CreateConstraint) {
+export const createConstraint = async (input: CreateConstraint) => {
     try {
         const { calendarID, description, startTime, endTime, type } = input
 
@@ -51,7 +51,7 @@ export async function createConstraint(input: CreateConstraint) {
     }
 }
 
-export async function updateConstraint(input: UpdateConstraint) {
+export const updateConstraint = async (input: UpdateConstraint) => {
     try {
         const { id, description, startTime, endTime, type } = input
 
@@ -93,7 +93,7 @@ export async function updateConstraint(input: UpdateConstraint) {
     }
 }
 
-export async function deleteConstraint(id: string) {
+export const deleteConstraint = async (id: string) => {
     try {
         const deletedConstraint = await pool.query(
             'DELETE FROM constraints WHERE id = $1 RETURNING *',
@@ -105,7 +105,7 @@ export async function deleteConstraint(id: string) {
     }
 }
 
-function constraintAsInterface(dbConstraint: any) {
+const constraintAsInterface = (dbConstraint: any) => {
     const constraint: Constraint = {
         id: dbConstraint.id,
         calendarID: dbConstraint.calendar_id,
