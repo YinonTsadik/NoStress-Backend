@@ -15,11 +15,13 @@ export default class Manager {
         this.allTasks = new Array<Task>()
     }
 
-    public async createManager() {
+    public async generateManager() {
         const calendar = await db.getCalendar(this.calendarID)
 
         this.allDays = Day.generateCalendar(calendar.startDate, calendar.endDate)
-        this.allDays.forEach((day: Day) => day.updateConstraints(this.calendarID))
+        this.allDays.forEach((day: Day) =>
+            day.constraintsScheduling(this.calendarID)
+        )
 
         const tasks = await db.getCalendarTasks(this.calendarID)
         tasks.forEach((task: TaskInterface) => {
@@ -34,7 +36,7 @@ export default class Manager {
         })
     }
 
-    public optimize() {
+    public async optimize() {
         db.deleteCalendarScheduledTasks(this.calendarID)
 
         this.allDays.forEach((day: Day) => {
@@ -46,6 +48,7 @@ export default class Manager {
                     const tempTask = Task.copyConstructor(task)
                     tempTask.updateDetails(day.getDate)
 
+                    if (tempTask.getValue < 0) return
                     if (task.getWorkHours <= availableHours) {
                         options.push(tempTask)
                     } else {
@@ -60,6 +63,12 @@ export default class Manager {
             if (daySolution.getHours > availableHours) {
                 throw new Error('Knapsack Error')
             }
+
+            console.log(`Day: ${day.getDate}`)
+            console.log('solution:')
+            console.log(daySolution.getTasks)
+            console.log('hours:')
+            console.log(daySolution.getHours)
 
             // day.tasksScheduling(this.calendarID, daySolution.getTasks)
             day.setAvailableHours = day.getAvailableHours - daySolution.getHours

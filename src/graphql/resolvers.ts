@@ -92,11 +92,11 @@ const resolvers = {
 
         optimize: async (_: any, args: any) => {
             const manager = new Manager(args.calendarID)
-            await manager.createManager()
+            await manager.generateManager()
             await manager.optimize()
 
             // console.log(manager)
-            console.log(manager.getAllDays)
+            // console.log(manager.getAllDays)
             // console.log(manager.getAllTasks)
             return true
         },

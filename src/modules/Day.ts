@@ -18,17 +18,23 @@ export default class Day {
         this.totalValue = 0
     }
 
-    public static generateCalendar(start: Date, end: Date): Day[] {
+    public static generateCalendar(start: Date, end: Date) {
         const calendar = new Array<Day>()
 
-        for (let date = start; date <= end; date.setDate(date.getDate() + 1)) {
+        for (let date = start; date < end; date.setDate(date.getDate() + 1)) {
             calendar.push(new Day(new Date(date)))
         }
 
         return calendar
     }
 
-    public async updateConstraints(calendarID: string) {
+    private periodScheduling(period: Period, startIndex: number, endIndex: number) {
+        for (let i = startIndex; i < endIndex; i++) {
+            this.schedule[i] = period
+        }
+    }
+
+    public async constraintsScheduling(calendarID: string) {
         const dayConstraints = await db.getDayConstraints(calendarID, this.date)
         let constraintsHoursSum = 0
 
@@ -100,12 +106,6 @@ export default class Day {
         })
 
         this.availableHours -= constraintsHoursSum
-    }
-
-    private periodScheduling(period: Period, startIndex: number, endIndex: number) {
-        for (let i = startIndex; i < endIndex; i++) {
-            this.schedule[i] = period
-        }
     }
 
     public tasksScheduling(calendarID: string, tasks: Task[]) {
