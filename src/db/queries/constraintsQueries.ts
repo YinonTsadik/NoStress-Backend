@@ -8,8 +8,12 @@ import {
 
 export const getCalendarConstraints = async (calendarID: string) => {
     try {
+        // const calendarConstraints = await pool.query(
+        //     'SELECT * FROM constraints WHERE calendar_id = $1 AND end_time > NOW()',
+        //     [calendarID]
+        // )
         const calendarConstraints = await pool.query(
-            'SELECT * FROM constraints WHERE calendar_id = $1 AND end_time > NOW()',
+            'SELECT * FROM constraints WHERE calendar_id = $1',
             [calendarID]
         )
         return calendarConstraints.rows.map((calendarConstraint) =>
