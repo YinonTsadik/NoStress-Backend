@@ -61,7 +61,6 @@ export default class Day {
                 endTime.getDate()
             )
 
-            // Add documentation - not clear enough
             let startHour: number, endHour: number
             if (startDay.getTime() === endDay.getTime()) {
                 constraintsHoursSum += newConstraint.getHours

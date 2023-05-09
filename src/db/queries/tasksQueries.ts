@@ -4,10 +4,6 @@ import { Task, CreateTask, UpdateTask } from '../interfaces/Task'
 
 export const getCalendarTasks = async (calendarID: string) => {
     try {
-        // const calendarTasks = await pool.query(
-        //     'SELECT * FROM tasks WHERE calendar_id = $1 AND deadline > NOW()',
-        //     [calendarID]
-        // )
         const calendarTasks = await pool.query(
             'SELECT * FROM tasks WHERE calendar_id = $1',
             [calendarID]
