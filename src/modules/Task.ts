@@ -45,13 +45,13 @@ export default class Task extends Event {
     }
 
     private hoursScore(hours: number): number {
-        return Math.pow(1.5, hours) - 1
+        return Math.pow(1.6, hours) - 1
     }
 
-    public splitTask(x: number): Task {
+    public splitTask(possibleHours: number): Task {
         const newTask = Task.copyConstructor(this)
-        newTask.workHours = x
-        newTask.value = (x / this.workHours) * this.value
+        newTask.workHours = possibleHours
+        newTask.value = (possibleHours / this.workHours) * this.value
         return newTask
     }
 
