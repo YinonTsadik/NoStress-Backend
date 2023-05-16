@@ -92,7 +92,7 @@ const resolvers = {
 
         optimize: async (_: any, args: any) => {
             const manager = new Manager(args.calendarID)
-            await manager.generateManager()
+            await manager.initManager()
             await manager.optimize()
 
             // console.log(manager)
