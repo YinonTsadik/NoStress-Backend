@@ -86,22 +86,22 @@ export default class Manager {
             })
 
             // Use the Knapsack algorithm to find the best task selection for the day
-            // day.tasksScheduling(this.calendarID, daySolution.getTasks)
             const dayKnapsack = new Knapsack(options, availableHours)
             const daySolution = dayKnapsack.solve()
 
             // Ensure that the scheduled solution does not exceed the available hours for the day
             if (daySolution.getHours > availableHours) {
+                console.log(`Day: ${day.getDate}`)
+                console.log('solution:')
+                console.log(daySolution.getTasks)
+                console.log('hours:')
+                console.log(daySolution.getHours)
+
                 throw new Error('Knapsack Error')
             }
 
-            console.log(`Day: ${day.getDate}`)
-            console.log('solution:')
-            console.log(daySolution.getTasks)
-            console.log('hours:')
-            console.log(daySolution.getHours)
-
             // Update the day's schedule and available hours based on the solution
+            // day.tasksScheduling(this.calendarID, daySolution.getTasks)
             day.setAvailableHours = day.getAvailableHours - daySolution.getHours
             day.setTotalValue = daySolution.getValue
 
