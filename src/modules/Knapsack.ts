@@ -14,6 +14,7 @@ export default class Knapsack {
      * Solves the Knapsack problem.
      * Returns a Solution object containing the selected tasks,
      * the total value of the selected tasks, and the total number of hours.
+     * @returns {Solution} - The solution to the Knapsack problem.
      */
     public solve(): Solution {
         // Get the number of tasks and the capacity of the knapsack
