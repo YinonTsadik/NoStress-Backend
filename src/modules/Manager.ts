@@ -101,7 +101,7 @@ export default class Manager {
             }
 
             // Update the day's schedule and available hours based on the solution
-            // day.tasksScheduling(this.calendarID, daySolution.getTasks)
+            day.tasksScheduling(this.calendarID, daySolution.getTasks)
             day.setAvailableHours = day.getAvailableHours - daySolution.getHours
             day.setTotalValue = daySolution.getValue
 
@@ -116,12 +116,8 @@ export default class Manager {
                             originalTask.setFullyScheduled = true
                         } else {
                             // Split the original task and replace it with the split version
-                            this.allTasks.splice(
-                                j,
-                                1,
-                                originalTask.splitTask(
-                                    originalTask.getWorkHours - availableHours
-                                )
+                            this.allTasks[j] = originalTask.splitTask(
+                                originalTask.getWorkHours - availableHours
                             )
                         }
                         break

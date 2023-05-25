@@ -151,7 +151,8 @@ export default class Day {
     }
 
     /**
-     * Performs scheduling of tasks for the day based on the provided calendar ID and tasks array.
+     * Performs scheduling of tasks for the day based
+     * on the provided calendar ID and tasks array.
      * Iterates over each task and schedules it by finding available time slots in the schedule.
      * Updates the task's work hours and creates corresponding scheduled tasks in the database.
      * @param {string} calendarID - The ID of the calendar associated with the tasks.
@@ -168,7 +169,8 @@ export default class Day {
                 // Find the first available index in the schedule
                 const startIndex = this.findFirstAvailableIndex()
 
-                // Find the consecutive available index based on the start index and remaining work hours
+                // Find the consecutive available index based on
+                // the start index and remaining work hours
                 const endIndex = this.findConsecutiveAvailableIndex(
                     startIndex,
                     workHours
