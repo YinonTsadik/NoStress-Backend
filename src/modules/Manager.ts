@@ -61,12 +61,12 @@ export default class Manager {
         db.deleteCalendarScheduledTasks(this.calendarID)
 
         // Iterate through each day in the calendar
-        this.allDays.forEach((day: Day) => {
+        for (const day of this.allDays) {
             const options = new Array<Task>()
             const availableHours = day.getAvailableHours
 
             // Iterate through each task in the list of all tasks
-            this.allTasks.forEach((task: Task) => {
+            for (const task of this.allTasks) {
                 if (!task.getFullyScheduled) {
                     // Create a temporary copy of the task and update its details based on the current day
                     const tempTask = Task.copyConstructor(task)
@@ -83,22 +83,11 @@ export default class Manager {
                         options.push(tempTask.splitTask(availableHours))
                     }
                 }
-            })
+            }
 
             // Use the Knapsack algorithm to find the best task selection for the day
             const dayKnapsack = new Knapsack(options, availableHours)
             const daySolution = dayKnapsack.solve()
-
-            // Ensure that the scheduled solution does not exceed the available hours for the day
-            if (daySolution.getHours > availableHours) {
-                console.log(`Day: ${day.getDate}`)
-                console.log('solution:')
-                console.log(daySolution.getTasks)
-                console.log('hours:')
-                console.log(daySolution.getHours)
-
-                throw new Error('Knapsack Error')
-            }
 
             // Update the day's schedule and available hours based on the solution
             day.tasksScheduling(this.calendarID, daySolution.getTasks)
@@ -106,17 +95,15 @@ export default class Manager {
             day.setTotalValue = daySolution.getValue
 
             // Update the scheduling status of the tasks in the solution and split tasks if necessary
-            for (let i = 0; i < daySolution.getTasks.length; i++) {
-                const solutionTask = daySolution.getTasks[i]
-                for (let j = 0; j < this.allTasks.length; j++) {
-                    if (this.allTasks[j].getID === solutionTask.getID) {
-                        const originalTask = this.allTasks[j]
+            for (const solutionTask of daySolution.getTasks) {
+                for (let originalTask of this.allTasks) {
+                    if (originalTask.getID === solutionTask.getID) {
                         if (originalTask.getWorkHours <= availableHours) {
                             // Mark the original task as fully scheduled
                             originalTask.setFullyScheduled = true
                         } else {
                             // Split the original task and replace it with the split version
-                            this.allTasks[j] = originalTask.splitTask(
+                            originalTask = originalTask.splitTask(
                                 originalTask.getWorkHours - availableHours
                             )
                         }
@@ -124,7 +111,7 @@ export default class Manager {
                     }
                 }
             }
-        })
+        }
     }
 
     get getAllDays() {

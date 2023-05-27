@@ -45,16 +45,30 @@ export const createCalendar = async (input: CreateCalendar) => {
 export const getCalendarEvents = async (calendarID: string) => {
     try {
         const calendarEvents = await pool.query(
-            `SELECT 
-            COALESCE(c.id, st.id) AS id, 
-            COALESCE(c.description, t.description) AS description,
-            COALESCE(c.start_time, st.start_time) AS start_time, 
-            COALESCE(c.end_time, st.end_time) AS end_time
-            FROM constraints as c
-            FULL OUTER JOIN scheduled_tasks as st
-            ON c.calendar_id = st.calendar_id
-            LEFT JOIN tasks as t ON st.task_id = t.id
-            WHERE c.calendar_id = $1 OR st.calendar_id = $1`,
+            `SELECT
+                c.id,
+                c.description,
+                c.start_time,
+                c.end_time
+            FROM
+                constraints AS c
+            WHERE
+                c.calendar_id = $1
+
+            UNION ALL
+
+            SELECT
+                st.id,
+                t.description,
+                st.start_time,
+                st.end_time
+            FROM
+                scheduled_tasks AS st
+            JOIN
+                tasks AS t ON st.task_id = t.id
+            WHERE
+                st.calendar_id = $1
+            `,
             [calendarID]
         )
         return calendarEvents.rows.map((calendarEvent) =>
@@ -75,12 +89,6 @@ export const updateCalendar = async (input: UpdateCalendar) => {
                 id,
             ])
         }
-
-        /*
-            Add:
-            Deleting the tasks, constraints and scheduledTasks that
-            are not in the new date range after updating the dates.
-        */
 
         if (startDate) {
             await pool.query('UPDATE calendars SET start_date = $1 WHERE id = $2', [

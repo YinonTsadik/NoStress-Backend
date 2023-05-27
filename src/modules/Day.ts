@@ -120,93 +120,91 @@ export default class Day {
         this.availableHours -= constraintsHoursSum
     }
 
-    /**
-     * Finds the first available index in the schedule.
-     * @returns {number} - The index of the first available slot in the schedule.
-     */
-    private findFirstAvailableIndex(): number {
-        return this.schedule.findIndex((slot) => slot === null)
+    private isOccupiedByConstraint(hour: number): boolean {
+        // Check if the given hour is occupied by a constraint in the schedule
+        const period = this.schedule[hour]
+        return period instanceof Constraint
     }
 
-    /**
-     * Finds the consecutive available index in the schedule starting from the given index.
-     * @param {number} startIndex - The index to start searching from.
-     * @param {number} workHours - The remaining work hours of the task.
-     * @returns {number} - The index of the consecutive available slot in the schedule.
-     */
-    private findConsecutiveAvailableIndex(
-        startIndex: number,
-        workHours: number
-    ): number {
-        let endIndex = startIndex
-        while (
-            endIndex < this.schedule.length &&
-            workHours > 0 &&
-            this.schedule[endIndex] === null
-        ) {
-            endIndex++
-            workHours--
-        }
-        return endIndex
-    }
-
-    /**
-     * Performs scheduling of tasks for the day based
-     * on the provided calendar ID and tasks array.
-     * Iterates over each task and schedules it by finding available time slots in the schedule.
-     * Updates the task's work hours and creates corresponding scheduled tasks in the database.
-     * @param {string} calendarID - The ID of the calendar associated with the tasks.
-     * @param {Task[]} tasks - An array of Task objects to be scheduled.
-     */
-    public tasksScheduling(calendarID: string, tasks: Task[]) {
-        tasks.forEach((task: Task) => {
-            const id = task.getID
-            const description = task.getDescription
-            let workHours = task.getWorkHours
-
-            // Loop until all work hours of the task are scheduled
-            while (workHours > 0) {
-                // Find the first available index in the schedule
-                const startIndex = this.findFirstAvailableIndex()
-
-                // Find the consecutive available index based on
-                // the start index and remaining work hours
-                const endIndex = this.findConsecutiveAvailableIndex(
-                    startIndex,
-                    workHours
-                )
-
-                // Calculate the scheduled work hours
-                const scheduledWorkHours = endIndex - startIndex
-
-                // Update the remaining work hours of the task
-                task.setWorkHours = workHours - scheduledWorkHours
-
-                // Create start and end date objects representing the scheduled time period
-                const start = new Date(this.date)
-                start.setHours(startIndex)
-                const end = new Date(this.date)
-                end.setHours(endIndex)
-
-                // Create a scheduled task object with the task details
-                const scheduledTask = new ScheduledTask(
-                    description,
-                    start,
-                    end,
-                    id,
-                    calendarID
-                )
-
-                // Update the schedule with the scheduled task's time period
-                this.periodScheduling(scheduledTask, startIndex, endIndex)
-
-                // Create the scheduled task in the database
-                db.createScheduledTask(scheduledTask)
-
-                // Decrement the remaining work hours
-                workHours -= scheduledWorkHours
+    private calculateAvailableHours(startIndex: number): number {
+        // Calculate the number of available contiguous hours starting from the given index
+        let availableHours = 0
+        for (let i = startIndex; i < this.schedule.length; i++) {
+            const period = this.schedule[i]
+            if (period || this.isOccupiedByConstraint(i)) {
+                break
             }
-        })
+            availableHours++
+        }
+        return availableHours
+    }
+
+    public async tasksScheduling(calendarID: string, tasks: Task[]) {
+        // Sort the tasks in descending order of work hours
+        tasks.sort((a, b) => b.getWorkHours - a.getWorkHours)
+
+        // Iterate over the tasks
+        for (const task of tasks) {
+            let scheduledHours = 0 // Track the number of hours scheduled for the task
+
+            // Iterate over each hour in the schedule
+            for (let hour = 0; hour < this.schedule.length; hour++) {
+                const period = this.schedule[hour]
+
+                // Check if the current hour is empty and not occupied by a constraint
+                if (!period && !this.isOccupiedByConstraint(hour)) {
+                    // Calculate the number of available hours in the current contiguous slot
+                    const availableHours = this.calculateAvailableHours(hour)
+
+                    // Calculate the number of hours to schedule for the task in the current slot
+                    const hoursToSchedule = Math.min(
+                        availableHours,
+                        task.getWorkHours - scheduledHours
+                    )
+
+                    // Schedule the task in the current slot
+                    const startIndex = hour
+                    const endIndex = hour + hoursToSchedule
+
+                    const description = task.getDescription
+                    const start = new Date(
+                        this.date.getFullYear(),
+                        this.date.getMonth(),
+                        this.date.getDate(),
+                        hour
+                    )
+                    const end = new Date(
+                        this.date.getFullYear(),
+                        this.date.getMonth(),
+                        this.date.getDate(),
+                        hour + hoursToSchedule
+                    )
+                    const id = task.getID
+
+                    // Create a scheduled task object with the task details
+                    const newScheduledTask = new ScheduledTask(
+                        description,
+                        start,
+                        end,
+                        id,
+                        calendarID
+                    )
+
+                    // Update the schedule with the scheduled task's time period
+                    this.periodScheduling(newScheduledTask, startIndex, endIndex)
+
+                    // Create the scheduled task in the database
+                    await db.createScheduledTask(newScheduledTask)
+
+                    scheduledHours += hoursToSchedule // Update the scheduled hours count
+
+                    // Break the loop if all hours for the task have been scheduled
+                    if (scheduledHours === task.getWorkHours) {
+                        break
+                    }
+                }
+            }
+        }
     }
 
     get getDate() {
