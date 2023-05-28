@@ -4,9 +4,11 @@ import Manager from '../modules/Manager'
 import { GraphQLScalarType } from 'graphql'
 const dateScalar = new GraphQLScalarType({
     name: 'Date',
+
     parseValue(value: any) {
         return new Date(value)
     },
+
     serialize(value: any) {
         return value.toISOString()
     },
@@ -95,9 +97,8 @@ const resolvers = {
             await manager.initManager()
             await manager.optimize()
 
-            // console.log(manager)
-            // console.log(manager.getAllDays)
-            // console.log(manager.getAllTasks)
+            // console.log(JSON.stringify(manager))
+
             return true
         },
     },

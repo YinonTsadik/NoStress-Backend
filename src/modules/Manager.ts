@@ -27,15 +27,15 @@ export default class Manager {
         this.allDays = Day.generateCalendar(calendar.startDate, calendar.endDate)
 
         // Apply scheduling constraints to each day based on the calendar ID
-        this.allDays.forEach((day: Day) =>
-            day.constraintsScheduling(this.calendarID)
-        )
+        for (const day of this.allDays) {
+            await day.constraintsScheduling(this.calendarID)
+        }
 
         // Retrieve tasks associated with the calendar from the database
         const tasks = await db.getCalendarTasks(this.calendarID)
 
         // Create Task objects for each retrieved task and add them to the `allTasks` array
-        tasks.forEach((task: TaskInterface) => {
+        for (const task of tasks) {
             const newTask = new Task(
                 task.id,
                 task.description,
@@ -44,11 +44,11 @@ export default class Manager {
             )
 
             // Update the details of the task with the start date of the calendar
-            newTask.updateDetails(new Date(calendar.startDate))
+            newTask.updateDetails(calendar.startDate)
 
             // Add the task to the `allTasks` array
             this.allTasks.push(newTask)
-        })
+        }
     }
 
     /**
@@ -58,7 +58,7 @@ export default class Manager {
      */
     public async optimize() {
         // Delete previously scheduled tasks associated with the calendar from the database
-        db.deleteCalendarScheduledTasks(this.calendarID)
+        await db.deleteCalendarScheduledTasks(this.calendarID)
 
         // Iterate through each day in the calendar
         for (const day of this.allDays) {
@@ -92,11 +92,11 @@ export default class Manager {
             const daySolution = dayKnapsack.solve()
 
             // Update the day's schedule and available hours based on the solution
-            day.tasksScheduling(this.calendarID, daySolution.getTasks)
+            await day.tasksScheduling(this.calendarID, daySolution.getTasks)
             day.setAvailableHours = day.getAvailableHours - daySolution.getHours
             day.setTotalValue = daySolution.getValue
 
-            // Update the scheduling status of the tasks in the solution and split tasks if necessary
+            // Update the scheduling status of the tasks in the solution and split tasks if necessarys
             for (const solutionTask of daySolution.getTasks) {
                 for (let originalTask of this.allTasks) {
                     if (originalTask.getID === solutionTask.getID) {

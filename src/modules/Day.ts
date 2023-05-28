@@ -21,7 +21,11 @@ export default class Day {
     public static generateCalendar(start: Date, end: Date) {
         const calendar = new Array<Day>()
 
-        for (let date = start; date < end; date.setDate(date.getDate() + 1)) {
+        for (
+            let date = new Date(start);
+            date < end;
+            date.setDate(date.getDate() + 1)
+        ) {
             calendar.push(new Day(new Date(date)))
         }
 
@@ -35,13 +39,16 @@ export default class Day {
      * @param {number} endIndex - The ending index (exclusive) in the schedule array.
      */
     private periodScheduling(period: Period, startIndex: number, endIndex: number) {
+        console.log(
+            `Date: ${this.date.toLocaleDateString()} - startIndex: ${startIndex}, endIndex: ${endIndex}`
+        )
         for (let i = startIndex; i < endIndex; i++) {
             this.schedule[i] = period
         }
     }
 
     /**
-     * Performs scheduling of constraints for the day based on the provided calendar id.
+     * Performs scheduling of constraints for the day based on the provided calendar ID.
      * Updates the schedule array with the constraints and calculates the sum of constraint hours.
      * Updates the availableHours property by subtracting the sum of constraint hours.
      * @param {string} calendarID - The ID of the calendar associated with the constraints.
@@ -52,7 +59,7 @@ export default class Day {
         let constraintsHoursSum = 0
 
         // Iterate over each constraint and schedule it for the day
-        dayConstraints.forEach((constraint: ConstraintInterface) => {
+        for (const constraint of dayConstraints) {
             // Create a new Constraint object from the retrieved data
             const newConstraint = new Constraint(
                 constraint.id,
@@ -63,8 +70,8 @@ export default class Day {
             )
 
             // Extract the start and end times of the constraint
-            const startTime = newConstraint.getStart
-            const endTime = newConstraint.getEnd
+            const startTime = new Date(newConstraint.getStart)
+            const endTime = new Date(newConstraint.getEnd)
 
             // Determine the start and end days for comparison
             const startDay = new Date(
@@ -114,7 +121,7 @@ export default class Day {
 
             // Schedule the constraint period in the appropriate hours of the day
             this.periodScheduling(newConstraint, startHour, endHour)
-        })
+        }
 
         // Update the available hours by subtracting the sum of constraint hours
         this.availableHours -= constraintsHoursSum
@@ -164,7 +171,7 @@ export default class Day {
      * @param {string} calendarID - The ID of the calendar.
      * @param {Task[]} tasks - An array of tasks to be scheduled.
      */
-    public async tasksScheduling(calendarID: string, tasks: Task[]): Promise<void> {
+    public async tasksScheduling(calendarID: string, tasks: Task[]) {
         // Sort the tasks in descending order of work hours
         tasks.sort((a, b) => b.getWorkHours - a.getWorkHours)
 
