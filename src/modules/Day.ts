@@ -39,9 +39,6 @@ export default class Day {
      * @param {number} endIndex - The ending index (exclusive) in the schedule array.
      */
     private periodScheduling(period: Period, startIndex: number, endIndex: number) {
-        console.log(
-            `Date: ${this.date.toLocaleDateString()} - startIndex: ${startIndex}, endIndex: ${endIndex}`
-        )
         for (let i = startIndex; i < endIndex; i++) {
             this.schedule[i] = period
         }

@@ -65,7 +65,9 @@ export default class Manager {
             const options = new Array<Task>()
             const availableHours = day.getAvailableHours
 
-            if (availableHours === 0) continue
+            if (availableHours === 0) {
+                continue
+            }
 
             // Iterate through each task in the list of all tasks
             for (const task of this.allTasks) {
@@ -75,7 +77,9 @@ export default class Manager {
                     tempTask.updateDetails(day.getDate)
 
                     // Skip the task if its value is negative after the update
-                    if (tempTask.getValue < 0) continue
+                    if (tempTask.getValue < 0) {
+                        continue
+                    }
 
                     if (task.getWorkHours <= availableHours) {
                         // If the task can fit within the available hours, add it as an option
@@ -106,7 +110,7 @@ export default class Manager {
                         } else {
                             // Split the original task and replace it with the split version
                             originalTask = originalTask.splitTask(
-                                originalTask.getWorkHours - availableHours
+                                originalTask.getWorkHours - solutionTask.getWorkHours
                             )
                         }
                         break

@@ -66,6 +66,8 @@ export const updateTask = async (input: UpdateTask) => {
 
 export const deleteTask = async (id: string) => {
     try {
+        await pool.query('DELETE FROM scheduled_tasks WHERE task_id = $1', [id])
+
         const deletedTask = await pool.query(
             'DELETE FROM tasks WHERE id = $1 RETURNING *',
             [id]
