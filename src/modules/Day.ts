@@ -120,32 +120,58 @@ export default class Day {
         this.availableHours -= constraintsHoursSum
     }
 
+    /**
+     * Checks if the given hour is occupied by a constraint in the schedule.
+     * @param {number} hour - The hour to check.
+     * @returns {boolean} - A boolean indicating if the hour is occupied by a constraint.
+     */
     private isOccupiedByConstraint(hour: number): boolean {
-        // Check if the given hour is occupied by a constraint in the schedule
+        // Get the period at the specified hour in the schedule
         const period = this.schedule[hour]
+
+        // Check if the period is an instance of Constraint
         return period instanceof Constraint
     }
 
+    /**
+     * Calculates the number of available contiguous hours starting from the given index.
+     * @param {number} startIndex - The starting index to calculate the available hours from.
+     * @returns {number} - The number of available contiguous hours.
+     */
     private calculateAvailableHours(startIndex: number): number {
-        // Calculate the number of available contiguous hours starting from the given index
+        // Initialize the available hours counter
         let availableHours = 0
+
+        // Iterate over the schedule starting from the given index
         for (let i = startIndex; i < this.schedule.length; i++) {
             const period = this.schedule[i]
+
+            // If the period is already occupied or there is a constraint, stop counting
             if (period || this.isOccupiedByConstraint(i)) {
                 break
             }
+
+            // Increment the available hours counter
             availableHours++
         }
+
+        // Return the number of available contiguous hours
         return availableHours
     }
 
-    public async tasksScheduling(calendarID: string, tasks: Task[]) {
+    /**
+     * Schedules tasks in the calendar based on availability in the schedule.
+     * @param {string} calendarID - The ID of the calendar.
+     * @param {Task[]} tasks - An array of tasks to be scheduled.
+     */
+    public async tasksScheduling(calendarID: string, tasks: Task[]): Promise<void> {
         // Sort the tasks in descending order of work hours
         tasks.sort((a, b) => b.getWorkHours - a.getWorkHours)
 
         // Iterate over the tasks
         for (const task of tasks) {
-            let scheduledHours = 0 // Track the number of hours scheduled for the task
+            // Track the number of hours scheduled for the task
+            let scheduledHours = 0
 
             // Iterate over each hour in the schedule
             for (let hour = 0; hour < this.schedule.length; hour++) {
@@ -196,7 +222,8 @@ export default class Day {
                     // Create the scheduled task in the database
                     await db.createScheduledTask(newScheduledTask)
 
-                    scheduledHours += hoursToSchedule // Update the scheduled hours count
+                    // Update the scheduled hours count
+                    scheduledHours += hoursToSchedule
 
                     // Break the loop if all hours for the task have been scheduled
                     if (scheduledHours === task.getWorkHours) {

@@ -43,8 +43,8 @@ export default class Manager {
                 task.workHours
             )
 
-            // Update the task's details using the current date
-            newTask.updateDetails(new Date())
+            // Update the details of the task with the start date of the calendar
+            newTask.updateDetails(new Date(calendar.startDate))
 
             // Add the task to the `allTasks` array
             this.allTasks.push(newTask)
@@ -65,6 +65,8 @@ export default class Manager {
             const options = new Array<Task>()
             const availableHours = day.getAvailableHours
 
+            if (availableHours === 0) continue
+
             // Iterate through each task in the list of all tasks
             for (const task of this.allTasks) {
                 if (!task.getFullyScheduled) {
@@ -73,7 +75,7 @@ export default class Manager {
                     tempTask.updateDetails(day.getDate)
 
                     // Skip the task if its value is negative after the update
-                    if (tempTask.getValue < 0) return
+                    if (tempTask.getValue < 0) continue
 
                     if (task.getWorkHours <= availableHours) {
                         // If the task can fit within the available hours, add it as an option
