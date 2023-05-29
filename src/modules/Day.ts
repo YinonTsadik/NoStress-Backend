@@ -2,7 +2,6 @@ import Period from './Period'
 import Task from './Task'
 import Constraint from './Constraint'
 import ScheduledTask from './ScheduledTask'
-import { Constraint as ConstraintInterface } from '../db'
 import * as db from '../db'
 
 export default class Day {

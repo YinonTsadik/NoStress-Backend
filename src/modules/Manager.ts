@@ -63,7 +63,7 @@ export default class Manager {
         for (const day of this.allDays) {
             const availableHours = day.getAvailableHours
 
-            if (availableHours === 0) {
+            if (availableHours <= 0) {
                 continue
             }
 
