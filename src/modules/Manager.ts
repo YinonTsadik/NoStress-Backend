@@ -61,54 +61,41 @@ export default class Manager {
 
         // Iterate through each day in the calendar
         for (const day of this.allDays) {
-            const options = new Array<Task>()
             const availableHours = day.getAvailableHours
 
             if (availableHours === 0) {
                 continue
             }
 
-            // Iterate through each task in the list of all tasks
-            for (const task of this.allTasks) {
-                if (!task.getFullyScheduled) {
+            const options = this.allTasks
+                .filter((task) => !task.getFullyScheduled)
+                .map((task) => {
                     // Create a temporary copy of the task and update its details based on the current day
                     const tempTask = Task.copyConstructor(task)
                     tempTask.updateDetails(day.getDate)
-
-                    // Skip the task if its value is negative after the update
-                    if (tempTask.getValue < 0) {
-                        continue
-                    }
-
-                    if (task.getWorkHours <= availableHours) {
-                        // If the task can fit within the available hours, add it as an option
-                        options.push(tempTask)
-                    } else {
-                        // If the task needs to be split to fit within the available hours, add the split version as an option
-                        options.push(tempTask.splitTask(availableHours))
-                    }
-                }
-            }
+                    return task.getWorkHours <= availableHours
+                        ? tempTask
+                        : tempTask.splitTask(availableHours)
+                })
 
             // Use the Knapsack algorithm to find the best task selection for the day
-            const dayKnapsack = new Knapsack(options, availableHours)
-            const daySolution = dayKnapsack.solve()
+            const daySolution = new Knapsack(options, availableHours).solve()
 
-            // Update the scheduling status of the tasks in the solution and split tasks if necessarys
             for (const solutionTask of daySolution.getTasks) {
-                for (let originalTask of this.allTasks) {
-                    if (originalTask.getID === solutionTask.getID) {
-                        if (originalTask.getWorkHours <= availableHours) {
-                            // Mark the original task as fully scheduled
-                            originalTask.setFullyScheduled = true
-                        } else {
-                            // Split the original task and replace it with the split version
-                            originalTask = originalTask.splitTask(
-                                originalTask.getWorkHours - solutionTask.getWorkHours
-                            )
-                        }
-                        break
-                    }
+                const originalTaskIndex = this.allTasks.findIndex(
+                    (task) => task.getID === solutionTask.getID
+                )
+                const originalTask = this.allTasks[originalTaskIndex]
+
+                if (originalTask.getWorkHours <= availableHours) {
+                    // Mark the original task as fully scheduled
+                    originalTask.setFullyScheduled = true
+                } else {
+                    // Split the original task and replace it with the split version
+                    const splitTask = originalTask.splitTask(
+                        originalTask.getWorkHours - solutionTask.getWorkHours
+                    )
+                    this.allTasks.splice(originalTaskIndex, 1, splitTask)
                 }
             }
 
