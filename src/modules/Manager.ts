@@ -1,7 +1,6 @@
 import Day from './Day'
 import Task from './Task'
 import Knapsack from './Knapsack'
-import { Task as TaskInterface } from '../db'
 import * as db from '../db'
 
 export default class Manager {
@@ -95,11 +94,6 @@ export default class Manager {
             const dayKnapsack = new Knapsack(options, availableHours)
             const daySolution = dayKnapsack.solve()
 
-            // Update the day's schedule and available hours based on the solution
-            await day.tasksScheduling(this.calendarID, daySolution.getTasks)
-            day.setAvailableHours = day.getAvailableHours - daySolution.getHours
-            day.setTotalValue = daySolution.getValue
-
             // Update the scheduling status of the tasks in the solution and split tasks if necessarys
             for (const solutionTask of daySolution.getTasks) {
                 for (let originalTask of this.allTasks) {
@@ -117,6 +111,11 @@ export default class Manager {
                     }
                 }
             }
+
+            // Update the day's schedule and available hours based on the solution
+            await day.tasksScheduling(this.calendarID, daySolution.getTasks)
+            day.setAvailableHours = day.getAvailableHours - daySolution.getHours
+            day.setTotalValue = daySolution.getValue
         }
     }
 
